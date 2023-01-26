@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>SPI_ST-LIB</name>
+	<name>template-project</name>
 	<comment></comment>
 	<projects>
+		<project>ST-LIB</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -37,6 +37,6 @@
 ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_lptim.c:2003:13:HAL_LPTIM_AutoReloadWriteCallback	16	static
 ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_lptim.c:2018:13:HAL_LPTIM_DirectionUpCallback	16	static
 ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_lptim.c:2033:13:HAL_LPTIM_DirectionDownCallback	16	static
-../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_lptim.c:2287:24:HAL_LPTIM_GetState	16	static
-../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_lptim.c:2334:26:LPTIM_WaitForFlag	24	static
-../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_lptim.c:2359:6:LPTIM_Disable	56	static,ignoring_inline_asm
+../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_lptim.c:2275:24:HAL_LPTIM_GetState	16	static
+../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_lptim.c:2322:26:LPTIM_WaitForFlag	24	static
+../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_lptim.c:2347:6:LPTIM_Disable	56	static,ignoring_inline_asm

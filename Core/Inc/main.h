@@ -65,10 +65,6 @@ void Error_Handler(void);
 #define PWM_OUT_GPIO_Port GPIOE
 #define PWM_OUTE6_Pin GPIO_PIN_6
 #define PWM_OUTE6_GPIO_Port GPIOE
-#define RTC_IN_Pin GPIO_PIN_14
-#define RTC_IN_GPIO_Port GPIOC
-#define RTC_OUT_Pin GPIO_PIN_15
-#define RTC_OUT_GPIO_Port GPIOC
 #define PWM_IN_Pin GPIO_PIN_0
 #define PWM_IN_GPIO_Port GPIOF
 #define PWM_OUTF1_Pin GPIO_PIN_1
@@ -95,12 +91,16 @@ void Error_Handler(void);
 #define HSE_OUT_GPIO_Port GPIOH
 #define ADC_16BIT_Pin GPIO_PIN_0
 #define ADC_16BIT_GPIO_Port GPIOC
+#define RMII_MDC_Pin GPIO_PIN_1
+#define RMII_MDC_GPIO_Port GPIOC
 #define ADC_12BITC2_Pin GPIO_PIN_2
 #define ADC_12BITC2_GPIO_Port GPIOC
 #define ADC_12BITC3_Pin GPIO_PIN_3
 #define ADC_12BITC3_GPIO_Port GPIOC
 #define ADC_16BITA0_Pin GPIO_PIN_0
 #define ADC_16BITA0_GPIO_Port GPIOA
+#define RMII_MDIO_Pin GPIO_PIN_2
+#define RMII_MDIO_GPIO_Port GPIOA
 #define ADC_16BITA3_Pin GPIO_PIN_3
 #define ADC_16BITA3_GPIO_Port GPIOA
 #define ADC_16BITA4_Pin GPIO_PIN_4
@@ -109,6 +109,10 @@ void Error_Handler(void);
 #define ADC_16BITA5_GPIO_Port GPIOA
 #define ADC_16BITA6_Pin GPIO_PIN_6
 #define ADC_16BITA6_GPIO_Port GPIOA
+#define RMII_RXD0_Pin GPIO_PIN_4
+#define RMII_RXD0_GPIO_Port GPIOC
+#define RMII_RXD1_Pin GPIO_PIN_5
+#define RMII_RXD1_GPIO_Port GPIOC
 #define ADC_16BITB0_Pin GPIO_PIN_0
 #define ADC_16BITB0_GPIO_Port GPIOB
 #define ADC_16BITB1_Pin GPIO_PIN_1
@@ -135,6 +139,8 @@ void Error_Handler(void);
 #define PWM_OUTE13_GPIO_Port GPIOE
 #define PWM_OUTE14_Pin GPIO_PIN_14
 #define PWM_OUTE14_GPIO_Port GPIOE
+#define RMII_TXD1_Pin GPIO_PIN_13
+#define RMII_TXD1_GPIO_Port GPIOB
 #define PWM_OUTB14_Pin GPIO_PIN_14
 #define PWM_OUTB14_GPIO_Port GPIOB
 #define PWM_OUTB15_Pin GPIO_PIN_15
@@ -155,6 +161,10 @@ void Error_Handler(void);
 #define PWM_INC9_GPIO_Port GPIOC
 #define SPI3_SS_Pin GPIO_PIN_3
 #define SPI3_SS_GPIO_Port GPIOD
+#define RMII_TX_EN_Pin GPIO_PIN_11
+#define RMII_TX_EN_GPIO_Port GPIOG
+#define RMII_TXD0_Pin GPIO_PIN_13
+#define RMII_TXD0_GPIO_Port GPIOG
 #define PWM_OUTB4_Pin GPIO_PIN_4
 #define PWM_OUTB4_GPIO_Port GPIOB
 #define PWM_OUTB5_Pin GPIO_PIN_5
@@ -167,6 +177,7 @@ void Error_Handler(void);
 #define PWM_OUTB8_GPIO_Port GPIOB
 #define PWM_OUTB9_Pin GPIO_PIN_9
 #define PWM_OUTB9_GPIO_Port GPIOB
+
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

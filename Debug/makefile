@@ -9,7 +9,17 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include Middlewares/Third_Party/LwIP/src/netif/ppp/subdir.mk
+-include Middlewares/Third_Party/LwIP/src/netif/subdir.mk
+-include Middlewares/Third_Party/LwIP/src/core/ipv6/subdir.mk
+-include Middlewares/Third_Party/LwIP/src/core/ipv4/subdir.mk
+-include Middlewares/Third_Party/LwIP/src/core/subdir.mk
+-include Middlewares/Third_Party/LwIP/src/apps/mqtt/subdir.mk
+-include Middlewares/Third_Party/LwIP/src/api/subdir.mk
+-include LWIP/Target/subdir.mk
+-include LWIP/App/subdir.mk
 -include Drivers/STM32H7xx_HAL_Driver/Src/subdir.mk
+-include Drivers/BSP/Components/lan8742/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
 -include objects.mk
@@ -74,9 +84,12 @@ all: main-build
 # Main-build Target
 main-build: template-project.elf secondary-outputs
 
+dependents:
+	-cd C:/Users/dougk/OneDrive/Escritorio/Firmware_workspace/ST-LIB/Debug && $(MAKE) all
+
 # Tool invocations
-template-project.elf template-project.map: $(OBJS) $(USER_OBJS) /home/dgoncas/Desktop/Firmware_workspace/template-project/STM32H723ZGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "template-project.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"/home/dgoncas/Desktop/Firmware_workspace/template-project/STM32H723ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="template-project.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+template-project.elf template-project.map: $(OBJS) $(USER_OBJS) C:/Users/dougk/OneDrive/Escritorio/Firmware_workspace/ST-LIB/Debug/libST-LIB.a C:\Users\dougk\OneDrive\Escritorio\Firmware_workspace\template-project\STM32H723ZGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "template-project.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\dougk\OneDrive\Escritorio\Firmware_workspace\template-project\STM32H723ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="template-project.map" -Wl,--gc-sections -static -L"C:\Users\dougk\OneDrive\Escritorio\Firmware_workspace\ST-LIB\Debug" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -105,5 +118,6 @@ warn-no-linker-script-specified:
 	@echo 'Warning: No linker script specified. Check the linker settings in the build configuration.'
 
 .PHONY: all clean dependents main-build fail-specified-linker-script-missing warn-no-linker-script-specified
+C:/Users/dougk/OneDrive/Escritorio/Firmware_workspace/ST-LIB/Debug/libST-LIB.a:
 
 -include ../makefile.targets
