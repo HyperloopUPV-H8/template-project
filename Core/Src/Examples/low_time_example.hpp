@@ -9,12 +9,7 @@
 #include "ST-LIB.hpp"
 
 void low_time_example(){
-	UART::set_up_printf(UART::uart2);
-
-	Pin::start();
-	Time::start();
-	ADC::start();
-	UART::start();
+	STLIB::start(Nucleo);
 	uint8_t alarm = 255;
 	int second = 0;
 	Time::set_timeout(3000,[&](){printf("3 seconds have passed, timeout A trigger\n");});
@@ -25,6 +20,6 @@ void low_time_example(){
 	printf("\n\n\n\n\n\n\n\n\n\n");
 
 	while(1){
-		HAL_Delay(100);
+		//HAL_Delay(100);
 	}
 }
