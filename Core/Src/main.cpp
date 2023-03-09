@@ -9,8 +9,10 @@ extern struct netif gnetif;
 
 int main(void)
 {
-	rtc_example();
+	STLIB::start(Nucleo, "192.168.1.4", "255.255.0.0", "192.168.1.1");
+	printf("freq = %lu", HAL_RCC_GetSysClockFreq());
 	while(1) {
+		STLIB::update();
 
 	}
 }
