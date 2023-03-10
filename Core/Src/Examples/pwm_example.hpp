@@ -10,30 +10,46 @@
 
 int pwm_example(void)
 {
-	vector<uint8_t> pwms;
-	for (pair<Pin, PWMservice::Instance> pin_info : PWMservice::available_instances) {
-		uint8_t id = PWMservice::inscribe(pin_info.first).value();
-		pwms.push_back(id);
-	}
+	PWM pwm1(PB15);
+	PhasedPWM phased_pwm1(PB4);
+	PhasedPWM phased_pwm2(PE14);
+	DualPhasedPWM dp_pwm(PE11, PE10);
+	DualPhasedPWM dp_pwm2(PE13, PE12);
+	STLIB::start(Nucleo);
 
-	STLIB::start(Nucleo, "192.168.1.4", "255.255.0.0", "192.168.1.1", UART::uart2);
+	pwm1.turn_on();
+	pwm1.set_duty_cycle(50);
 
-	for (uint8_t id : pwms) {
-		PWMservice::turn_on(id);
-		PWMservice::set_duty_cycle(id, 50);
-	}
+	dp_pwm.turn_on();
+	dp_pwm.set_duty_cycle(50);
 
+	dp_pwm2.turn_on();
+	dp_pwm2.set_duty_cycle(50);
 
-	uint8_t duty_cycle = 0;
+	phased_pwm1.turn_on();
+	phased_pwm1.set_duty_cycle(50);
+
+	phased_pwm2.turn_on();
+	phased_pwm2.set_duty_cycle(50);
+
+	float my_phase = 50;
+	float increase = 0.1;
+
+	Time::register_low_precision_alarm(10, [&](){
+		STLIB::update();
+
+		dp_pwm2.set_phase(my_phase);
+		dp_pwm.set_phase(-my_phase);
+
+		my_phase += increase;
+		increase += 0.005;
+		if (my_phase > 99) {
+			my_phase = 1;
+			increase = 0.1;
+		}
+	});
+
 	while (1) {
-//		for (uint8_t id : pwms) {
-//			PWMservice::set_duty_cycle(id, duty_cycle++);
-//		}
-//		if (duty_cycle >= 100) duty_cycle = 0;
-//
-//		printf("Duty %u",duty_cycle);
-//		HAL_Delay(10);
-//
-//		ErrorHandlerModel::ErrorHandlerUpdate();
+
 	}
 }

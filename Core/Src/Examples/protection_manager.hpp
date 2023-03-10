@@ -8,7 +8,7 @@
 
 #include "ST-LIB.hpp"
 
-int protection_manager_example(void)
+void protection_manager_example(void)
 {
 	#define BOARD_ID 54
 	ProtectionManager::set_id(BOARD_ID);

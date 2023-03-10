@@ -10,8 +10,13 @@ extern struct netif gnetif;
 int main(void)
 {
 
-	while(1) {
+	STLIB::start(Nucleo);
 
+	while(1){
+		HAL_Delay(1);
+		Time::set_timeout(10, [](){
+			__NOP();
+		});
 	}
 }
 
