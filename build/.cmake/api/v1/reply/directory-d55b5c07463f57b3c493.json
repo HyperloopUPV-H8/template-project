@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "/home/alejandro/projects/template-project/ST-LIB/build",
+		"source" : "/home/alejandro/projects/ST-LIB"
+	}
+}

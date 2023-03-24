@@ -1,0 +1,1 @@
+/usr/bin/g++ -g CMakeFiles/template-project.dir/Core/Src/main.cpp.o -o template-project  -l../ST-LIB/Debug/libST-LIB.a 
