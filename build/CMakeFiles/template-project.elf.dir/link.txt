@@ -1,1 +1,0 @@
-/usr/share/arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-g++ CMakeFiles/template-project.elf.dir/Core/Src/main.cpp.obj -o template-project.elf  -l../ST-LIB/build/libST-LIB.a 

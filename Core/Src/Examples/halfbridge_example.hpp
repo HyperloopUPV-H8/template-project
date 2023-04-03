@@ -11,7 +11,7 @@
 void halfbridge_example(){
 
 	HalfBridge half_bridge(PE11, PE10, PE13, PE12, PB8);
-	STLIB::start(Nucleo);
+	STLIB::start();
 
 	half_bridge.turn_on();
 	half_bridge.set_duty_cycle(50);

@@ -2,3 +2,14 @@ Debug
 Release
 .vscode
 .settings
+
+.cache
+CMakeFiles
+CMakeCache.txt
+Makefile
+build
+
+template-project
+template-project.bin
+template-project.hex
+template-project.map

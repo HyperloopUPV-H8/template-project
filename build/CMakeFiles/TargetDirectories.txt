@@ -1,6 +1,0 @@
-/home/alejandro/projects/template-project/build/CMakeFiles/template-project.elf.dir
-/home/alejandro/projects/template-project/build/CMakeFiles/edit_cache.dir
-/home/alejandro/projects/template-project/build/CMakeFiles/rebuild_cache.dir
-/home/alejandro/projects/template-project/ST-LIB/build/CMakeFiles/st-lib.dir
-/home/alejandro/projects/template-project/ST-LIB/build/CMakeFiles/edit_cache.dir
-/home/alejandro/projects/template-project/ST-LIB/build/CMakeFiles/rebuild_cache.dir

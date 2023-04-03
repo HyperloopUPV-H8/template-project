@@ -15,7 +15,7 @@ int pwm_example(void)
 	PhasedPWM phased_pwm2(PE14);
 	DualPhasedPWM dp_pwm(PE11, PE10);
 	DualPhasedPWM dp_pwm2(PE13, PE12);
-	STLIB::start(Nucleo);
+	STLIB::start();
 
 	pwm1.turn_on();
 	pwm1.set_duty_cycle(50);

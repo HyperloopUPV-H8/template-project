@@ -12,7 +12,7 @@ int i2c_example(void)
 {
 	//remember to re activate i2c on runes
 	/*uint8_t id = I2C::inscribe(I2C::i2c2,2).value_or(69);
-	STLIB::start(Nucleo);
+	STLIB::start();
 	I2C::start();
 	uint8_t buf[4];
 	buf[0] = 1;

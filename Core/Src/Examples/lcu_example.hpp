@@ -32,7 +32,7 @@ int lcu_example(void)
 	uint8_t pwm2 = PWMservice::inscribe(PF2).value();
 	uint8_t pwm3 = PWMservice::inscribe(PF3).value();
 
-	STLIB::start(Nucleo, "192.168.1.4", "255.255.0.0", "192.168.1.1", UART::uart2);
+	STLIB::start( "192.168.1.4", "255.255.0.0", "192.168.1.1", UART::uart2);
 	DatagramSocket socket = DatagramSocket("192.168.1.4", 6969, "192.168.1.3", 6969);
 
 

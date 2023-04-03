@@ -9,6 +9,9 @@ endif()
 
 set(TOOLCHAIN_PREFIX arm-none-eabi-)
 
+set(ASM_OPTIONS "-x assembler-with-cpp")
+set(CMAKE_ASM_FLAGS "${CFLAGS} ${ASM_OPTIONS}")
+
 execute_process(
   COMMAND ${UTIL_SEARCH_CMD} ${TOOLCHAIN_PREFIX}gcc
   OUTPUT_VARIABLE BINUTILS_PATH

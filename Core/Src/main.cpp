@@ -9,14 +9,14 @@ extern struct netif gnetif;
 
 int main(void)
 {
+	DigitalOutput digout(PB14);
 
-	STLIB::start(Nucleo);
+	STLIB::start();
 
 	while(1){
-		HAL_Delay(1);
-		Time::set_timeout(10, [](){
-			__NOP();
-		});
+		HAL_Delay(1000);
+		digout.toggle();
+		STLIB::update();
 	}
 }
 

@@ -11,7 +11,7 @@
 void low_time_example(){
 	UART::set_up_printf(UART::uart2);
 
-	STLIB::start(Nucleo);
+	STLIB::start();
 	uint8_t alarm = 255;
 	int second = 0;
 	Time::set_timeout(3000,[&](){printf("3 seconds have passed, timeout A trigger\n");});
