@@ -8,11 +8,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(STLIB_DIR ${CMAKE_SOURCE_DIR}/../ST-LIB)
 set(EXECUTABLE ${PROJECT_NAME}.elf)
 
-set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
 add_subdirectory(${STLIB_DIR} ${STLIB_DIR}/build)
 add_executable(${EXECUTABLE} 
   ${CMAKE_SOURCE_DIR}/Core/Src/main.cpp 
@@ -23,6 +18,7 @@ add_executable(${EXECUTABLE}
   ${CMAKE_SOURCE_DIR}/Core/Src/system_stm32h7xx.c
   ${CMAKE_SOURCE_DIR}/Core/Startup/startup_stm32h723zgtx.s
   )
+
 target_link_libraries(${EXECUTABLE} ${STLIB_DIR}/build/libst-lib.a)
 
 target_compile_definitions(${EXECUTABLE} PUBLIC
@@ -91,12 +87,12 @@ target_compile_options(${EXECUTABLE} PUBLIC
   -mfloat-abi=hard
   -mthumb
   
-  -O0
+  -O3
   -ffunction-sections
   -fdata-sections
   -fno-exceptions
-  $<$<COMPILE_LANGUAGE:CXX:-fno-rtti>
-  $<$<COMPILE_LANGUAGE:CXX:-fno-use-cxa-atexit>
+  -fno-use-cxa-atexit
+  -fno-use-cxa-atexit
 
   -Wall
 
@@ -115,14 +111,3 @@ target_link_options(${EXECUTABLE} PUBLIC
         -Wl,-Map=${PROJECT_NAME}.map,--cref
         -Wl,--gc-sections
         )
-
-# Print executable size
-add_custom_command(TARGET ${EXECUTABLE}
-        POST_BUILD
-        COMMAND arm-none-eabi-size ${EXECUTABLE})
-
-# Create hex file
-add_custom_command(TARGET ${EXECUTABLE}
-        POST_BUILD
-        COMMAND arm-none-eabi-objcopy -O ihex ${EXECUTABLE} ${PROJECT_NAME}.hex
-        COMMAND arm-none-eabi-objcopy -O binary ${EXECUTABLE} ${PROJECT_NAME}.bin)
