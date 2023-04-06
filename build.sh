@@ -33,6 +33,9 @@ make -j16 all
 end=`date +%s.%N`
 runtime=$( echo "$end - $start" | bc -l )
 
+arm-none-eabi-objcopy -O ihex ${EXECUTABLE} ${PROJECT_NAME}.hex
+arm-none-eabi-objcopy -O binary ${EXECUTABLE} ${PROJECT_NAME}.bin
+
 RED='\033[1;31m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
@@ -44,7 +47,9 @@ printf "\n\n\n${RED}%25s${NC} built!\n\n" ${PROJECT_NAME}
 
 printf "${RED}%20s ${NC}: ${YELLOW}\t%s\n" Target ${TARGET}
 printf "${RED}%20s ${NC}: ${YELLOW}\t%ss\n" Compile $runtime
-printf "\n"
-arm-none-eabi-objcopy -O ihex ${EXECUTABLE} ${PROJECT_NAME}.hex
-arm-none-eabi-objcopy -O binary ${EXECUTABLE} ${PROJECT_NAME}.bin
+if ([ $ETH = "NOETH" ])
+then
+  printf "${RED}%20s ${NC}: ${YELLOW}\t%s\n" Ethernet OFF
+fi
+printf "\n\n"
 
