@@ -28,7 +28,8 @@ else
 fi
 
 cmake -DCMAKE_TOOLCHAIN_FILE=arm-none-eabi.cmake -D${TARGET}=ON -D${ETH}=ON .
-make -j16 all
+OUTPUT=`make -j16 all`
+WARNINGS=`echo ${OUTPUT} | grep -c "warning"`
 
 end=`date +%s.%N`
 runtime=$( echo "$end - $start" | bc -l )
@@ -51,5 +52,9 @@ if ([ $ETH = "NOETH" ])
 then
   printf "${RED}%20s ${NC}: ${YELLOW}\t%s\n" Ethernet OFF
 fi
+printf "\n"
+
+printf "${RED}%20s ${NC}: ${YELLOW}\t%s\n" Warnings ${WARNINGS}
+
 printf "\n\n"
 
