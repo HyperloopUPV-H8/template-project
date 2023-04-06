@@ -27,7 +27,6 @@ target_compile_definitions(${EXECUTABLE} PUBLIC
   -DDATA_IN_D2_SRAM
 )
 
-
 target_include_directories(${EXECUTABLE} PUBLIC
   ${CMAKE_SOURCE_DIR}/Core/Inc
   ${CMAKE_SOURCE_DIR}/Drivers/STM32H7xx_HAL_Driver/Inc

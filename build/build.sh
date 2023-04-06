@@ -1,11 +1,14 @@
 #!/bin/bash
 
+PROJECT_NAME=template-project
+EXECUTABLE=template-project.elf
+
+
 echo "Enter Target (nucleo|n / board|b) : "
 read TARGET
 
 start=`date +%s.%N`
 
-rm -R CMakeCache.txt compile_commands.json cmake_install.cmake Makefile CMakeFiles
 
 if [[ $* == *--NOETH* ]]
 then
@@ -27,21 +30,18 @@ else
   fi
 fi
 
-cmake -DCMAKE_TOOLCHAIN_FILE=arm-none-eabi.cmake -D${TARGET}=ON -D${ETH}=ON .
-OUTPUT=`make -j16 all`
-WARNINGS=`echo ${OUTPUT} | grep -c "warning"`
+cmake -DCMAKE_TOOLCHAIN_FILE=arm-none-eabi.cmake -D${TARGET}=ON -D${ETH}=ON ..
+make -j16 all 
+WARNINGS=$(echo ${OUTPUT} | grep -c "warning:")
 
 end=`date +%s.%N`
 runtime=$( echo "$end - $start" | bc -l )
 
-arm-none-eabi-objcopy -O ihex ${EXECUTABLE} ${PROJECT_NAME}.hex
 arm-none-eabi-objcopy -O binary ${EXECUTABLE} ${PROJECT_NAME}.bin
 
 RED='\033[1;31m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
-EXECUTABLE=template-project.elf
-PROJECT_NAME=template-project
 
 
 printf "\n\n\n${RED}%25s${NC} built!\n\n" ${PROJECT_NAME}
@@ -58,3 +58,4 @@ printf "${RED}%20s ${NC}: ${YELLOW}\t%s\n" Warnings ${WARNINGS}
 
 printf "\n\n"
 
+rm -R CMakeCache.txt compile_commands.json cmake_install.cmake Makefile CMakeFiles template-project.hex template-project.map
