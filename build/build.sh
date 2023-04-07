@@ -31,8 +31,8 @@ else
 fi
 
 cmake -DCMAKE_TOOLCHAIN_FILE=arm-none-eabi.cmake -D${TARGET}=ON -D${ETH}=ON ..
-make -j16 all 
-WARNINGS=$(echo ${OUTPUT} | grep -c "warning:")
+make -j16 all 2>err.txt 1>log.txt
+WARNINGS=$(cat err.txt | grep -c "warning:")
 
 end=`date +%s.%N`
 runtime=$( echo "$end - $start" | bc -l )
@@ -58,4 +58,4 @@ printf "${RED}%20s ${NC}: ${YELLOW}\t%s\n" Warnings ${WARNINGS}
 
 printf "\n\n"
 
-rm -R CMakeCache.txt compile_commands.json cmake_install.cmake Makefile CMakeFiles template-project.hex template-project.map
+rm -R CMakeCache.txt compile_commands.json cmake_install.cmake Makefile CMakeFiles template-project.map template-project.hex &>/dev/null
