@@ -9,16 +9,14 @@ extern struct netif gnetif;
 
 int main(void)
 {
+
 	while(1) {
+    
 	}
 }
 
 void Error_Handler(void)
 {
-  /* USER CODE BEGIN Error_Handler_Debug */
 	ErrorHandler("HAL error handler triggered");
-  /* User can add his own implementation to report the HAL error return state */
-  //__disable_irq();
-  //while (1){}
-  /* USER CODE END Error_Handler_Debug */
+  while (1){}
 }
