@@ -103,6 +103,9 @@ bool UART::printf_ready = false;
  *              Communication-I2C
  ***********************************************/
 
+unordered_map<uint32_t, uint32_t> I2C::available_speed_frequencies = {};
+
+
 /************************************************
  *                 	  Encoder
  ***********************************************/

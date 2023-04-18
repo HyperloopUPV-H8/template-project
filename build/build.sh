@@ -31,8 +31,7 @@ else
 fi
 
 cmake -DCMAKE_TOOLCHAIN_FILE=arm-none-eabi.cmake -D${TARGET}=ON -D${ETH}=ON ..
-make -j16 all 2>err.txt 1>log.txt
-WARNINGS=$(cat err.txt | grep -c "warning:")
+make -j16 all
 
 end=`date +%s.%N`
 runtime=$( echo "$end - $start" | bc -l )
