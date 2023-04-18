@@ -23,6 +23,7 @@ TIM_HandleTypeDef htim17;
 TIM_HandleTypeDef htim15;
 TIM_HandleTypeDef htim23;
 TIM_HandleTypeDef htim24;
+extern I2C_HandleTypeDef hi2c2;
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
@@ -103,6 +104,20 @@ bool UART::printf_ready = false;
  *              Communication-I2C
  ***********************************************/
 
+#ifdef HAL_I2C_MODULE_ENABLED
+I2C::Instance I2C::instance2 = { .SCL = PF1, .SDA = PB11, .hi2c = &hi2c2, .instance = I2C2, .RX_DMA = DMA::Stream::DMA1Stream3, .TX_DMA = DMA::Stream::DMA1Stream4};
+
+I2C::Peripheral I2C::i2c2 = I2C::Peripheral::peripheral2;
+
+unordered_map<I2C::Peripheral, I2C::Instance*> I2C::available_i2cs = {
+	{I2C::i2c2, &I2C::instance2}
+};
+
+unordered_map<uint32_t, uint32_t> I2C::available_speed_frequencies = {
+	{100, 0x60404E72}
+};
+
+#endif
 /************************************************
  *                 	  Encoder
  ***********************************************/

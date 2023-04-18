@@ -16,7 +16,7 @@ int can_example(void)
 		ErrorHandler("Unable to inscribe fdcan");
 	}
 
-	STLIB::start( "192.168.1.4", "255.255.0.0", "192.168.1.1", UART::uart2);
+	STLIB::start(Nucleo, "192.168.1.4", "255.255.0.0", "192.168.1.1", UART::uart2);
 	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 	std::vector<uint8_t> v = {1, 2, 3, 4, 5, 0x69, 0x43};
 
