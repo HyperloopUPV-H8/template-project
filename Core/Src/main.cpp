@@ -5,11 +5,9 @@
 #include "Runes/Runes.hpp"
 #include "Examples/examples_includes.hpp"
 
-extern struct netif gnetif;
 
 int main(void)
 {
-
 	while(1) {
     
 	}
@@ -18,5 +16,5 @@ int main(void)
 void Error_Handler(void)
 {
 	ErrorHandler("HAL error handler triggered");
-  while (1){}
+	while (1){}
 }
