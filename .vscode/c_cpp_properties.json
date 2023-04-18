@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/alejandro/projects/ST-LIB/Inc",
+                "/home/alejandro/projects/ST-LIB/Inc/HALAL/Models",
+                "/home/alejandro/projects/ST-LIB/Drivers/STM32H7xx_HAL_Driver/Inc"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "c++20",
+            "intelliSenseMode": "linux-gcc-x64",
+            "configurationProvider": "ms-vscode.makefile-tools",
+            "compileCommands": "compile_commands.json"
+        }
+    ],
+    "version": 4
+}
