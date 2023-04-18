@@ -151,9 +151,12 @@
 ../Core/Src/main.cpp:27:6:void stick_up()	8	static
 ../Core/Src/main.cpp:32:6:void set_parameters()	8	static
 ../Core/Src/main.cpp:37:6:void set_slave_parameters()	8	static
+../Core/Src/main.cpp:42:6:void start_commuting()	8	static
+../Core/Src/main.cpp:48:6:void stop_commuting()	8	static
+../Core/Src/main.cpp:55:6:void invert_current_sense()	16	static
 ../Core/Inc/LCU.hpp:422:2:constexpr LCUMaster::LCUMaster()	16	static
-../Core/Src/main.cpp:43:5:int main()	304	static
-../Core/Src/main.cpp:74:6:void Error_Handler()	40	static
+../Core/Src/main.cpp:68:5:int main()	392	static
+../Core/Src/main.cpp:112:6:void Error_Handler()	40	static
 /home/stefancostea/st/stm32cubeide_1.12.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.200.202301161003/tools/arm-none-eabi/include/c++/10.3.1/bits/stl_algobase.h:254:5:constexpr const _Tp& std::max(const _Tp&, const _Tp&) [with _Tp = unsigned int]	16	static
 /home/stefancostea/st/stm32cubeide_1.12.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.200.202301161003/tools/arm-none-eabi/include/c++/10.3.1/bits/char_traits.h:106:7:static constexpr bool __gnu_cxx::char_traits<_CharT>::eq(const char_type&, const char_type&) [with _CharT = char]	16	static
 /home/stefancostea/st/stm32cubeide_1.12.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.200.202301161003/tools/arm-none-eabi/include/c++/10.3.1/bits/char_traits.h:167:5:static constexpr std::size_t __gnu_cxx::char_traits<_CharT>::length(const char_type*) [with _CharT = char]	24	static
@@ -2344,7 +2347,7 @@
 /home/stefancostea/Documents/ST-LIB/Inc/HALAL/Models/TimerPeripheral/TimerPeripheral.hpp:29:7:TimerPeripheral::~TimerPeripheral()	16	static
 /home/stefancostea/Documents/ST-LIB/Inc/HALAL/Services/Communication/SPI/SPI.hpp:31:12:SPI::Instance::~Instance()	16	static
 /home/stefancostea/Documents/ST-LIB/Inc/HALAL/Services/Communication/FDCAN/FDCAN.hpp:58:12:FDCAN::Instance::~Instance()	16	static
-../Core/Src/main.cpp:82:1:void __static_initialization_and_destruction_0(int, int)	3104	static
+../Core/Src/main.cpp:120:1:void __static_initialization_and_destruction_0(int, int)	3104	static
 /home/stefancostea/Documents/ST-LIB/Inc/HALAL/Models/Packets/Order.hpp:41:14:uint8_t* StackOrder<BufferLength, Types>::build() [with unsigned int BufferLength = 0; Types = {}]	16	static
 /home/stefancostea/Documents/ST-LIB/Inc/HALAL/Models/Packets/Order.hpp:44:10:void StackOrder<BufferLength, Types>::parse(void*) [with unsigned int BufferLength = 0; Types = {}]	16	static
 /home/stefancostea/Documents/ST-LIB/Inc/HALAL/Models/Packets/Order.hpp:47:12:size_t StackOrder<BufferLength, Types>::get_size() [with unsigned int BufferLength = 0; Types = {}]	16	static
@@ -2359,5 +2362,5 @@
 /home/stefancostea/Documents/ST-LIB/Inc/HALAL/Models/Packets/PacketValue.hpp:58:12:size_t PacketValue<Type>::get_size() [with Type = float]	16	static
 /home/stefancostea/Documents/ST-LIB/Inc/HALAL/Models/Packets/PacketValue.hpp:61:10:void PacketValue<Type>::parse(void*) [with Type = float]	16	static
 /home/stefancostea/Documents/ST-LIB/Inc/HALAL/Models/Packets/PacketValue.hpp:64:10:void PacketValue<Type>::copy_to(void*) [with Type = float]	16	static
-../Core/Src/main.cpp:82:1:cpp)	8	static
-../Core/Src/main.cpp:82:1:cpp)	8	static
+../Core/Src/main.cpp:120:1:cpp)	8	static
+../Core/Src/main.cpp:120:1:cpp)	8	static

@@ -131,7 +131,7 @@ public:
 		HEMS_2_H1.set_frequency(30000);
 		HEMS_2_H2.set_frequency(30000);
 		HEMS_2_H1.set_duty_cycle(0);
-		HEMS_2_H2.set_duty_cycle(40);
+		HEMS_2_H2.set_duty_cycle(0);
 	}
 };
 

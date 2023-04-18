@@ -151,9 +151,12 @@ main.cpp:22:6:void stick_down()	1
 main.cpp:27:6:void stick_up()	1
 main.cpp:32:6:void set_parameters()	1
 main.cpp:37:6:void set_slave_parameters()	1
+main.cpp:42:6:void start_commuting()	1
+main.cpp:48:6:void stop_commuting()	1
+main.cpp:55:6:void invert_current_sense()	2
 LCU.hpp:422:2:constexpr LCUMaster::LCUMaster()	1
-main.cpp:43:5:int main()	1
-main.cpp:74:6:void Error_Handler()	1
+main.cpp:68:5:int main()	1
+main.cpp:112:6:void Error_Handler()	1
 stl_algobase.h:254:5:constexpr const _Tp& std::max(const _Tp&, const _Tp&) [with _Tp = unsigned int]	2
 char_traits.h:106:7:static constexpr bool __gnu_cxx::char_traits<_CharT>::eq(const char_type&, const char_type&) [with _CharT = char]	1
 char_traits.h:167:5:static constexpr std::size_t __gnu_cxx::char_traits<_CharT>::length(const char_type*) [with _CharT = char]	2
@@ -2344,7 +2347,7 @@ LCU.hpp:257:7:LCUUDP::~LCUUDP()	1
 TimerPeripheral.hpp:29:7:TimerPeripheral::~TimerPeripheral()	1
 SPI.hpp:31:12:SPI::Instance::~Instance()	1
 FDCAN.hpp:58:12:FDCAN::Instance::~Instance()	1
-main.cpp:82:1:void __static_initialization_and_destruction_0(int, int)	7
+main.cpp:120:1:void __static_initialization_and_destruction_0(int, int)	7
 Order.hpp:41:14:uint8_t* StackOrder<BufferLength, Types>::build() [with unsigned int BufferLength = 0; Types = {}]	1
 Order.hpp:44:10:void StackOrder<BufferLength, Types>::parse(void*) [with unsigned int BufferLength = 0; Types = {}]	1
 Order.hpp:47:12:size_t StackOrder<BufferLength, Types>::get_size() [with unsigned int BufferLength = 0; Types = {}]	1
@@ -2359,5 +2362,5 @@ PacketValue.hpp:55:11:void* PacketValue<Type>::get_pointer() [with Type = float]
 PacketValue.hpp:58:12:size_t PacketValue<Type>::get_size() [with Type = float]	1
 PacketValue.hpp:61:10:void PacketValue<Type>::parse(void*) [with Type = float]	1
 PacketValue.hpp:64:10:void PacketValue<Type>::copy_to(void*) [with Type = float]	1
-main.cpp:82:1:cpp)	1
-main.cpp:82:1:cpp)	1
+main.cpp:120:1:cpp)	1
+main.cpp:120:1:cpp)	1
