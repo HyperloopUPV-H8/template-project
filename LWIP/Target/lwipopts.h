@@ -101,6 +101,7 @@
 #define CHECKSUM_CHECK_TCP 0
 /*----- Value in opt.h for CHECKSUM_CHECK_ICMP6: 1 -----*/
 #define CHECKSUM_CHECK_ICMP6 0
+
 /*-----------------------------------------------------------------------------*/
 /* USER CODE BEGIN 1 */
 

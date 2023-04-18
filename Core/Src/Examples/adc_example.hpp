@@ -22,7 +22,7 @@ int adc_example(void)
 	ADC::turn_on(adc.value());
 
 	while (1) {
-		float value = ADC::get_value(adc.value()).value();
+		float value = ADC::get_value(adc.value());
 		printf("Value %f | \r", value);
 		HAL_Delay(50);
 

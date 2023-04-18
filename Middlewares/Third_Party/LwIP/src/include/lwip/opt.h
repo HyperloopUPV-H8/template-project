@@ -2105,7 +2105,7 @@
  * LWIP_STATS_DISPLAY==1: Compile in the statistics output functions.
  */
 #if !defined LWIP_STATS_DISPLAY || defined __DOXYGEN__
-#define LWIP_STATS_DISPLAY              0
+#define LWIP_STATS_DISPLAY              1
 #endif
 
 /**
@@ -3257,21 +3257,21 @@
  * ETHARP_DEBUG: Enable debugging in etharp.c.
  */
 #if !defined ETHARP_DEBUG || defined __DOXYGEN__
-#define ETHARP_DEBUG                    LWIP_DBG_OFF
+#define ETHARP_DEBUG                    LWIP_DBG_ON
 #endif
 
 /**
  * NETIF_DEBUG: Enable debugging in netif.c.
  */
 #if !defined NETIF_DEBUG || defined __DOXYGEN__
-#define NETIF_DEBUG                     LWIP_DBG_OFF
+#define NETIF_DEBUG                     LWIP_DBG_ON
 #endif
 
 /**
  * PBUF_DEBUG: Enable debugging in pbuf.c.
  */
 #if !defined PBUF_DEBUG || defined __DOXYGEN__
-#define PBUF_DEBUG                      LWIP_DBG_OFF
+#define PBUF_DEBUG                      LWIP_DBG_ON
 #endif
 
 /**
@@ -3369,7 +3369,7 @@
  * TCP_DEBUG: Enable debugging for TCP.
  */
 #if !defined TCP_DEBUG || defined __DOXYGEN__
-#define TCP_DEBUG                       LWIP_DBG_OFF
+#define TCP_DEBUG                       LWIP_DBG_ON
 #endif
 
 /**
