@@ -57,4 +57,5 @@ printf "${RED}%20s ${NC}: ${YELLOW}\t%s\n" Warnings ${WARNINGS}
 
 printf "\n\n"
 
-rm -R CMakeCache.txt compile_commands.json cmake_install.cmake Makefile CMakeFiles template-project.map template-project.hex &>/dev/null
+rm -R .cmake CMakeCache.txt cmake_install.cmake Makefile CMakeFiles template-project.map template-project.hex &>/dev/null
+mv compile_commands.json ..
