@@ -1,8 +1,15 @@
+Debug
+Release
+.vscode
 .settings
 
 .cache
-README.md
+CMakeFiles
+CMakeCache.txt
+Makefile
+build
 
-Debug
-compile_commands.json
-ST-LIB
+template-project
+template-project.bin
+template-project.hex
+template-project.map

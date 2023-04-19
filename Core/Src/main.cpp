@@ -8,8 +8,10 @@
 
 int main(void)
 {
+	i2c_example();
+	printf("freq = %lu", HAL_RCC_GetSysClockFreq());
 	while(1) {
-    
+		HAL_Delay(1000);
 	}
 }
 
