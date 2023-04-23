@@ -5,7 +5,6 @@
 #include "Runes/Runes.hpp"
 #include "Examples/examples_includes.hpp"
 
-
 int main(void)
 {
 	i2c_example();

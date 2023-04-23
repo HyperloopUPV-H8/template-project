@@ -17,6 +17,13 @@ else
   ETH="HAL_ETH_MODULE_ENABLED"
 fi
 
+if [[ $* == *--DEBUG* ]]
+then
+  DEBUG="-g3"
+else
+  DEBUG="-g0"
+fi
+
 if ([ $TARGET = "board" ] || [ $TARGET = "b" ] || [ $TARGET = "B" ] || [ $TARGET = "Board" ] || [ $TARGET = "BOARD" ])
 then
   TARGET="BOARD"
@@ -30,7 +37,7 @@ else
   fi
 fi
 
-cmake -DCMAKE_TOOLCHAIN_FILE=arm-none-eabi.cmake -D${TARGET}=ON -D${ETH}=ON ..
+cmake -DCMAKE_TOOLCHAIN_FILE=arm-none-eabi.cmake -DDEBUG:STRING=${DEBUG} -D${TARGET}=ON -D${ETH}=ON ..
 make -j16 all
 
 end=`date +%s.%N`
@@ -50,6 +57,14 @@ printf "${RED}%20s ${NC}: ${YELLOW}\t%ss\n" Compile $runtime
 if ([ $ETH = "NOETH" ])
 then
   printf "${RED}%20s ${NC}: ${YELLOW}\t%s\n" Ethernet OFF
+fi
+printf "\n"
+
+if ([ $DEBUG = "-g3" ])
+then
+  printf "${RED}%20s ${NC}: ${YELLOW}\t%s\n" Debug ON 
+else
+  printf "${RED}%20s ${NC}: ${YELLOW}\t%s\n" Debug OFF
 fi
 printf "\n"
 

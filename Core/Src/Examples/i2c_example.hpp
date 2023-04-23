@@ -11,7 +11,7 @@
 int i2c_example(void)
 {
 	uint8_t id = I2C::inscribe(I2C::i2c2).value_or(69);
-	STLIB::start(Nucleo);
+	STLIB::start();
 	uint8_t *message = new uint8_t[3];
 	uint8_t *data = new uint8_t[7];
 	message[0] = 0xAA;

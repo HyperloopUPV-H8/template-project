@@ -38,7 +38,8 @@ target_compile_options(${EXECUTABLE} PUBLIC
   -mfloat-abi=hard
   -mthumb
   
-  -O3
+  # -O3
+  ${DEBUG}
   -ffunction-sections
   -fdata-sections
   -fno-exceptions
