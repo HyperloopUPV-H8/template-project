@@ -111,6 +111,9 @@ public:
 	PWM HEMS_2_H1;
 	PWM HEMS_2_H2;
 
+	PWM EMS_2_H1;
+	PWM EMS_2_H2;
+
 	void inscribe_digital_outputs(){
 		sleep_led = DigitalOutput(PG4);
 		can_led = DigitalOutput(PG5);
@@ -122,16 +125,25 @@ public:
 
 		HEMS_2_H1 = PWM(PE11);
 		HEMS_2_H2 = PWM(PE5);
+
+		EMS_2_H1 = PWM(PB4);
+		EMS_2_H2 = PWM(PB5);
 	}
 
 	void start(){
 		buffer_enable.turn_off();
 		HEMS_2_H1.turn_on();
 		HEMS_2_H2.turn_on();
-		HEMS_2_H1.set_frequency(30000);
-		HEMS_2_H2.set_frequency(30000);
+		EMS_2_H1.turn_on();
+		EMS_2_H2.turn_on();
+		HEMS_2_H1.set_frequency(20000);
+		HEMS_2_H2.set_frequency(20000);
+		EMS_2_H1.set_duty_cycle(20000);
+		EMS_2_H2.set_duty_cycle(20000);
 		HEMS_2_H1.set_duty_cycle(0);
 		HEMS_2_H2.set_duty_cycle(0);
+		EMS_2_H1.set_duty_cycle(0);
+		EMS_2_H2.set_duty_cycle(0);
 	}
 };
 

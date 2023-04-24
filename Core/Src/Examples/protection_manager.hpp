@@ -14,7 +14,7 @@ void protection_manager_example(void)
 	ProtectionManager::set_id(BOARD_ID);
 
 	double variable = 5.3;
-	ProtectionManager_add_protection(&variable, OUT_OF_RANGE, 1, 20, NOT_EQUALS, 5);
+//	ProtectionManager_add_protection(&variable, OUT_OF_RANGE, 1, 20, NOT_EQUALS, 5);
 
 	variable = 8;
 	ProtectionManager::check_protections();
