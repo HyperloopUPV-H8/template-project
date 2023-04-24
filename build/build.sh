@@ -39,6 +39,7 @@ fi
 
 cmake -DCMAKE_TOOLCHAIN_FILE=arm-none-eabi.cmake -DDEBUG:STRING=${DEBUG} -D${TARGET}=ON -D${ETH}=ON ..
 make -j16 all
+RET_STATUS=$(echo "$?")
 
 end=`date +%s.%N`
 runtime=$( echo "$end - $start" | bc -l )
@@ -50,7 +51,12 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 
-printf "\n\n\n${RED}%25s${NC} built!\n\n" ${PROJECT_NAME}
+if [[ $RET_STATUS == 0 ]]
+then
+  printf "\n\n\n${RED}%25s${NC} built!\n\n" ${PROJECT_NAME}
+else
+  printf "\n\n\n${RED}%15s${NC} not built correctly, errors ocurred.\n\n" ${PROJECT_NAME}
+fi
 
 printf "${RED}%20s ${NC}: ${YELLOW}\t%s\n" Target ${TARGET}
 printf "${RED}%20s ${NC}: ${YELLOW}\t%ss\n" Compile $runtime
