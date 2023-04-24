@@ -4,9 +4,6 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/home/alejandro/projects/ST-LIB/Inc",
-                "/home/alejandro/projects/ST-LIB/Inc/HALAL/Models",
-                "/home/alejandro/projects/ST-LIB/Drivers/STM32H7xx_HAL_Driver/Inc"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

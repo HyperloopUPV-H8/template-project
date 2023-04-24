@@ -33,4 +33,3 @@ void clock_example(){
 		HAL_Delay(100);
 	}
 }
-
