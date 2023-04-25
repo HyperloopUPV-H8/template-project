@@ -4,11 +4,20 @@ PROJECT_NAME=template-project
 EXECUTABLE=template-project.elf
 
 
-echo "Enter Target (nucleo|n / board|b) : "
-read TARGET
-
 start=`date +%s.%N`
 
+if [[ $* = *--nucleo* ]] || [[ $* = *-n* ]]
+then
+  TARGET="NUCLEO"
+else
+  if [[ $* = *--board* ]] || [[ $* = *-b* ]]
+  then
+    TARGET="BOARD"
+  else
+    echo "No target chosen. Do ./build [--nucleo | --board]"
+    exit 1
+  fi
+fi
 
 if [[ $* == *--NOETH* ]]
 then
@@ -22,19 +31,6 @@ then
   DEBUG="-g3"
 else
   DEBUG="-g0"
-fi
-
-if ([ $TARGET = "board" ] || [ $TARGET = "b" ] || [ $TARGET = "B" ] || [ $TARGET = "Board" ] || [ $TARGET = "BOARD" ])
-then
-  TARGET="BOARD"
-else
-  if ([ $TARGET = "nucleo" ] || [ $TARGET = "n" ] || [ $TARGET = "N" ] || [ $TARGET = "Nucleo" ]  || [ $TARGET = "NUCLEO" ])
-  then
-    TARGET="NUCLEO"
-  else
-    echo "Wrong value, exiting"
-    exit 1
-  fi
 fi
 
 cmake -DCMAKE_TOOLCHAIN_FILE=arm-none-eabi.cmake -DDEBUG:STRING=${DEBUG} -D${TARGET}=ON -D${ETH}=ON ..
