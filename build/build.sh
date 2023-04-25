@@ -2,8 +2,7 @@
 
 PROJECT_NAME=template-project
 EXECUTABLE=template-project.elf
-
-
+ERROR=0
 start=`date +%s.%N`
 
 if [[ $* = *--nucleo* ]] || [[ $* = *-n* ]]
@@ -52,6 +51,7 @@ then
   printf "\n\n\n${RED}%25s${NC} built!\n\n" ${PROJECT_NAME}
 else
   printf "\n\n\n${RED}%15s${NC} not built correctly, errors ocurred.\n\n" ${PROJECT_NAME}
+  ERROR=1
 fi
 
 printf "${RED}%20s ${NC}: ${YELLOW}\t%s\n" Target ${TARGET}
@@ -76,3 +76,5 @@ printf "\n\n"
 
 rm -R .cmake CMakeCache.txt cmake_install.cmake Makefile CMakeFiles template-project.map template-project.hex &>/dev/null
 mv compile_commands.json ..
+
+exit $ERROR
