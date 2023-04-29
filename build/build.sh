@@ -27,9 +27,8 @@ fi
 
 if [[ $* == *--DEBUG* ]]
 then
-  DEBUG="-g3"
-else
-  DEBUG="-g0"
+  PROFILE="-g3"
+  PROFILE="-g0"
 fi
 
 cmake -DCMAKE_TOOLCHAIN_FILE=arm-none-eabi.cmake -DDEBUG:STRING=${DEBUG} -D${TARGET}=ON -D${ETH}=ON ..

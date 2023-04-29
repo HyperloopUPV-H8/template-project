@@ -39,7 +39,7 @@ target_compile_options(${EXECUTABLE} PUBLIC
   -mthumb
   
   # -O3
-  ${DEBUG}
+  ${PROFILE}
   -ffunction-sections
   -fdata-sections
   -fno-exceptions
