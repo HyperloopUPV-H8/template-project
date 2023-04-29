@@ -137,6 +137,12 @@ void Error_Handler(void);
 #define PWM_OUTB8_GPIO_Port GPIOB
 #define PWM_OUTB9_Pin GPIO_PIN_9
 #define PWM_OUTB9_GPIO_Port GPIOB
+#define SWDIO_Pin GPIO_PIN_13
+#define SWDIO_GPIO_Port GPIOA
+#define SWCLK_Pin GPIO_PIN_14
+#define SWCLK_GPIO_Port GPIOA
+#define SWO_Pin GPIO_PIN_3
+#define SWO_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
