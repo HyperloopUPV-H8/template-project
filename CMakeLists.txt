@@ -39,6 +39,8 @@ target_compile_options(${EXECUTABLE} PUBLIC
   -mthumb
   
   # -O3
+  -Og
+  -g3
   ${PROFILE}
   -ffunction-sections
   -fdata-sections
