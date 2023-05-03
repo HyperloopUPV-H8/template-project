@@ -117,27 +117,27 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Inc/HALAL/Services}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Inc/ST-LIB_LOW}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Inc/ST-LIB_HIGH}&quot;"/>
-									<listOptionValue builtIn="false" value="../LWIP/App"/>
-									<listOptionValue builtIn="false" value="../LWIP/Target"/>
-									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/LwIP/src/include"/>
-									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/LwIP/system"/>
-									<listOptionValue builtIn="false" value="../Drivers/BSP/Components/lan8742"/>
-									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/LwIP/src/include/netif/ppp"/>
-									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/LwIP/src/include/lwip"/>
-									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/LwIP/src/include/lwip/apps"/>
-									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/LwIP/src/include/lwip/priv"/>
-									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/LwIP/src/include/lwip/prot"/>
-									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/LwIP/src/include/netif"/>
-									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/LwIP/src/include/compat/posix"/>
-									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/LwIP/src/include/compat/posix/arpa"/>
-									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/LwIP/src/include/compat/posix/net"/>
-									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/LwIP/src/include/compat/posix/sys"/>
-									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/LwIP/src/include/compat/stdc"/>
-									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/LwIP/system/arch"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Inc/HALAL/Services/Communication}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Inc/HALAL/Services/Communication/Ethernet}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Inc/HALAL/Services/Communication/Ethernet/UDP}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Inc/HALAL/Services/Communication/Ethernet/TCP}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/LWIP/App}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/LWIP/Target}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Middlewares/Third_Party/LwIP/src/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Middlewares/Third_Party/LwIP/system}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Drivers/BSP/Components/lan8742}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Middlewares/Third_Party/LwIP/src/include/netif/ppp}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Middlewares/Third_Party/LwIP/src/include/lwip}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Middlewares/Third_Party/LwIP/src/include/lwip/apps}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Middlewares/Third_Party/LwIP/src/include/lwip/priv}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Middlewares/Third_Party/LwIP/src/include/lwip/prot}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Middlewares/Third_Party/LwIP/src/include/netif}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Middlewares/Third_Party/LwIP/src/include/compat/posix}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Middlewares/Third_Party/LwIP/src/include/compat/posix/arpa}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Middlewares/Third_Party/LwIP/src/include/compat/posix/net}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/template-project/Middlewares/Third_Party/LwIP/src/include/compat/posix/sys}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/template-project/Middlewares/Third_Party/LwIP/src/include/compat/stdc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/template-project/Middlewares/Third_Party/LwIP/system/arch}&quot;"/>
 								</option>
 								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.languagestandard.852152736" name="Language standard" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.languagestandard" useByScannerDiscovery="true" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.languagestandard.value.gnupp20" valueType="enumerated"/>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.input.cpp.433115375" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.input.cpp"/>
@@ -168,8 +168,6 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="LWIP"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 					</sourceEntries>
 				</configuration>
@@ -372,8 +370,6 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="LWIP"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 					</sourceEntries>
 				</configuration>

@@ -1,6 +1,7 @@
 #pragma once
 #include "Pins.hpp"
 
+ETH_HandleTypeDef heth;
 DMA_HandleTypeDef hdma_adc1;
 DMA_HandleTypeDef hdma_adc2;
 DMA_HandleTypeDef hdma_adc3;
