@@ -7,12 +7,8 @@
 int main(void)
 {
 	STLIB::start();
-	int a = 5;
-	DatagramSocket udp_socket = DatagramSocket( IPV4("192.168.1.4"), 50400, IPV4("192.168.1.3"), 50400);
-	HeapPacket pack = {1, &a};
 
 	while(1) {
-		udp_socket.send(pack);
 		STLIB::update();
 	}
 }
