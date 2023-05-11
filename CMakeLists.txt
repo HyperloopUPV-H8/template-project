@@ -38,10 +38,8 @@ target_compile_options(${EXECUTABLE} PUBLIC
   -mfloat-abi=hard
   -mthumb
   
-  # -O3
-  -Og
-  -g3
   ${PROFILE}
+  ${OPTIMIZATION}
   -ffunction-sections
   -fdata-sections
   -fno-exceptions
