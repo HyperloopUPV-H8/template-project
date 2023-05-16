@@ -56,9 +56,9 @@ EXTERNC u32_t get_rtc_us();
 #define SUBSECONDS_PER_SECOND 32767
 #define TRANSFORMATION_FACTOR (SUBSECONDS_PER_SECOND/999999.0)
 #define SNTP_COMP_ROUNDTRIP 1
-#define SNTP_UPDATE_DELAY 3600000
+#define SNTP_UPDATE_DELAY 60000
 
-void set_time(uint32_t sec, uint32_t us){
+/*void set_time(uint32_t sec, uint32_t us){
 	struct timeval tv;
 	tv.tv_sec = sec;
 	tv.tv_usec = us;
@@ -66,7 +66,7 @@ void set_time(uint32_t sec, uint32_t us){
 	struct tm *nowtm = localtime(&nowtime);
 	uint32_t subsecond = (uint32_t)(TRANSFORMATION_FACTOR * tv.tv_usec);
 	set_rtc(subsecond, nowtm->tm_sec, nowtm->tm_min, nowtm->tm_hour, nowtm->tm_mday, 1+nowtm->tm_mon, 1900+(nowtm->tm_year));
-}
+}*/
 
 #define SNTP_GET_SYSTEM_TIME(sec, us) do {(sec) = get_rtc_s(); (us) = get_rtc_us(); } while (0)
 
