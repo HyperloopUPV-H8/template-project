@@ -40,10 +40,16 @@
 #include "lwip/opt.h"
 #include "lwip/prot/iana.h"
 
-static void set_time(uint32_t sec, uint32_t us);
-static void set_rtc(uint16_t counter, uint8_t second, uint8_t minute, uint8_t hour, uint8_t day, uint8_t month, uint16_t year);
-static u32_t get_rtc_s();
-static u32_t get_rtc_us();
+#ifdef __cplusplus
+#define EXTERNC extern "C"
+#else
+#define EXTERNC
+#endif
+
+EXTERNC void set_time(uint32_t sec, uint32_t us);
+EXTERNC void set_rtc(uint16_t counter, uint8_t second, uint8_t minute, uint8_t hour, uint8_t day, uint8_t month, uint16_t year);
+EXTERNC u32_t get_rtc_s();
+EXTERNC u32_t get_rtc_us();
 
 #define SNTP_STARTUP_DELAY 0
 #define SNTP_SET_SYSTEM_TIME_US(sec,us) set_time(sec,us)
@@ -63,6 +69,8 @@ void set_time(uint32_t sec, uint32_t us){
 }
 
 #define SNTP_GET_SYSTEM_TIME(sec, us) do {(sec) = get_rtc_s(); (us) = get_rtc_us(); } while (0)
+
+#undef EXTERNC
 /**
  * @defgroup sntp_opts Options
  * @ingroup sntp
