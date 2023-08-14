@@ -81,8 +81,8 @@ target_compile_options(${EXECUTABLE} PUBLIC
   -ffunction-sections
   -fdata-sections
   -fno-exceptions
-  -fno-use-cxa-atexit
-  -fno-use-cxa-atexit
+  $<$<COMPILE_LANGUAGE:CXX>:-fno-use-cxa-atexit>
+  $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
 
   -Wall
 
