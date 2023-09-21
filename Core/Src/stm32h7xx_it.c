@@ -61,15 +61,17 @@ extern DMA_HandleTypeDef hdma_adc2;
 extern DMA_HandleTypeDef hdma_adc3;
 extern DMA_HandleTypeDef hdma_i2c2_rx;
 extern DMA_HandleTypeDef hdma_i2c2_tx;
+extern I2C_HandleTypeDef hi2c2;
 extern LPTIM_HandleTypeDef hlptim1;
 extern LPTIM_HandleTypeDef hlptim2;
 extern LPTIM_HandleTypeDef hlptim3;
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim5;
-extern TIM_HandleTypeDef htim7;
-extern TIM_HandleTypeDef htim8;
+extern TIM_HandleTypeDef htim6;
 extern TIM_HandleTypeDef htim23;
 extern TIM_HandleTypeDef htim24;
+extern TIM_HandleTypeDef htim7;
+
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -155,15 +157,15 @@ void UsageFault_Handler(void)
 /**
   * @brief This function handles System service call via SWI instruction.
   */
-void SVC_Handler(void)
-{
-  /* USER CODE BEGIN SVCall_IRQn 0 */
-
-  /* USER CODE END SVCall_IRQn 0 */
-  /* USER CODE BEGIN SVCall_IRQn 1 */
-
-  /* USER CODE END SVCall_IRQn 1 */
-}
+//void SVC_Handler(void)
+//{
+//  /* USER CODE BEGIN SVCall_IRQn 0 */
+//
+//  /* USER CODE END SVCall_IRQn 0 */
+//  /* USER CODE BEGIN SVCall_IRQn 1 */
+//
+//  /* USER CODE END SVCall_IRQn 1 */
+//}
 
 /**
   * @brief This function handles Debug monitor.
@@ -181,6 +183,7 @@ void DebugMon_Handler(void)
 /**
   * @brief This function handles Pendable request for system service.
   */
+/*
 void PendSV_Handler(void)
 {
   /* USER CODE BEGIN PendSV_IRQn 0 */
@@ -189,7 +192,8 @@ void PendSV_Handler(void)
   /* USER CODE BEGIN PendSV_IRQn 1 */
 
   /* USER CODE END PendSV_IRQn 1 */
-}
+//}
+//
 
 /**
   * @brief This function handles System tick timer.
@@ -199,7 +203,7 @@ void SysTick_Handler(void)
   /* USER CODE BEGIN SysTick_IRQn 0 */
 
   /* USER CODE END SysTick_IRQn 0 */
-  HAL_IncTick();
+
   /* USER CODE BEGIN SysTick_IRQn 1 */
 
   /* USER CODE END SysTick_IRQn 1 */
@@ -325,17 +329,17 @@ void TIM2_IRQHandler(void)
 }
 
 /**
-  * @brief This function handles TIM8 trigger and commutation interrupts and TIM14 global interrupt.
+  * @brief This function handles I2C2 event interrupt.
   */
-void TIM8_TRG_COM_TIM14_IRQHandler(void)
+void I2C2_EV_IRQHandler(void)
 {
-  /* USER CODE BEGIN TIM8_TRG_COM_TIM14_IRQn 0 */
+  /* USER CODE BEGIN I2C2_EV_IRQn 0 */
 
-  /* USER CODE END TIM8_TRG_COM_TIM14_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim8);
-  /* USER CODE BEGIN TIM8_TRG_COM_TIM14_IRQn 1 */
+  /* USER CODE END I2C2_EV_IRQn 0 */
+  HAL_I2C_EV_IRQHandler(&hi2c2);
+  /* USER CODE BEGIN I2C2_EV_IRQn 1 */
 
-  /* USER CODE END TIM8_TRG_COM_TIM14_IRQn 1 */
+  /* USER CODE END I2C2_EV_IRQn 1 */
 }
 
 /**
@@ -350,6 +354,20 @@ void TIM5_IRQHandler(void)
   /* USER CODE BEGIN TIM5_IRQn 1 */
 
   /* USER CODE END TIM5_IRQn 1 */
+}
+
+/**
+  * @brief This function handles TIM6 global interrupt, DAC1_CH1 and DAC1_CH2 underrun error interrupts.
+  */
+void TIM6_DAC_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM6_DAC_IRQn 0 */
+
+  /* USER CODE END TIM6_DAC_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim6);
+  /* USER CODE BEGIN TIM6_DAC_IRQn 1 */
+
+  /* USER CODE END TIM6_DAC_IRQn 1 */
 }
 
 /**

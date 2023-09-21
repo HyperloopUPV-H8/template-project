@@ -4,10 +4,12 @@
 #include "ST-LIB.hpp"
 #include "Runes/Runes.hpp"
 
+#include "FreeRTOS.h"
+
 int main(void)
 {
 	STLIB::start();
-
+	xPortStartScheduler();
 	while(1) {
 		STLIB::update();
 	}
