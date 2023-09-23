@@ -143,8 +143,9 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Inc/HALAL/Services/Communication/Ethernet/UDP}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ST-LIB/Inc/HALAL/Services/Communication/Ethernet/TCP}&quot;"/>
 									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/free-rtos"/>
-									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/free-rtos/portable/GCC/ARM_CM4F"/>
 									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/free-rtos/include"/>
+									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/free-rtos/portable/GCC/ARM_CM4F"/>
+									<listOptionValue builtIn="false" value="../Middlewares/Third_Party"/>
 								</option>
 								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.languagestandard.852152736" name="Language standard" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.languagestandard" useByScannerDiscovery="true" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.languagestandard.value.gnupp20" valueType="enumerated"/>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.input.cpp.433115375" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.input.cpp"/>

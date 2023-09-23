@@ -4,7 +4,7 @@
 #include "ST-LIB.hpp"
 #include "Runes/Runes.hpp"
 
-#include "FreeRTOS.h"
+#include <free-rtos/include/FreeRTOS.h>
 
 int main(void)
 {
