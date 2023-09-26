@@ -4,9 +4,6 @@
 #include "ST-LIB.hpp"
 #include "Runes/Runes.hpp"
 
-<<<<<<< HEAD
-#include <free-rtos/include/FreeRTOS.h>
-=======
 
 //  when including free-rtos files
 // use the following notation
@@ -17,7 +14,6 @@
 #include <free-rtos/include/FreeRTOS.h>
 #include <free-rtos/include/task.h>
 
->>>>>>> main
 
 int main(void)
 {
