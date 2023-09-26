@@ -107,13 +107,6 @@
     #define configUSE_NEWLIB_REENTRANT    0
 #endif
 
-/* Required if struct _reent is used. */
-#if ( configUSE_NEWLIB_REENTRANT == 1 )
-
-    #include "newlib-freertos.h"
-
-#endif /* if ( configUSE_NEWLIB_REENTRANT == 1 ) */
-
 /* Must be defaulted before configUSE_PICOLIBC_TLS is used below. */
 #ifndef configUSE_PICOLIBC_TLS
     #define configUSE_PICOLIBC_TLS    0
