@@ -1,8 +1,6 @@
-/* USER CODE BEGIN Header */
 /*
- * FreeRTOS Kernel V10.3.1
- * Portion Copyright (C) 2017 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
- * Portion Copyright (C) 2019 StMicroelectronics, Inc.  All Rights Reserved.
+ * FreeRTOS Kernel V10.2.0
+ * Copyright (C) 2017 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -21,15 +19,15 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * http://www.FreeRTOS.org
  * http://aws.amazon.com/freertos
+ * http://www.FreeRTOS.org
  *
- * 1 tab == 4 spaces!
+ *   1 tab == 4 spaces!
  */
-/* USER CODE END Header */
 
 #ifndef FREERTOS_CONFIG_H
 #define FREERTOS_CONFIG_H
+
 
 /*-----------------------------------------------------------
  * Application specific definitions.
@@ -37,70 +35,97 @@
  * These definitions should be adjusted for your particular hardware and
  * application requirements.
  *
- * These parameters and more are described within the 'configuration' section of the
- * FreeRTOS API documentation available on the FreeRTOS.org web site.
+ * THESE PARAMETERS ARE DESCRIBED WITHIN THE 'CONFIGURATION' SECTION OF THE
+ * FreeRTOS API DOCUMENTATION AVAILABLE ON THE FreeRTOS.org WEB SITE.
  *
- * See http://www.freertos.org/a00110.html
+ * See http://www.freertos.org/a00110.html.
  *----------------------------------------------------------*/
-
-/* USER CODE BEGIN Includes */
-/* Section where include file can be added */
-/* USER CODE END Includes */
-
-/* Ensure definitions are only used by the compiler, and not by the assembler. */
 #if defined(__ICCARM__) || defined(__CC_ARM) || defined(__GNUC__)
   #include <stdint.h>
   extern uint32_t SystemCoreClock;
-  void xPortSysTickHandler(void);
 #endif
-#ifndef CMSIS_device_header
-#define CMSIS_device_header "stm32h7xx.h"
-#endif /* CMSIS_device_header */
+#define configUSE_PREEMPTION		1
+#define configUSE_IDLE_HOOK			0
+#define configUSE_TICK_HOOK			0
+#define configCPU_CLOCK_HZ			( SystemCoreClock )
+/*
+ * configTICK_RATE_HZ indicate the frequency in HZ of the Tick.
+ * On some CPU having a configTICK_RATE_HZ too high could induce scheduling time consuption
+ * to high, then the task will not have time to run.
+ *
+ * configTICK_RATE_HZ = 100 means a Tick every 10ms.
+ */
+#define configTICK_RATE_HZ			( ( TickType_t ) 1000 )
+#define configMAX_PRIORITIES			( 7 )
+/*
+ * configMINIMAL_STACK_SIZE must be a value greater than the stack use by
+ * the minimal task + the sizeof the register saved.
+ * The size of the register is differrent from a core to another, e.g. on RiscV
+ * it could be 32 base register + 32 register for FPU and some other for the
+ * specific extensions.
+ */
+#define configMINIMAL_STACK_SIZE		( ( size_t ) 128 )
 
-#define configENABLE_FPU                         0
-#define configENABLE_MPU                         0
+/*
+ * FPU Support: If configENABLE_FPU is not set, it will be set to 1 into FreeRTOS.h due to ARMv8M ports.
+ * We Set this value if gcc request fpu support
+ */
+#ifdef __riscv_fdiv
+#define configENABLE_FPU	0
+#else
+#define configENABLE_FPU	0
+#endif /* __riscv_fdiv */
 
-#define configUSE_PREEMPTION                     1
-#define configSUPPORT_STATIC_ALLOCATION          1
-#define configSUPPORT_DYNAMIC_ALLOCATION         1
-#define configUSE_IDLE_HOOK                      0
-#define configUSE_TICK_HOOK                      0
-#define configCPU_CLOCK_HZ                       ( SystemCoreClock )
-#define configTICK_RATE_HZ                       ((TickType_t)1000)
-#define configMAX_PRIORITIES                     ( 56 )
-#define configMINIMAL_STACK_SIZE                 ((uint16_t)128)
-#define configTOTAL_HEAP_SIZE                    ((size_t)15360)
-#define configMAX_TASK_NAME_LEN                  ( 16 )
-#define configUSE_TRACE_FACILITY                 1
-#define configUSE_16_BIT_TICKS                   0
-#define configUSE_MUTEXES                        1
-#define configQUEUE_REGISTRY_SIZE                8
-#define configUSE_RECURSIVE_MUTEXES              1
-#define configUSE_COUNTING_SEMAPHORES            1
-#define configUSE_PORT_OPTIMISED_TASK_SELECTION  0
-/* USER CODE BEGIN MESSAGE_BUFFER_LENGTH_TYPE */
-/* Defaults to size_t for backward compatibility, but can be changed
-   if lengths will always be less than the number of bytes in a size_t. */
-#define configMESSAGE_BUFFER_LENGTH_TYPE         size_t
-/* USER CODE END MESSAGE_BUFFER_LENGTH_TYPE */
+/*
+ * ucHeap buffer is defined by the application and store into section .heap with freedom metal
+ * so configAPPLICATION_ALLOCATED_HEAP must be set to 1
+ */
+#define configTOTAL_HEAP_SIZE          		( ( size_t ) 15360 )
+
+#define configMAX_TASK_NAME_LEN				( 16 )
+#define configUSE_TRACE_FACILITY			1
+#define configUSE_16_BIT_TICKS				0
+#define configIDLE_SHOULD_YIELD				0
+#define configUSE_MUTEXES					1
+#define configQUEUE_REGISTRY_SIZE			8
+#define configCHECK_FOR_STACK_OVERFLOW		2
+#define configUSE_RECURSIVE_MUTEXES			1
+#define configUSE_MALLOC_FAILED_HOOK		0
+#define configUSE_APPLICATION_TASK_TAG		0
+#define configUSE_COUNTING_SEMAPHORES		1
+#define configGENERATE_RUN_TIME_STATS		0
+#define configUSE_PORT_OPTIMISED_TASK_SELECTION 1
+#define configCHECKFORSTACK_OVERFLOW		0
+
+/**************************************************************
+ * Required for thread-safety of newlib sprintf, strtok, etc...
+ * Newlib usage into FreeRTOS could induce some unexpected issue
+ * For more information please read:
+ * http://www.nadler.com/embedded/newlibAndFreeRTOS.html
+ * in order to mitigate it the following define must be set to 1
+ **************************************************************/
+#define configUSE_NEWLIB_REENTRANT 		0
 
 /* Co-routine definitions. */
-#define configUSE_CO_ROUTINES                    0
-#define configMAX_CO_ROUTINE_PRIORITIES          ( 2 )
+#define configUSE_CO_ROUTINES 				0
+#define configMAX_CO_ROUTINE_PRIORITIES 	( 2 )
 
-/* Software timer definitions. */
-#define configUSE_TIMERS                         1
-#define configTIMER_TASK_PRIORITY                ( 2 )
-#define configTIMER_QUEUE_LENGTH                 10
-#define configTIMER_TASK_STACK_DEPTH             256
+/* Software timer definitions. SwitchC */
+#define configUSE_TIMERS				1
+#define configTIMER_TASK_PRIORITY		( configMAX_PRIORITIES - 1 )
+#define configTIMER_QUEUE_LENGTH		4
+/*
+ * configTIMER_TASK_STACK_DEPTH must be a value greater than 80 + the sizeof the register saved.
+ * The size of the register is differrent from a core to another, e.g. on RiscV
+ * it could be 32 base register + 32 register for FPU and some other for the
+ * specific extensions.
+ */
+#define configTIMER_TASK_STACK_DEPTH		( 256 )
 
-/* CMSIS-RTOS V2 flags */
-#define configUSE_OS2_THREAD_SUSPEND_RESUME  1
-#define configUSE_OS2_THREAD_ENUMERATE       1
-#define configUSE_OS2_EVENTFLAGS_FROM_ISR    1
-#define configUSE_OS2_THREAD_FLAGS           1
-#define configUSE_OS2_TIMER                  1
-#define configUSE_OS2_MUTEX                  1
+/* Task priorities.  Allow these to be overridden. */
+#ifndef uartPRIMARY_PRIORITY
+	#define uartPRIMARY_PRIORITY		( configMAX_PRIORITIES - 3 )
+#endif
 
 /* Set the following definitions to 1 to include the API function, or zero
 to exclude the API function. */
@@ -118,54 +143,35 @@ to exclude the API function. */
 #define INCLUDE_xTaskGetCurrentTaskHandle    1
 #define INCLUDE_eTaskGetState                1
 
-/*
- * The CMSIS-RTOS V2 FreeRTOS wrapper is dependent on the heap implementation used
- * by the application thus the correct define need to be enabled below
- */
 #define USE_FreeRTOS_HEAP_4
 
-/* Cortex-M specific definitions. */
+  /* Cortex-M specific definitions. */
 #ifdef __NVIC_PRIO_BITS
- /* __BVIC_PRIO_BITS will be specified when CMSIS is being used. */
- #define configPRIO_BITS         __NVIC_PRIO_BITS
+/* __BVIC_PRIO_BITS will be specified when CMSIS is being used. */
+#define configPRIO_BITS         __NVIC_PRIO_BITS
 #else
- #define configPRIO_BITS         4
+#define configPRIO_BITS         4
 #endif
 
-/* The lowest interrupt priority that can be used in a call to a "set priority"
-function. */
-#define configLIBRARY_LOWEST_INTERRUPT_PRIORITY   15
+  /* The lowest interrupt priority that can be used in a call to a "set priority"
+  function. */
+  #define configLIBRARY_LOWEST_INTERRUPT_PRIORITY   15
 
-/* The highest interrupt priority that can be used by any interrupt service
-routine that makes calls to interrupt safe FreeRTOS API functions.  DO NOT CALL
-INTERRUPT SAFE FREERTOS API FUNCTIONS FROM ANY INTERRUPT THAT HAS A HIGHER
-PRIORITY THAN THIS! (higher priorities are lower numeric values. */
-#define configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY 5
+  /* The highest interrupt priority that can be used by any interrupt service
+  routine that makes calls to interrupt safe FreeRTOS API functions.  DO NOT CALL
+  INTERRUPT SAFE FREERTOS API FUNCTIONS FROM ANY INTERRUPT THAT HAS A HIGHER
+  PRIORITY THAN THIS! (higher priorities are lower numeric values. */
+  #define configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY 5
 
-/* Interrupt priorities used by the kernel port layer itself.  These are generic
-to all Cortex-M ports, and do not rely on any particular library functions. */
-#define configKERNEL_INTERRUPT_PRIORITY 		( configLIBRARY_LOWEST_INTERRUPT_PRIORITY << (8 - configPRIO_BITS) )
-/* !!!! configMAX_SYSCALL_INTERRUPT_PRIORITY must not be set to zero !!!!
-See http://www.FreeRTOS.org/RTOS-Cortex-M3-M4.html. */
-#define configMAX_SYSCALL_INTERRUPT_PRIORITY 	( configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY << (8 - configPRIO_BITS) )
+  /* Interrupt priorities used by the kernel port layer itself.  These are generic
+  to all Cortex-M ports, and do not rely on any particular library functions. */
+  #define configKERNEL_INTERRUPT_PRIORITY 		( configLIBRARY_LOWEST_INTERRUPT_PRIORITY << (8 - configPRIO_BITS) )
+  /* !!!! configMAX_SYSCALL_INTERRUPT_PRIORITY must not be set to zero !!!!
+  See http://www.FreeRTOS.org/RTOS-Cortex-M3-M4.html. */
+  #define configMAX_SYSCALL_INTERRUPT_PRIORITY 	( configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY << (8 - configPRIO_BITS) )
 
-/* Normal assert() semantics without relying on the provision of an assert.h
-header file. */
-/* USER CODE BEGIN 1 */
-#define configASSERT( x ) if ((x) == 0) {taskDISABLE_INTERRUPTS(); for( ;; );}
-/* USER CODE END 1 */
-
-/* Definitions that map the FreeRTOS port interrupt handlers to their CMSIS
-standard names. */
-#define vPortSVCHandler    SVC_Handler
-#define xPortPendSVHandler PendSV_Handler
-
-/* IMPORTANT: After 10.3.1 update, Systick_Handler comes from NVIC (if SYS timebase = systick), otherwise from cmsis_os2.c */
-
-#define USE_CUSTOM_SYSTICK_HANDLER_IMPLEMENTATION 1
-
-/* USER CODE BEGIN Defines */
-/* Section where parameter definitions can be added (for instance, to override default ones in FreeRTOS.h) */
-/* USER CODE END Defines */
+#define xPortPendSVHandler 	PendSV_Handler
+#define vPortSVCHandler 	SVC_Handler
+#define xPortSysTickHandler SysTick_Handler
 
 #endif /* FREERTOS_CONFIG_H */
