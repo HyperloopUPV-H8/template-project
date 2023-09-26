@@ -4597,7 +4597,7 @@ BaseType_t xTaskIncrementTick( void )
             #endif /* configGENERATE_RUN_TIME_STATS */
 
             /* Check for stack overflow, if configured. */
-            taskCHECK_FOR_STACK_OVERFLOW();
+            //taskCHECK_FOR_STACK_OVERFLOW();
 
             /* Before the currently running task is switched out, save its errno. */
             #if ( configUSE_POSIX_ERRNO == 1 )
@@ -4686,7 +4686,7 @@ BaseType_t xTaskIncrementTick( void )
                 #endif /* configGENERATE_RUN_TIME_STATS */
 
                 /* Check for stack overflow, if configured. */
-                taskCHECK_FOR_STACK_OVERFLOW();
+                //taskCHECK_FOR_STACK_OVERFLOW();
 
                 /* Before the currently running task is switched out, save its errno. */
                 #if ( configUSE_POSIX_ERRNO == 1 )
