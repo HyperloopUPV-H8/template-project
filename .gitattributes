@@ -1,0 +1,7 @@
+#cube generated files sets the End Of Line character as DOS/Windows (CR-LF)
+#the one from the ST-LIB is UNIX (LF) style
+* text=lf
+*.c text
+*.cpp text
+*.h text
+*.hpp text
