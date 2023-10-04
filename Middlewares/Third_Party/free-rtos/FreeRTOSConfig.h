@@ -81,13 +81,7 @@
  * so configAPPLICATION_ALLOCATED_HEAP must be set to 1
  */
 #define configTOTAL_HEAP_SIZE          		( ( size_t ) 15360 )
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
 #define configSUPPORT_STATIC_ALLOCATION 	1 // support for xSemaphoreCreateMutexStatic()
->>>>>>> main
->>>>>>> 0d41d259892823f2d16b557dba703fa4c266282e
 
 #define configMAX_TASK_NAME_LEN				( 16 )
 #define configUSE_TRACE_FACILITY			1
