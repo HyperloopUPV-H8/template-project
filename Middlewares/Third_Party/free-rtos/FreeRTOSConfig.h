@@ -55,7 +55,7 @@
  *
  * configTICK_RATE_HZ = 100 means a Tick every 10ms.
  */
-#define configTICK_RATE_HZ			( ( TickType_t ) 1000 )
+#define configTICK_RATE_HZ			( ( TickType_t ) 10000 )
 #define configMAX_PRIORITIES			( 7 )
 /*
  * configMINIMAL_STACK_SIZE must be a value greater than the stack use by
@@ -81,6 +81,7 @@
  * so configAPPLICATION_ALLOCATED_HEAP must be set to 1
  */
 #define configTOTAL_HEAP_SIZE          		( ( size_t ) 15360 )
+#define configSUPPORT_STATIC_ALLOCATION 	1 // support for xSemaphoreCreateMutexStatic()
 
 #define configMAX_TASK_NAME_LEN				( 16 )
 #define configUSE_TRACE_FACILITY			1
