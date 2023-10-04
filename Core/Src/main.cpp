@@ -11,8 +11,8 @@
 // note the use of the root path free-rtos
 // and the angle brackets
 
-#include <free-rtos/include/FreeRTOS.h>
-#include <free-rtos/include/task.h>
+#include <FreeRTOS-Lib/inc/thread.hpp>
+#include <FreeRTOS-Lib/inc/GlobalMutexHandler.hpp>
 
 
 int main(void)
