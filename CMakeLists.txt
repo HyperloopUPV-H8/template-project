@@ -1,11 +1,14 @@
 cmake_minimum_required (VERSION 3.4)
+
+include(arm-none-eabi.cmake)
+
 project (template-project ASM C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(STLIB_DIR /opt/malva/ST-LIB)
+set(STLIB_DIR /opt/ST-LIB)
 set(EXECUTABLE ${PROJECT_NAME}.elf)
 
 file(GLOB_RECURSE SOURCE_C ${CMAKE_SOURCE_DIR}/Core/*.c ${CMAKE_SOURCE_DIR}/Drivers/*.c ${CMAKE_SOURCE_DIR}/Middlewares/*.c ${CMAKE_SOURCE_DIR}/LWIP/*.c) 
@@ -13,7 +16,7 @@ file(GLOB_RECURSE SOURCE_CPP ${CMAKE_SOURCE_DIR}/Core/*.cpp ${CMAKE_SOURCE_DIR}/
 file(GLOB_RECURSE SOURCE_H ${CMAKE_SOURCE_DIR}/Core/*.h ${CMAKE_SOURCE_DIR}/Drivers/*.h ${CMAKE_SOURCE_DIR}/Middlewares/*.h ${CMAKE_SOURCE_DIR}/LWIP/*.h) 
 file(GLOB_RECURSE SOURCE_HPP ${CMAKE_SOURCE_DIR}/Core/*.hpp ${CMAKE_SOURCE_DIR}/Drivers/*.hpp ${CMAKE_SOURCE_DIR}/Middlewares/*.hpp ${CMAKE_SOURCE_DIR}/LWIP/*.hpp) 
 
-add_subdirectory(${STLIB_DIR} ${STLIB_DIR}/build)
+#add_subdirectory(${STLIB_DIR} ${STLIB_DIR}/build)
 add_executable(${EXECUTABLE} 
   ${SOURCE_C}
   ${SOURCE_CPP}
@@ -22,7 +25,7 @@ add_executable(${EXECUTABLE}
   Core/Startup/startup_stm32h723zgtx.s
   )
 
-target_link_libraries(${EXECUTABLE} st-lib)
+target_link_libraries(${EXECUTABLE} PUBLIC /opt/ST-LIB/build/libst-lib.a)
 
 target_compile_definitions(${EXECUTABLE} PUBLIC
   -DUSE_HAL_DRIVER
@@ -30,18 +33,42 @@ target_compile_definitions(${EXECUTABLE} PUBLIC
   -DDATA_IN_D2_SRAM
 )
 
-option(BOARD "Board clock config" OFF)
-option(NUCLEO "Nucleo clock config" OFF)
 
-if(BOARD)
+
+# option(BOARD "Board clock config" OFF)
+# option(NUCLEO "Nucleo clock config" OFF)
+
+if(${NUCLEO})
+  add_definitions(-DNUCLEO)
+  add_definitions(-DHSE_VALUE=8000000)
+else()
   add_definitions(-DBOARD)
   add_definitions(-DHSE_VALUE=25000000)
 endif()
 
-if(NUCLEO)
-  add_definitions(-DNUCLEO)
-  add_definitions(-DHSE_VALUE=8000000)
-endif()
+
+#default to debug
+message("\n\nCMAKE:\n")
+message(STATUS "Optimization value: " ${OPTIMIZATION})
+message(STATUS "Debug configuration value: " ${DEBUG_CONFIGURATION})
+message(STATUS "[BOARD, NUCLEO] Config: NUCLEO: " ${NUCLEO})
+
+target_compile_options(${EXECUTABLE} PUBLIC
+  -mcpu=cortex-m7
+  -mfpu=fpv5-d16
+  -mfloat-abi=hard
+  -mthumb
+  ${OPTIMIZATION}
+  ${DEBUG_CONFIGURATION}
+  -ffunction-sections
+  -fdata-sections
+  -fno-exceptions
+  $<$<COMPILE_LANGUAGE:CXX>:-fno-use-cxa-atexit>
+  $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
+
+  -Wall
+  -specs=/usr/lib/arm-none-eabi/lib/nosys.specs
+)
 
 target_include_directories(${EXECUTABLE} PUBLIC
   Drivers/CMSIS/Device/ST/STM32H7xx/Include
@@ -65,29 +92,18 @@ target_include_directories(${EXECUTABLE} PUBLIC
   Middlewares/Third_Party/LwIP/system/arch
   Drivers/BSP/Components
   Drivers/BSP/Components/lan8742
-
+  LWIP/App
+  LWIP/Target
   Core/Inc
+  ${STLIB_DIR}/Inc
+  ${STLIB_DIR}/Inc/HALAL/Models
+  ${STLIB_DIR}/Inc/HALAL/Services
+  ${STLIB_DIR}/Inc/ST-LIB_LOW
+  ${STLIB_DIR}/Inc/ST-LIB_HIGH
 )
 
 
-target_compile_options(${EXECUTABLE} PUBLIC
-  -mcpu=cortex-m7
-  -mfpu=fpv5-d16
-  -mfloat-abi=hard
-  -mthumb
-  
-  ${PROFILE}
-  ${OPTIMIZATION}
-  -ffunction-sections
-  -fdata-sections
-  -fno-exceptions
-  $<$<COMPILE_LANGUAGE:CXX>:-fno-use-cxa-atexit>
-  $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
 
-  -Wall
-
-  --specs=nosys.specs
-)
 target_link_options(${EXECUTABLE} PUBLIC 
         -T${CMAKE_SOURCE_DIR}/STM32H723ZGTX_FLASH.ld
         -mcpu=cortex-m7
