@@ -45,9 +45,10 @@ class ConfigBuild:
     def flash_target(self):
         location = self.repo_root + "/build/" + self.output_dir +"/"
         file_name = self.find_file(location)
+        print("File location: " + file_name)
         elf_src = location + file_name
-        binary_target = file_name.strip(".elf") + ".bin"
-        print(Fore.GREEN + "Elf name:\t" + file_name)
+        binary_target = location + file_name.strip(".elf") + ".bin"
+        print(Fore.GREEN + "Elf name:\t" + elf_src)
         print("Binary target:\t" +binary_target +"\n\n" + Fore.YELLOW)
 
         ret = subprocess.call(["arm-none-eabi-objcopy","-O","binary", elf_src, binary_target ])
