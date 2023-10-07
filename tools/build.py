@@ -60,9 +60,9 @@ class ConfigBuild:
             print(Fore.RED + "Error when flashing to the board, check st-flash is installed")
             raise Exception()
         else:
-            print("\nSuccessfully flashed the code to the target")
-        subprocess.call(["st-flash","reset"])
-        print(Fore.LIGHTMAGENTA_EX + "\tStarting program execution")
+            print("\nSuccessfully flashed the code to the target\n")
+            print(Fore.LIGHTMAGENTA_EX + "\nStarting program execution\n")
+            subprocess.call(["st-flash","reset"])
 
     def build(self):
         try:
