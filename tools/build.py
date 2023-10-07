@@ -11,7 +11,7 @@ parser.add_argument('-bb','--build_behaviour',choices=['Release','Debug'],requir
 parser.add_argument('-target','--target',choices=['NUCLEO','BOARD'],required=True)
 parser.add_argument('-eth','--ethernet_config',choices=['ON','OFF'],required=True)
 parser.add_argument('-dir','--output_dir',required=False)
-parser.add_argument('-f','--flash',choices=['TRUE','FALSE'],default=False,required=False)
+parser.add_argument('-f','--flash',choices=['True','False'],required=False)
 
 args = parser.parse_args()
 
@@ -25,7 +25,10 @@ class ConfigBuild:
         self.buildconfig = args.build_behaviour
         self.target = args.target
         self.ethernet = args.ethernet_config
-        self.flash = args.flash
+        if args.flash == None:
+            self.flash = False
+        else:
+            self.flash = args.flash
         if args.output_dir == None:
             self.output_dir = self.buildconfig         
         else:
@@ -84,9 +87,15 @@ class ConfigBuild:
         if retval != 0:
             print(Fore.RED + "ERRORS OCCURED\n")
             raise Exception("error invoking make")
+        
         print(Fore.GREEN + "\nBuild completed successfully!!\n" + Fore.YELLOW)
-        if self.flash:
+        print("Flash value: " + self.flash)
+
+        if self.flash == "False":
+            exit()
+        else:
             self.flash_target()
+
     def printConfiguration(self):
         print(Fore.CYAN +"\n\tConfiguration used:\n")
         print(Fore.CYAN +"\t\tBuild configuration: [DEBUG, RELEASE]: {} ".format(self.buildconfig).upper())
