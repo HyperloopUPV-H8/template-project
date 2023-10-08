@@ -39,7 +39,7 @@ class ConfigBuild:
                     return file
 
     def flash_target(self):
-        location = self.repo_root + "/build/" + self.output_dir +"/"
+        location = self.repo_root + "/build/" + self.output_dir +"/bin/"
         file_name = self.find_file(location)
         print("File location: " + file_name)
         elf_src = location + file_name
@@ -86,7 +86,13 @@ class ConfigBuild:
             raise Exception("error invoking make")
         
         print(Fore.GREEN + "\nBuild completed successfully!!\n" + Fore.YELLOW)
-        
+        try:
+            os.makedirs(self.repo_root + "/build/" + self.output_dir + "/bin")
+        except FileExistsError:
+            pass
+        elf_ori = self.repo_root + "/build/" + self.output_dir  + "/" + self.find_file(self.repo_root + "/build/" + self.output_dir)
+        elf_dir = self.repo_root + "/build/" + self.output_dir + "/bin"
+        subprocess.call(["mv",elf_ori,elf_dir])
         print("Flash value: " + str(self.flash))
 
         if self.flash == "False":
