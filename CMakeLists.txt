@@ -104,6 +104,11 @@ target_include_directories(${EXECUTABLE} PUBLIC
   Middlewares/Third_Party/LwIP/src/include/compat/posix/sys
   Middlewares/Third_Party/LwIP/src/include/compat/stdc
   Middlewares/Third_Party/LwIP/system/arch
+
+  Middlewares/Third_Party/free-rtos/
+  Middlewares/Third_Party/free-rtos/include
+  Middlewares/Third_Party/free-rtos/portable/GCC/ARM_CM4F
+  Middlewares/Third_Party/
   Drivers/BSP/Components
   Drivers/BSP/Components/lan8742
   LWIP/App
