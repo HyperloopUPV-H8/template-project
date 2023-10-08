@@ -10,7 +10,6 @@ parser = argparse.ArgumentParser(prog="ConfigBuild",
 parser.add_argument('-bb','--build_behaviour',choices=['Release','Debug'],required=True)
 parser.add_argument('-target','--target',choices=['NUCLEO','BOARD'],required=True)
 parser.add_argument('-eth','--ethernet_config',choices=['ON','OFF'],required=True)
-parser.add_argument('-dir','--output_dir',required=False)
 parser.add_argument('-f','--flash',choices=['True','False'],required=False)
 
 args = parser.parse_args()
@@ -26,13 +25,10 @@ class ConfigBuild:
         self.target = args.target
         self.ethernet = args.ethernet_config
         if args.flash == None:
-            self.flash = False
+            self.flash = "False"
         else:
             self.flash = args.flash
-        if args.output_dir == None:
-            self.output_dir = self.buildconfig         
-        else:
-             self.output_dir = args.output_dir
+        self.output_dir = self.buildconfig         
         self.find_repo_root()
         self.printConfiguration()
 
@@ -74,14 +70,14 @@ class ConfigBuild:
         output = self.repo_root + "/build/" + self.output_dir
         if self.buildconfig == "Release":
                 if self.target == "BOARD":
-                    subprocess.call(["cmake", self.repo_root, "-B", output, "-DOPTIMIZATION=-O3","-DDEBUG_CONFIGURATION=-g0","-DNUCLEO=FALSE"])
+                    subprocess.call(["cmake", self.repo_root, "-B", output, "-DRELEASE=TRUE","-DNUCLEO=FALSE"])
                 else:
-                    subprocess.call(["cmake", self.repo_root, "-B", output, "-DOPTIMIZATION=-O3","-DDEBUG_CONFIGURATION=-g0", "-DNUCLEO=TRUE"])
+                    subprocess.call(["cmake", self.repo_root, "-B", output, "-DRELEASE=TRUE","-DNUCLEO=TRUE"])
         else:
             if self.target == "BOARD":
-                subprocess.call(["cmake", self.repo_root, "-B", output, "-DOPTIMIZATION=-Og", "-DDEBUG_CONFIGURATION=-g3", "-DNUCLEO=FALSE"])
+                subprocess.call(["cmake", self.repo_root, "-B", output, "-DRELEASE=FALSE", "-DNUCLEO=FALSE"])
             else:
-                subprocess.call(["cmake", self.repo_root, "-B", output, "-DOPTIMIZATION=-Og", "-DDEBUG_CONFIGURATION=-g3", "-DNUCLEO=TRUE"])                              
+                subprocess.call(["cmake", self.repo_root, "-B", output, "-DRELEASE=FALSE", "-DNUCLEO=TRUE"])                              
         threads = os.cpu_count()
         print( Fore.BLUE +  "\n\nCalling make with {} threads\n\n".format(threads))
         retval = subprocess.call(["make","-j",str(threads),"-C", output])
@@ -90,12 +86,15 @@ class ConfigBuild:
             raise Exception("error invoking make")
         
         print(Fore.GREEN + "\nBuild completed successfully!!\n" + Fore.YELLOW)
-        print("Flash value: " + self.flash)
+        
+        print("Flash value: " + str(self.flash))
 
         if self.flash == "False":
+            self.printConfiguration()
             exit()
         else:
             self.flash_target()
+            self.printConfiguration()
 
     def printConfiguration(self):
         print(Fore.CYAN +"\n\tConfiguration used:\n")
@@ -108,4 +107,4 @@ class ConfigBuild:
 obj = ConfigBuild()
 obj.build()
 
-obj.printConfiguration()
+

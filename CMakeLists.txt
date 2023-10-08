@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(STLIB_DIR /opt/ST-LIB)
+
 set(EXECUTABLE ${PROJECT_NAME}.elf)
 
 file(GLOB_RECURSE SOURCE_C ${CMAKE_SOURCE_DIR}/Core/*.c ${CMAKE_SOURCE_DIR}/Drivers/*.c ${CMAKE_SOURCE_DIR}/Middlewares/*.c ${CMAKE_SOURCE_DIR}/LWIP/*.c) 
@@ -16,27 +16,8 @@ file(GLOB_RECURSE SOURCE_CPP ${CMAKE_SOURCE_DIR}/Core/*.cpp ${CMAKE_SOURCE_DIR}/
 file(GLOB_RECURSE SOURCE_H ${CMAKE_SOURCE_DIR}/Core/*.h ${CMAKE_SOURCE_DIR}/Drivers/*.h ${CMAKE_SOURCE_DIR}/Middlewares/*.h ${CMAKE_SOURCE_DIR}/LWIP/*.h) 
 file(GLOB_RECURSE SOURCE_HPP ${CMAKE_SOURCE_DIR}/Core/*.hpp ${CMAKE_SOURCE_DIR}/Drivers/*.hpp ${CMAKE_SOURCE_DIR}/Middlewares/*.hpp ${CMAKE_SOURCE_DIR}/LWIP/*.hpp) 
 
-#add_subdirectory(${STLIB_DIR} ${STLIB_DIR}/build)
-add_executable(${EXECUTABLE} 
-  ${SOURCE_C}
-  ${SOURCE_CPP}
-  ${SOURCE_H}
-  ${SOURCE_HPP}
-  Core/Startup/startup_stm32h723zgtx.s
-  )
+set(STLIB_DIR /opt/ST-LIB)
 
-target_link_libraries(${EXECUTABLE} PUBLIC /opt/ST-LIB/build/libst-lib.a)
-
-target_compile_definitions(${EXECUTABLE} PUBLIC
-  -DUSE_HAL_DRIVER
-  -DSTM32H723xx
-  -DDATA_IN_D2_SRAM
-)
-
-
-
-# option(BOARD "Board clock config" OFF)
-# option(NUCLEO "Nucleo clock config" OFF)
 
 if(${NUCLEO})
   add_definitions(-DNUCLEO)
@@ -46,9 +27,42 @@ else()
   add_definitions(-DHSE_VALUE=25000000)
 endif()
 
+if(${RELEASE})
+  set(OPTIMIZATION -O3)
+  set(DEBUG_CONFIGURATION -g0)
+  set(STLIB_LIBRARY ${STLIB_DIR}/build/Release)
+else()
+  set(OPTIMIZATION -Og)
+  set(DEBUG_CONFIGURATION -g3)
+  set(STLIB_LIBRARY ${STLIB_DIR}/build/Debug)
+endif()
+
+
+
+add_executable(${EXECUTABLE} 
+  ${SOURCE_C}
+  ${SOURCE_CPP}
+  ${SOURCE_H}
+  ${SOURCE_HPP}
+  Core/Startup/startup_stm32h723zgtx.s
+  )
+
+target_link_libraries(${EXECUTABLE} PUBLIC ${STLIB_LIBRARY}/libst-lib.a)
+
+target_compile_definitions(${EXECUTABLE} PUBLIC
+  -DUSE_HAL_DRIVER
+  -DSTM32H723xx
+  -DDATA_IN_D2_SRAM
+)
+
+
+
+
+
 
 #default to debug
 message("\n\nCMAKE:\n")
+message(STATUS "[DEBUG, RELEASE]: RELEASE: " ${RELEASE})
 message(STATUS "Optimization value: " ${OPTIMIZATION})
 message(STATUS "Debug configuration value: " ${DEBUG_CONFIGURATION})
 message(STATUS "[BOARD, NUCLEO] Config: NUCLEO: " ${NUCLEO})
