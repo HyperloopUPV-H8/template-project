@@ -7,6 +7,14 @@ CMakeFiles
 CMakeCache.txt
 Makefile
 
+#build
+
+build/*
+
+#vscode
+.vscode/*
+vscode/*
+
 template-project
 template-project.bin
 template-project.hex

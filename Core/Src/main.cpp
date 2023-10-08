@@ -4,7 +4,6 @@
 #include "ST-LIB.hpp"
 #include "Runes/Runes.hpp"
 
-
 //  when including free-rtos files
 // use the following notation
 // 		<free-rtos/path-to-file>
@@ -14,14 +13,15 @@
 #include <FreeRTOS-Lib/inc/thread.hpp>
 #include <FreeRTOS-Lib/inc/GlobalMutexHandler.hpp>
 
-
 int main(void)
 {
+
 	// Declare peripherals to be used
 
 
 	// All peripherals must have been declared before calling start()
 	STLIB::start();
+	//add_protection(&current,Boundary<uint64_t,BELOW>(10));
 
 	//define tasks for FreeRTOS
 
