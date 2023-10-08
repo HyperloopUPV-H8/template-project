@@ -4,51 +4,31 @@
 #include "ST-LIB.hpp"
 #include "Runes/Runes.hpp"
 
-using namespace std::chrono_literals;
+//  when including free-rtos files
+// use the following notation
+// 		<free-rtos/path-to-file>
+// note the use of the root path free-rtos
+// and the angle brackets
 
-enum States{
-	OPERATIONAL,
-	FALLO
-};
-
-class Test{
-public:
-	uint64_t current = 0;
-	void add(){
-		add_protection(&current,Boundary<uint64_t,BELOW>(10));
-	}
-
-};
-
+#include <FreeRTOS-Lib/inc/thread.hpp>
+#include <FreeRTOS-Lib/inc/GlobalMutexHandler.hpp>
 
 int main(void)
 {
 
-	//uint64_t current = 0;
-	Test test;
-	StateMachine state_machine;
-	state_machine.add_state(States::OPERATIONAL);
-	state_machine.add_state(States::FALLO);
-	DigitalOutput pin(PB0);
-	auto ledtoggle = [&pin](){
-		pin.toggle();
-	};
-	state_machine.add_low_precision_cyclic_action(ledtoggle, 100ms);
+	// Declare peripherals to be used
 
-	auto ledon = [&pin](){
-		pin.turn_on();
-	};
-	state_machine.add_enter_action(ledon, States::FALLO);
-	ProtectionManager::link_state_machine(state_machine,States::FALLO);
+
+	// All peripherals must have been declared before calling start()
 	STLIB::start();
 	//add_protection(&current,Boundary<uint64_t,BELOW>(10));
 
-	test.add();
+	//define tasks for FreeRTOS
 
-	while(1) {
-		ProtectionManager::check_protections();
-		STLIB::update();
-	}
+	//start the freeRTOS task scheduler
+	//any code below vTaskStartScheduler will NOT execute
+	vTaskStartScheduler();
+
 }
 
 void Error_Handler(void)
