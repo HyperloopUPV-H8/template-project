@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import os
 import argparse
 import subprocess
@@ -68,11 +70,14 @@ class ConfigBuild:
             pass
 
         output = self.repo_root + "/build/" + self.output_dir
+        stlib = subprocess.call(["/opt/ST-LIB/tools/build.py", "-bb", self.buildconfig, "-t" , self.target, "-eth",self.ethernet])
+        if stlib != 0:
+            raise Exception("STLIB build failed")
         if self.buildconfig == "Release":
-                if self.target == "BOARD":
-                    subprocess.call(["cmake", self.repo_root, "-B", output, "-DRELEASE=TRUE","-DNUCLEO=FALSE"])
-                else:
-                    subprocess.call(["cmake", self.repo_root, "-B", output, "-DRELEASE=TRUE","-DNUCLEO=TRUE"])
+            if self.target == "BOARD":
+                subprocess.call(["cmake", self.repo_root, "-B", output, "-DRELEASE=TRUE","-DNUCLEO=FALSE"])
+            else:
+                subprocess.call(["cmake", self.repo_root, "-B", output, "-DRELEASE=TRUE","-DNUCLEO=TRUE"])
         else:
             if self.target == "BOARD":
                 subprocess.call(["cmake", self.repo_root, "-B", output, "-DRELEASE=FALSE", "-DNUCLEO=FALSE"])
