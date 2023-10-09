@@ -39,6 +39,46 @@
                 "kind": "build",
                 "isDefault": false
             }
+        },
+        {
+            "type": "shell",
+            "label": "Build RELEASE -- ETH ON -- NUCLEO",
+            "command": "tools/build.py",
+            "args": [
+                "-bb",
+                "Release",
+                "-t",
+                "NUCLEO",
+                "-eth",
+                "ON"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            }
+        },
+        {
+            "type": "shell",
+            "label": "Build RELEASE -- ETH OFF -- NUCLEO",
+            "command": "tools/build.py",
+            "args": [
+                "-bb",
+                "Release",
+                "-t",
+                "NUCLEO",
+                "-eth",
+                "OFF"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            }
         }
     ],
     "version": "2.0.0"
