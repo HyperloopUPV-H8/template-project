@@ -8,7 +8,6 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-
 set(EXECUTABLE ${PROJECT_NAME}.elf)
 
 file(GLOB_RECURSE SOURCE_C ${CMAKE_SOURCE_DIR}/Core/*.c ${CMAKE_SOURCE_DIR}/Drivers/*.c ${CMAKE_SOURCE_DIR}/Middlewares/*.c ${CMAKE_SOURCE_DIR}/LWIP/*.c) 
@@ -16,8 +15,7 @@ file(GLOB_RECURSE SOURCE_CPP ${CMAKE_SOURCE_DIR}/Core/*.cpp ${CMAKE_SOURCE_DIR}/
 file(GLOB_RECURSE SOURCE_H ${CMAKE_SOURCE_DIR}/Core/*.h ${CMAKE_SOURCE_DIR}/Drivers/*.h ${CMAKE_SOURCE_DIR}/Middlewares/*.h ${CMAKE_SOURCE_DIR}/LWIP/*.h) 
 file(GLOB_RECURSE SOURCE_HPP ${CMAKE_SOURCE_DIR}/Core/*.hpp ${CMAKE_SOURCE_DIR}/Drivers/*.hpp ${CMAKE_SOURCE_DIR}/Middlewares/*.hpp ${CMAKE_SOURCE_DIR}/LWIP/*.hpp) 
 
-set(STLIB_DIR /opt/ST-LIB)
-
+set(STLIB_DIR "/opt/ST-LIB")
 
 if(${NUCLEO})
   add_definitions(-DNUCLEO)
@@ -30,14 +28,12 @@ endif()
 if(${RELEASE})
   set(OPTIMIZATION -O3)
   set(DEBUG_CONFIGURATION -g0)
-  set(STLIB_LIBRARY ${STLIB_DIR}/build/Release)
+  set(STLIB_LIBRARY ${STLIB_DIR}/build/Release/lib)
 else()
   set(OPTIMIZATION -Og)
   set(DEBUG_CONFIGURATION -g3)
-  set(STLIB_LIBRARY ${STLIB_DIR}/build/Debug)
+  set(STLIB_LIBRARY ${STLIB_DIR}/build/Debug/lib)
 endif()
-
-
 
 add_executable(${EXECUTABLE} 
   ${SOURCE_C}
@@ -55,12 +51,6 @@ target_compile_definitions(${EXECUTABLE} PUBLIC
   -DDATA_IN_D2_SRAM
 )
 
-
-
-
-
-
-#default to debug
 message("\n\nCMAKE:\n")
 message(STATUS "[DEBUG, RELEASE]: RELEASE: " ${RELEASE})
 message(STATUS "Optimization value: " ${OPTIMIZATION})
