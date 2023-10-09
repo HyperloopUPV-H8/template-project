@@ -2,23 +2,43 @@
     "tasks": [
         {
             "type": "shell",
-            "label": "build project for nucleo",
-            "command": "malva build .",
+            "label": "Build DEBUG --ETH OFF--NUCLEO ",
+            "command": "tools/build.py",
+            "args": [
+                "-bb",
+                "Debug",
+                "-t",
+                "NUCLEO",
+                "-eth",
+                "OFF"
+            ],
             "problemMatcher": [
                 "$gcc"
             ],
             "group": {
                 "kind": "build",
-                "isDefault": true
+                "isDefault": false
             }
         },
         {
             "type": "shell",
-            "label": "build project for board",
-            "command": "malva build --board . ",
+            "label": "Build DEBUG -- ETH ON -- NUCLEO",
+            "command": "tools/build.py",
+            "args": [
+                "-bb",
+                "Debug",
+                "-t",
+                "NUCLEO",
+                "-eth",
+                "ON"
+            ],
             "problemMatcher": [
                 "$gcc"
-            ]
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            }
         }
     ],
     "version": "2.0.0"
