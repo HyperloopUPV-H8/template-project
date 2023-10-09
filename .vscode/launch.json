@@ -9,7 +9,7 @@
             "cwd": "${workspaceRoot}",
             "runToEntryPoint": "main",
             "showDevDebugOutput": "raw",
-            "executable": "build/template-project.elf",
+            "executable": "build/Debug/bin/template-project.elf",
             "device": "STM32H723ZG",
             "configFiles": [
                 ".vscode/stlink.cfg",
