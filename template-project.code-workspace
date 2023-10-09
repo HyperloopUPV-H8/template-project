@@ -7,5 +7,11 @@
 			"path": "/opt/ST-LIB"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"stm32-for-vscode.openOCDPath": "/usr/bin/openocd",
+		"files.associations": {
+			"bitset": "cpp",
+			"cstdlib": "cpp"
+		}
+	}
 }
