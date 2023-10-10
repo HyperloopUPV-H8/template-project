@@ -42,7 +42,7 @@ If at the bottom you choose terminal view, you will see the output
 
 After the build has finished go into the menu on the left and select the Run and Debug view,
 
-choose the configuration you want to run
+choose the configuration you want to run [Debug, Release]
 
 ![image](https://github.com/HyperloopUPV-H8/template-freeRTOS-project/assets/58850783/8fc8fe8a-3209-45c0-acf1-9f04f39ba1bb)
 
