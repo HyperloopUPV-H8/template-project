@@ -13,6 +13,7 @@
         "**/CMakeLists.txt": false,
         "**/compile_commands.json": true,
         "**/Debug": true,
+        "**/Release":true,
         "**/libst-lib.a": true,
         "**/Makefile": true
     },
