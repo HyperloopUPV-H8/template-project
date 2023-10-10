@@ -17,13 +17,13 @@ int main(void)
 {
 
 	// Declare peripherals to be used
-
-
+	
 	// All peripherals must have been declared before calling start()
 	STLIB::start();
-	//add_protection(&current,Boundary<uint64_t,BELOW>(10));
 
 	//define tasks for FreeRTOS
+	
+
 
 	//start the freeRTOS task scheduler
 	//any code below vTaskStartScheduler will NOT execute
