@@ -1,0 +1,3 @@
+[submodule "Middlewares/Third_Party/freeRTOS-lib"]
+	path = Middlewares/Third_Party/freeRTOS-lib
+	url = git@github.com:g0nz4I0/FreeRTOS-Lib.git
