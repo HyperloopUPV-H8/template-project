@@ -33,6 +33,7 @@
                 "${workspaceFolder}/Middlewares/Third_Party/free-rtos/include",
                 "${workspaceFolder}/Middlewares/Third_Party/free-rtos/portable/GCC/ARM_CM4F",
                 "${workspaceFolder}/Middlewares/Third_Party/",
+                "${workspaceFolder}/Middlewares/Third_Party/freeRTOS-lib/inc",
                 "${workspaceFolder}/Drivers/BSP/Components",
                 "${workspaceFolder}/Drivers/BSP/Components/lan8742",
                 "${workspaceFolder}/LWIP/App",
