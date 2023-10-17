@@ -11,7 +11,10 @@
 		"stm32-for-vscode.openOCDPath": "/usr/bin/openocd",
 		"files.associations": {
 			"bitset": "cpp",
-			"cstdlib": "cpp"
+			"cstdlib": "cpp",
+			"array": "cpp",
+			"chrono": "cpp",
+			"algorithm": "cpp"
 		}
 	}
 }
