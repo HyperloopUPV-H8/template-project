@@ -10,6 +10,7 @@
                 "/opt/ST-LIB/Inc/ST-LIB_LOW",
                 "/opt/ST-LIB/Inc/ST-LIB_HIGH",
                 "/opt/ST-LIB/Drivers/STM32H7xx_HAL_Driver/Inc/",
+                "/opt/ST-LIB/Drivers/CMSIS/Device/ST/STM32H7xx/Include/",
                 "${workspaceFolder}/Drivers/CMSIS/Device/ST/STM32H7xx/Include",
                 "${workspaceFolder}/Drivers/CMSIS/Include",
                 "${workspaceFolder}/Drivers/STM32H7xx_HAL_Driver/Inc",
