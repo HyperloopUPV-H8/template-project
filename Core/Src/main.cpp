@@ -10,8 +10,8 @@
 // note the use of the root path free-rtos
 // and the angle brackets
 
-#include <FreeRTOS-Lib/inc/thread.hpp>
-#include <FreeRTOS-Lib/inc/GlobalMutexHandler.hpp>
+#include <freeRTOS-lib/inc/Thread.hpp>
+#include <freeRTOS-lib/inc/GlobalMutexHandler.hpp>
 
 int main(void)
 {

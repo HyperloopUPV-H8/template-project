@@ -70,6 +70,7 @@ void LPTIM2_IRQHandler(void);
 void LPTIM3_IRQHandler(void);
 void TIM23_IRQHandler(void);
 void TIM24_IRQHandler(void);
+void FDCAN1_IT0_IRQHandler(void) ;
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */
