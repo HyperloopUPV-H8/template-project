@@ -1,6 +1,11 @@
 # template-freeRTOS-project
 Fork of the template project to support creating projects with freeRTOS with support for VScode
 
+**This project allows to use VS code in Linux ONLY for Windows use skip to the bottom**
+
+
+**Linux**
+
 
 **Set Up:**
 
@@ -19,6 +24,7 @@ better to give the user permissions
 
 clone this repo:
 `git clone git@github.com:HyperloopUPV-H8/template-freeRTOS-project.git`
+and run `git submodule init` to start the freeRTOSlib submodule
 
 open VS code 
 and go into `Open workspace from file`
@@ -50,8 +56,24 @@ After launching, the following view shows:
 
 ![image](https://github.com/HyperloopUPV-H8/template-freeRTOS-project/assets/58850783/202e9a1a-139f-4dab-ab8a-ac8afe6037a6)
 
-That's it you can start using VS Code for firmware development.
+That's it you can start using VS Code in Linux for firmware development.
 
+
+
+**Windows User**
+
+Step 1:
+ Switch to Linux
+ 
+Step 2:
+  Read the guide above for Linux setup
+  
+In case you are still using Windows:
+
+clone this repo:
+`git clone git@github.com:HyperloopUPV-H8/template-freeRTOS-project.git`
+and run `git submodule init` to start the freeRTOSlib submodule
+ 
 
 
 
