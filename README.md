@@ -9,6 +9,13 @@ Fork of the template project to support creating projects with freeRTOS with sup
 
 **Set Up:**
 
+install necessary python dependencies:
+
+`pip install GitPython`
+
+`pip install colorama`
+
+
 move the STLIB from your current location to /opt/ST-LIB:
 
 To do so:
