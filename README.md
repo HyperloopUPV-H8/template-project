@@ -79,8 +79,13 @@ In case you are still using Windows:
 
 clone this repo:
 `git clone git@github.com:HyperloopUPV-H8/template-freeRTOS-project.git`
-and run `git submodule init` to start the freeRTOSlib submodule
- 
+
+and run 
+`git submodule init` to start the freeRTOSlib submodule
+
+the run 
+
+ `git pull --recurse-submodule`
 
 
 
