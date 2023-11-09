@@ -71,7 +71,7 @@ target_compile_options(${EXECUTABLE} PUBLIC
   $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
 
   -Wall
-  -specs=/usr/lib/arm-none-eabi/lib/nosys.specs
+  -specs=nosys.specs
 )
 
 target_include_directories(${EXECUTABLE} PUBLIC
