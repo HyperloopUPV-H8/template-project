@@ -4,12 +4,37 @@
         {
             "type": "cortex-debug",
             "request": "launch",
+            "name": "Release (OpenOCD)",
+            "servertype": "openocd",
+            "cwd": "${workspaceRoot}",
+            "runToEntryPoint": "main",
+            "showDevDebugOutput": "raw",
+            "executable": "build/Release/bin/template-project.elf",
+            "device": "STM32H723ZG",
+            "configFiles": [
+                ".vscode/stlink.cfg",
+                ".vscode/stm32h7x.cfg"
+            ],
+            "svdFile": ".vscode/STM32H723.svd",
+            "swoConfig": {
+                "enabled": true,
+                "cpuFrequency": 8000000,
+                "swoFrequency": 2000000,
+                "source": "probe",
+                "decoders": [
+                    { "type": "console", "label": "ITM", "port": 0 }
+                ]
+            }
+        } ,
+        {
+            "type": "cortex-debug",
+            "request": "launch",
             "name": "Debug (OpenOCD)",
             "servertype": "openocd",
             "cwd": "${workspaceRoot}",
             "runToEntryPoint": "main",
             "showDevDebugOutput": "raw",
-            "executable": "build/template-project.elf",
+            "executable": "build/Debug/bin/template-project.elf",
             "device": "STM32H723ZG",
             "configFiles": [
                 ".vscode/stlink.cfg",
