@@ -4,6 +4,8 @@
 DMA_HandleTypeDef hdma_adc1;
 DMA_HandleTypeDef hdma_adc2;
 DMA_HandleTypeDef hdma_adc3;
+DMA_HandleTypeDef hdma_spi3_rx;
+DMA_HandleTypeDef hdma_spi3_tx;
 DMA_HandleTypeDef hdma_i2c2_rx;
 DMA_HandleTypeDef hdma_i2c2_tx;
 I2C_HandleTypeDef hi2c2;
@@ -65,7 +67,10 @@ unordered_map<FDCAN_HandleTypeDef*, FDCAN::Instance*> FDCAN::handle_to_fdcan = {
 
 SPI::Instance SPI::instance3 = { .SCK = &PC10, .MOSI = &PC12, .MISO = &PC11, .SS = &PD0,
                                  .hspi = &hspi3, .instance = SPI3,
+								 .hdma_tx = DMA::Stream::DMA1Stream5,
+								 .hdma_rx = DMA::Stream::DMA1Stream6,
 								 .baud_rate_prescaler = SPI_BAUDRATEPRESCALER_256,
+								 .mode = SPI_MODE_SLAVE,
                                };
 
 SPI::Peripheral SPI::spi3 = SPI::Peripheral::peripheral3;
