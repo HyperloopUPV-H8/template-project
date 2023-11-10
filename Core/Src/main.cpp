@@ -8,9 +8,9 @@ int main(void)
 {
 		STLIB::start();
 
-		while(1) {
-				STLIB::update();
-		}
+	while(1) {
+		STLIB::update();
+	}
 }
 
 void Error_Handler(void)
