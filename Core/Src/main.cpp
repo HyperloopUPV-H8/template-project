@@ -6,7 +6,7 @@
 
 int main(void)
 {
-		STLIB::start();
+	STLIB::start();
 
 	while(1) {
 		STLIB::update();
