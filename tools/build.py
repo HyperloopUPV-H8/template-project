@@ -33,7 +33,7 @@ class ConfigBuild:
         self.output_dir = self.buildconfig         
         self.find_repo_root()
         self.printConfiguration()
-
+        self.args = []
     def find_file(self,search_path):
         for root, _, files in os.walk(search_path):
             for file in files:
@@ -73,16 +73,23 @@ class ConfigBuild:
         stlib = subprocess.call(["/opt/ST-LIB/tools/build.py", "-bb", self.buildconfig, "-t" , self.target, "-eth",self.ethernet])
         if stlib != 0:
             raise Exception("STLIB build failed")
+        
+        self.args.append("cmake")
+        self.args.append(self.repo_root)
+        self.args.append("-B")
+        self.args.append(output)
         if self.buildconfig == "Release":
-            if self.target == "BOARD":
-                subprocess.call(["cmake", self.repo_root, "-B", output, "-DRELEASE=TRUE","-DNUCLEO=FALSE"])
-            else:
-                subprocess.call(["cmake", self.repo_root, "-B", output, "-DRELEASE=TRUE","-DNUCLEO=TRUE"])
+            self.args.append("-DRELEASE=TRUE")
         else:
-            if self.target == "BOARD":
-                subprocess.call(["cmake", self.repo_root, "-B", output, "-DRELEASE=FALSE", "-DNUCLEO=FALSE"])
-            else:
-                subprocess.call(["cmake", self.repo_root, "-B", output, "-DRELEASE=FALSE", "-DNUCLEO=TRUE"])                              
+            self.args.append("-DRELEASE=FALSE")
+        if self.target == "BOARD":
+            self.args.append("-DNUCLEO=FALSE")
+        else:
+            self.args.append("-DNUCLEO=TRUE")
+        cmake_ret_val = subprocess.call(self.args)      
+        if cmake_ret_val != 0:
+            print(Fore.RED + "ERRORS OCCURED\n")
+            raise Exception("error invoking cmake")                      
         threads = os.cpu_count()
         print( Fore.BLUE +  "\n\nCalling make with {} threads\n\n".format(threads))
         retval = subprocess.call(["make","-j",str(threads),"-C", output])
