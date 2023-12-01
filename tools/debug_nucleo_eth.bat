@@ -1,0 +1,1 @@
+python tools/build.py -bb Debug -t NUCLEO -eth ON
