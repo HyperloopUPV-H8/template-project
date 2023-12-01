@@ -1,12 +1,23 @@
-#!/usr/bin/python3
-
 import os
 import argparse
 import subprocess
 import git
+import platform
 from colorama import Fore
+
+def replace_forward_slashes(input_string):
+    result_string = input_string.replace('/', '\\')
+    return result_string
+
 parser = argparse.ArgumentParser(prog="ConfigBuild",
                                  description="Configures and builds the project")
+is_windows = "Windows" in platform.system()
+move_cmd = "move" if is_windows else "mv"
+python_interpreter = "python" if is_windows else "python3"
+
+## !!!!!! CHANGE THIS PATH TO YOUR ST-LIB PATH !!!!!!
+stlib_path = "C:/ST-LIB/tools/build.py" if is_windows else "/opt/ST-LIB/tools/build.py"
+## !!!!!! CHANGE THIS PATH TO YOUR ST-LIB PATH !!!!!!
 
 
 parser.add_argument('-bb','--build_behaviour',choices=['Release','Debug'],required=True)
@@ -70,7 +81,7 @@ class ConfigBuild:
             pass
 
         output = self.repo_root + "/build/" + self.output_dir
-        stlib = subprocess.call(["/opt/ST-LIB/tools/build.py", "-bb", self.buildconfig, "-t" , self.target, "-eth",self.ethernet])
+        stlib = subprocess.call([python_interpreter,stlib_path, "-bb", self.buildconfig, "-t" , self.target, "-eth",self.ethernet])
         if stlib != 0:
             raise Exception("STLIB build failed")
         
@@ -86,6 +97,8 @@ class ConfigBuild:
             self.args.append("-DNUCLEO=FALSE")
         else:
             self.args.append("-DNUCLEO=TRUE")
+        self.args.append("-G")
+        self.args.append("Unix Makefiles")
         cmake_ret_val = subprocess.call(self.args)      
         if cmake_ret_val != 0:
             print(Fore.RED + "ERRORS OCCURED\n")
@@ -104,7 +117,10 @@ class ConfigBuild:
             pass
         elf_ori = self.repo_root + "/build/" + self.output_dir  + "/" + self.find_file(self.repo_root + "/build/" + self.output_dir)
         elf_dir = self.repo_root + "/build/" + self.output_dir + "/bin"
-        subprocess.call(["mv",elf_ori,elf_dir])
+        if is_windows:
+            elf_ori = replace_forward_slashes(elf_ori)
+            elf_dir = replace_forward_slashes(elf_dir)
+        subprocess.call([move_cmd,elf_ori,elf_dir],shell=True)
         print("Flash value: " + str(self.flash))
 
         if self.flash == "False":
