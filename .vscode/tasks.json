@@ -8,7 +8,7 @@
                 "command": "tools/debug_board_NO_eth.bat"
             },
             "linux":{
-                "command": "python tools/build.py",
+                "command": "tools/build.py",
                 "args": [
                     "-bb",
                     "Debug",
@@ -34,7 +34,7 @@
                 "command": "tools/debug_nucleo_eth.bat"
             },
             "linux":{
-                "command": "python tools/build.py",
+                "command": "tools/build.py",
                 "args": [
                     "-bb",
                     "Debug",

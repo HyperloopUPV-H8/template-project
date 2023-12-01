@@ -121,7 +121,10 @@ class ConfigBuild:
         if is_windows:
             elf_ori = replace_forward_slashes(elf_ori)
             elf_dir = replace_forward_slashes(elf_dir)
-        subprocess.call([move_cmd,elf_ori,elf_dir],shell=True)
+        if is_windows:
+            subprocess.call([move_cmd,elf_ori,elf_dir],shell=True)
+        else:
+            subprocess.call([move_cmd,elf_ori,elf_dir])
         print("Flash value: " + str(self.flash))
 
         if self.flash == "False":
