@@ -5,7 +5,7 @@
             "label": "Build DEBUG --ETH OFF--NUCLEO ",
 
             "windows":{
-                "command": "tools/debug_board_NO_eth.bat"
+                "command": "tools/debug_nucleo_NO_eth.bat"
             },
             "linux":{
                 "command": "tools/build.py",
