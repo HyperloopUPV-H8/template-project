@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build_st_lib:
+  build_template_project:
     runs-on: ubuntu-latest
     steps:
      - uses: actions/checkout@v3 
@@ -20,37 +20,8 @@ jobs:
        run: pip install GitPython colorama
      - name: Set up ST-LIB
        run: ls && cp -r ../* /opt/ && mv /opt/template-project /opt/ST-LIB
-    
      - name: Display ST-LIB
-       working-directory: /opt/ST-LIB/
-       run: ls 
+       run: ls /opt/ST-LIB
      - name: Invoking python
-       working-directory: /opt/ST-LIB/tools
-       run: python3 build.py -eth ON -t NUCLEO -bb Debug
-     - name: Upload build artifact
-       uses: actions/upload-artifact@v3
-       with:
-          name: library
-          path: /opt/ST-LIB/build/Debug/lib/libst-lib.a
-  build:
-    runs-on: ubuntu-latest
-    needs: build_st_lib
-    steps:
-    - uses: actions/checkout@v3
-    - name: Create output folder
-      run: mkdir -p /opt/ST-LIB/build/Debug/lib
-    - name: Download ST-LIB artifactory
-      uses: actions/download-artifact@v3
-      with:
-        name: library
-    - name: Install  compiler
-      uses: carlosperate/arm-none-eabi-gcc-action@v1
-    - run: arm-none-eabi-gcc --version
-    - name: Install python dependencies 
-      run: pip install GitPython colorama
-    - name: Configure CMake ## because we only download the library we cannot call the build script as usual
-      ## we have to invoke cmake
-      run: cmake -B build/Debug  -DRELEASE=FALSE -DNUCLEO=TRUE
-    - name: make
-      run: make -C build/Debug
-    
+       run: python3 tools/build.py -eth ON -t NUCLEO -bb Debug
+
