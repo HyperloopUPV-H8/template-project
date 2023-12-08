@@ -48,5 +48,9 @@ jobs:
     - run: arm-none-eabi-gcc --version
     - name: Install python dependencies 
       run: pip install GitPython colorama
-    - name: Build project
-      run: python3 tools/build.py -eth ON -t NUCLEO -bb Debug
+    - name: Configure CMake ## because we only download the library we cannot call the build script as usual
+      ## we have to invoke cmake
+      run: cmake -B build/Debug  -DRELEASE=FALSE -DNUCLEO=TRUE
+    - name: make
+      run: make -C build/Debug
+    -
