@@ -26,12 +26,12 @@ jobs:
        run: ls 
      - name: Invoking python
        working-directory: /opt/ST-LIB/tools
-       run: python3 build.py -eth ON -t NUCLEO -bb ${{matrix.build_type}}
+       run: python3 build.py -eth ON -t NUCLEO -bb Debug
      - name: Upload build artifact
        uses: actions/upload-artifact@v3
        with:
           name: library
-          path: /opt/ST-LIB/build/${{matrix.build_type}}/lib/libst-lib.a
+          path: /opt/ST-LIB/build/Debug/lib/libst-lib.a
   build:
     runs-on: ubuntu-latest
     needs: build_st_lib
