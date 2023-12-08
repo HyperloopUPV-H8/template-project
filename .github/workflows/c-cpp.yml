@@ -22,6 +22,9 @@ jobs:
        run: ls && cp -r ../* /opt/ && mv /opt/template-project /opt/ST-LIB
      - name: Display ST-LIB
        run: ls /opt/ST-LIB
+     - uses: actions/checkout@v3 
+       with: 
+         repository: ' '
      - name: Invoking python
        run: python3 tools/build.py -eth ON -t NUCLEO -bb Debug
 
