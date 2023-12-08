@@ -43,5 +43,10 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: library
+    - name: Install  compiler
+      uses: carlosperate/arm-none-eabi-gcc-action@v1
+    - run: arm-none-eabi-gcc --version
+    - name: Install python dependencies 
+      run: pip install GitPython colorama
     - name: Build project
       run: python3 tools/build.py -eth ON -t NUCLEO -bb Debug
