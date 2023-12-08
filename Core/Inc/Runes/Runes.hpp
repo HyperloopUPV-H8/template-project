@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Pins.hpp"
 
 DMA_HandleTypeDef hdma_adc1;
