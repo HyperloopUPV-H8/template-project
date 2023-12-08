@@ -19,12 +19,11 @@ jobs:
      - name: Install dependencies
        run: pip install GitPython colorama
      - name: Set up ST-LIB
-       run: ls && cp -r ../* /opt/
-     
-     - run: echo pwd
+       run: ls && cp -r ../* /opt/ && mv /opt/template-project /opt/ST-LIB
+    
      - name: Display ST-LIB
-       #working-directory: /opt/ST-LIB/
-       run: ls /opt/
+       working-directory: /opt/ST-LIB/
+       run: ls 
      - name: Invoking python
        working-directory: /opt/ST-LIB/tools
        run: python3 build.py -eth ON -t NUCLEO -bb ${{matrix.build_type}}
