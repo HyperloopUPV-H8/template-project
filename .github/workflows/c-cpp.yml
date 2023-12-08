@@ -7,6 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
+  uses: HyperloopUPV-H8/ST-LIB/.github/workflows/c-cpp.yml@d5361b8a7ed88a0f360a3c319f934e89f5b687b4
   build:
     strategy:
       matrix: 
@@ -16,7 +17,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build STLIB
-      uses: HyperloopUPV-H8/ST-LIB/.github/workflows/c-cpp.yml@d5361b8a7ed88a0f360a3c319f934e89f5b687b4
     - name: make
       run: make
     - name: make check
