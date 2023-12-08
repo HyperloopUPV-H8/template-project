@@ -23,8 +23,8 @@ jobs:
      
      - run: echo pwd
      - name: Display ST-LIB
-       working-directory: /opt/ST-LIB/
-       run: ls 
+       #working-directory: /opt/ST-LIB/
+       run: ls /opt/
      - name: Invoking python
        working-directory: /opt/ST-LIB/tools
        run: python3 build.py -eth ON -t NUCLEO -bb ${{matrix.build_type}}
