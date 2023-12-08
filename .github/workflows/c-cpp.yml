@@ -17,3 +17,5 @@ jobs:
     - name: check STLIB
       run: | 
         ls /opt/STLIB
+    - name: Build project
+      run: python3 tools/build.py -eth ON -t NUCLEO -bb Debug
