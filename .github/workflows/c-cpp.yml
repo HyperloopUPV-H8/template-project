@@ -20,6 +20,8 @@ jobs:
        run: pip install GitPython colorama
      - name: Set up ST-LIB
        run: ls && cp -r ../* /opt/
+     
+     - run: echo pwd
      - name: Display ST-LIB
        working-directory: /opt/ST-LIB/
        run: ls 
