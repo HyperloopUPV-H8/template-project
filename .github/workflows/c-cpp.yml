@@ -37,8 +37,11 @@ jobs:
     needs: build_st_lib
     steps:
     - uses: actions/checkout@v3
-    - name: check STLIB
-      run: | 
-        ls /opt/STLIB
+    - name: Create output folder
+      run: mkdir /opt/ST-LIB/build/Debug/lib
+    - name: Download ST-LIB artifactory
+      uses: actions/download-artifact@v3
+      with:
+        name: library
     - name: Build project
       run: python3 tools/build.py -eth ON -t NUCLEO -bb Debug
