@@ -11,6 +11,7 @@ jobs:
     uses: HyperloopUPV-H8/ST-LIB/.github/workflows/c-cpp.yml@d5361b8a7ed88a0f360a3c319f934e89f5b687b4
   build:
     runs-on: ubuntu-latest
+    needs: build_st_lib
     steps:
     - uses: actions/checkout@v3
     - name: check STLIB
