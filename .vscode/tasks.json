@@ -3,15 +3,21 @@
         {
             "type": "shell",
             "label": "Build DEBUG --ETH OFF--NUCLEO ",
-            "command": "tools/build.py",
-            "args": [
-                "-bb",
-                "Debug",
-                "-t",
-                "NUCLEO",
-                "-eth",
-                "OFF"
-            ],
+
+            "windows":{
+                "command": "tools/debug_nucleo_NO_eth.bat"
+            },
+            "linux":{
+                "command": "tools/build.py",
+                "args": [
+                    "-bb",
+                    "Debug",
+                    "-t",
+                    "NUCLEO",
+                    "-eth",
+                    "OFF"
+                ],
+            },
             "problemMatcher": [
                 "$gcc"
             ],
@@ -22,16 +28,22 @@
         },
         {
             "type": "shell",
-            "label": "Build DEBUG -- ETH ON -- NUCLEO",
-            "command": "tools/build.py",
-            "args": [
-                "-bb",
-                "Debug",
-                "-t",
-                "NUCLEO",
-                "-eth",
-                "ON"
-            ],
+            "label": "Build DEBUG --ETH ON--NUCLEO ",
+
+            "windows":{
+                "command": "tools/debug_nucleo_eth.bat"
+            },
+            "linux":{
+                "command": "tools/build.py",
+                "args": [
+                    "-bb",
+                    "Debug",
+                    "-t",
+                    "NUCLEO",
+                    "-eth",
+                    "ON"
+                ],
+            },
             "problemMatcher": [
                 "$gcc"
             ],
@@ -43,15 +55,19 @@
         {
             "type": "shell",
             "label": "Build RELEASE -- ETH ON -- NUCLEO",
-            "command": "tools/build.py",
-            "args": [
-                "-bb",
-                "Release",
-                "-t",
-                "NUCLEO",
-                "-eth",
-                "ON"
-            ],
+            "windows":{
+                "command": "tools/release_nucleo_eth.bat"
+            },
+            "linux":{
+                "command": "tools/build.py",
+                "args": [
+                    "-bb",
+                    "Release",
+                    "-t",
+                    "NUCLEO",
+                    "-eth",
+                    "ON"
+                ],},
             "problemMatcher": [
                 "$gcc"
             ],
@@ -63,6 +79,10 @@
         {
             "type": "shell",
             "label": "Build RELEASE -- ETH OFF -- NUCLEO",
+            "windows":{
+                "command": "tools/release_nucleo_NO_eth.bat"
+            },
+            "linux":{
             "command": "tools/build.py",
             "args": [
                 "-bb",
@@ -71,7 +91,7 @@
                 "NUCLEO",
                 "-eth",
                 "OFF"
-            ],
+            ],},
             "problemMatcher": [
                 "$gcc"
             ],
