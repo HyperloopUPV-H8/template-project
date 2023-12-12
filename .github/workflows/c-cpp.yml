@@ -14,7 +14,7 @@ jobs:
        with:
           repository: HyperloopUPV-H8/ST-LIB 
           ref: development
-     - uses: carlosperate/arm-none-eabi-gcc-action@v1.1.1
+     - uses: carlosperate/arm-none-eabi-gcc-action@f1f804cf56e9406183d434ef964cc6954dd1a973
      - run: arm-none-eabi-gcc --version
      - name: Install dependencies
        run: pip install GitPython colorama
