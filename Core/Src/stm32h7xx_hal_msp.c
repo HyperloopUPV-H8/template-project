@@ -548,66 +548,68 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* hfdcan)
 */
 void HAL_FMAC_MspInit(FMAC_HandleTypeDef* hfmac)
 {
-  if(hfmac->Instance==FMAC)
-  {
-		/* Peripheral clock enable */
-		__HAL_RCC_FMAC_CLK_ENABLE();
-	/* USER CODE BEGIN FMAC_MspInit 1 */
-		/* Preload channel initialisation */
-		hdma_fmac_preload.Instance = DMA2_Stream0;
-		hdma_fmac_preload.Init.Request = DMA_REQUEST_MEM2MEM;
-		hdma_fmac_preload.Init.Direction = DMA_MEMORY_TO_MEMORY;
-		hdma_fmac_preload.Init.PeriphInc = DMA_PINC_ENABLE;
-		hdma_fmac_preload.Init.MemInc = DMA_MINC_DISABLE;
-		hdma_fmac_preload.Init.PeriphDataAlignment =
-		DMA_PDATAALIGN_HALFWORD;
-		hdma_fmac_preload.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
-		hdma_fmac_preload.Init.Mode = DMA_NORMAL;
-		hdma_fmac_preload.Init.Priority = DMA_PRIORITY_HIGH;
-		if (HAL_DMA_Init(&hdma_fmac_preload) != HAL_OK){
-			Error_Handler();
-		}
-		/* Connect the DMA channel to the FMAC handle */
-		__HAL_LINKDMA(hfmac,hdmaPreload,hdma_fmac_preload);
+	  if(hfmac->Instance==FMAC)
+	  {
+		    __HAL_RCC_FMAC_CLK_ENABLE();
 
+		    /* FMAC DMA Init */
+		    /* FMAC_PRELOAD Init */
+		    hdma_fmac_preload.Instance = DMA2_Stream0;
+		    hdma_fmac_preload.Init.Request = DMA_REQUEST_MEM2MEM;
+		    hdma_fmac_preload.Init.Direction = DMA_MEMORY_TO_MEMORY;
+		    hdma_fmac_preload.Init.PeriphInc = DMA_PINC_ENABLE;
+		    hdma_fmac_preload.Init.MemInc = DMA_MINC_DISABLE;
+		    hdma_fmac_preload.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
+		    hdma_fmac_preload.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
+		    hdma_fmac_preload.Init.Mode = DMA_NORMAL;
+		    hdma_fmac_preload.Init.Priority = DMA_PRIORITY_HIGH;
+		    if (HAL_DMA_Init(&hdma_fmac_preload) != HAL_OK)
+		    {
+		      Error_Handler();
+		    }
 
-		/* Write channel initialisation */
-		hdma_fmac_write.Instance = DMA2_Stream1;
-		hdma_fmac_write.Init.Request = DMA_REQUEST_FMAC_WRITE;
-		hdma_fmac_write.Init.Direction = DMA_MEMORY_TO_PERIPH;
-		hdma_fmac_write.Init.PeriphInc = DMA_PINC_DISABLE;
-		hdma_fmac_write.Init.MemInc = DMA_MINC_ENABLE;
-		hdma_fmac_write.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
-		hdma_fmac_write.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
-		hdma_fmac_write.Init.Mode = DMA_NORMAL;
-		hdma_fmac_write.Init.Priority = DMA_PRIORITY_HIGH;
-		if (HAL_DMA_Init(&hdma_fmac_write) != HAL_OK){
-			Error_Handler();
-		}
-		/* Connect the DMA channel to the FMAC handle */
-		__HAL_LINKDMA(hfmac,hdmaIn,hdma_fmac_write);
+		    __HAL_LINKDMA(hfmac,hdmaPreload,hdma_fmac_preload);
 
+		    /* FMAC_WRITE Init */
+		    hdma_fmac_write.Instance = DMA2_Stream1;
+		    hdma_fmac_write.Init.Request = DMA_REQUEST_FMAC_WRITE;
+		    hdma_fmac_write.Init.Direction = DMA_MEMORY_TO_PERIPH;
+		    hdma_fmac_write.Init.PeriphInc = DMA_PINC_DISABLE;
+		    hdma_fmac_write.Init.MemInc = DMA_MINC_ENABLE;
+		    hdma_fmac_write.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
+		    hdma_fmac_write.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
+		    hdma_fmac_write.Init.Mode = DMA_NORMAL;
+		    hdma_fmac_write.Init.Priority = DMA_PRIORITY_HIGH;
+		    if (HAL_DMA_Init(&hdma_fmac_write) != HAL_OK)
+		    {
+		      Error_Handler();
+		    }
 
-		/* Read channel initialisation */
-		hdma_fmac_read.Instance = DMA2_Stream2;
-		hdma_fmac_read.Init.Request = DMA_REQUEST_FMAC_READ;
-		hdma_fmac_read.Init.Direction = DMA_PERIPH_TO_MEMORY;
-		hdma_fmac_read.Init.PeriphInc = DMA_PINC_DISABLE;
-		hdma_fmac_read.Init.MemInc = DMA_MINC_ENABLE;
-		hdma_fmac_read.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
-		hdma_fmac_read.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
-		hdma_fmac_read.Init.Mode = DMA_NORMAL;
-		hdma_fmac_read.Init.Priority = DMA_PRIORITY_HIGH;
-		if (HAL_DMA_Init(&hdma_fmac_read) != HAL_OK){
-			Error_Handler();
-		}
-		/* Connect the DMA channel to the FMAC handle */
-		__HAL_LINKDMA(hfmac,hdmaOut,hdma_fmac_read);
+		    __HAL_LINKDMA(hfmac,hdmaIn,hdma_fmac_write);
+
+		    /* FMAC interrupt Init */
+
+	    /* FMAC DMA Init */
+	    /* FMAC_READ Init */
+	    hdma_fmac_read.Instance = DMA2_Stream2;
+	    hdma_fmac_read.Init.Request = DMA_REQUEST_FMAC_READ;
+	    hdma_fmac_read.Init.Direction = DMA_PERIPH_TO_MEMORY;
+	    hdma_fmac_read.Init.PeriphInc = DMA_PINC_DISABLE;
+	    hdma_fmac_read.Init.MemInc = DMA_MINC_ENABLE;
+	    hdma_fmac_read.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
+	    hdma_fmac_read.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
+	    hdma_fmac_read.Init.Mode = DMA_NORMAL;
+	    hdma_fmac_read.Init.Priority = DMA_PRIORITY_HIGH;
+	    if (HAL_DMA_Init(&hdma_fmac_read) != HAL_OK)
+	    {
+	      Error_Handler();
+	    }
+
+	    __HAL_LINKDMA(hfmac,hdmaOut,hdma_fmac_read);
 
 	    HAL_NVIC_SetPriority(FMAC_IRQn, 0, 0);
-	    HAL_NVIC_EnableIRQ(FMAC_IRQn);
-  /* USER CODE END FMAC_MspInit 1 */
-  }
+		    HAL_NVIC_EnableIRQ(FMAC_IRQn);
+	  }
 
 }
 
