@@ -11,10 +11,3 @@ template-project
 template-project.bin
 template-project.hex
 template-project.map
-
-#vscode 
-.vscode
-.cproject
-.cache
-CMakeLists.txt
-template-project.code-workspace
