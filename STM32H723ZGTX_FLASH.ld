@@ -177,7 +177,12 @@ SECTIONS
     *(.TxDecripSection)
     
   } >RAM_D2
-
+ .stlib_no_cache_ram_pool :
+  {
+  	. = ABSOLUTE(0x38000000);
+  	_no_cached_ram_start = .;
+  	
+  } >RAM_D3
   /* Remove information from the standard libraries */
   /DISCARD/ :
   {

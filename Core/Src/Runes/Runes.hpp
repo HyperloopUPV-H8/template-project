@@ -213,9 +213,7 @@ map<Pin, InputCapture::Instance> InputCapture::available_instances = {
  ***********************************************/
 #if defined(HAL_ADC_MODULE_ENABLED) && defined(HAL_LPTIM_MODULE_ENABLED)
 
-uint16_t adc_buf1[ADC_BUF_LEN];
-uint16_t adc_buf2[ADC_BUF_LEN];
-uint16_t adc_buf3[ADC_BUF_LEN];
+MPUManager::config MPUManager::MPUConfig = {};
 
 LowPowerTimer lptim1(*LPTIM1, hlptim1, LPTIM1_PERIOD, "LPTIM 1");
 LowPowerTimer lptim2(*LPTIM2, hlptim2, LPTIM2_PERIOD, "LPTIM 2");
@@ -230,9 +228,9 @@ ADC::InitData init_data2(ADC2, ADC_RESOLUTION_16B, ADC_EXTERNALTRIG_LPTIM2_OUT, 
 ADC::InitData init_data3(ADC3, ADC_RESOLUTION_12B, ADC_EXTERNALTRIG_LPTIM3_OUT, channels3, DMA::Stream::DMA1Stream2, "ADC 3");
 
 ADC::Peripheral ADC::peripherals[3] = {
-		ADC::Peripheral(&hadc1, adc_buf1, lptim1, init_data1),
-		ADC::Peripheral(&hadc2, adc_buf2, lptim2, init_data2),
-		ADC::Peripheral(&hadc3, adc_buf3, lptim3, init_data3)
+		ADC::Peripheral(&hadc1, lptim1, init_data1),
+		ADC::Peripheral(&hadc2, lptim2, init_data2),
+		ADC::Peripheral(&hadc3, lptim3, init_data3)
 };
 
 map<Pin, ADC::Instance> ADC::available_instances = {
