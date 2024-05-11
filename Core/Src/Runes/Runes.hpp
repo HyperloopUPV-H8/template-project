@@ -40,6 +40,14 @@ FMAC_HandleTypeDef hfmac;
 
 
 /************************************************
+ *             	 		MPU
+ ***********************************************/
+
+MPUManager::config MPUManager::MPUConfig = {};
+
+
+
+/************************************************
  *              Communication-FDCAN
  ***********************************************/
 
@@ -69,12 +77,12 @@ unordered_map<FDCAN_HandleTypeDef*, FDCAN::Instance*> FDCAN::handle_to_fdcan = {
  ***********************************************/
 #ifdef HAL_SPI_MODULE_ENABLED
 
-SPI::Instance SPI::instance3 = { .SCK = &PC10, .MOSI = &PC12, .MISO = &PC11, .SS = &PD0,
+SPI::Instance SPI::instance3 = { .SCK = &PC10, .MOSI = &PC12, .MISO = &PC11, .SS = &PD3,
                                  .hspi = &hspi3, .instance = SPI3,
 								 .hdma_tx = DMA::Stream::DMA1Stream5,
 								 .hdma_rx = DMA::Stream::DMA1Stream6,
 								 .baud_rate_prescaler = SPI_BAUDRATEPRESCALER_256,
-								 .mode = SPI_MODE_SLAVE,
+								 .mode = SPI_MODE_MASTER,
 								 .use_DMA = false
                                };
 
@@ -212,8 +220,6 @@ map<Pin, InputCapture::Instance> InputCapture::available_instances = {
  *					   ADC
  ***********************************************/
 #if defined(HAL_ADC_MODULE_ENABLED) && defined(HAL_LPTIM_MODULE_ENABLED)
-
-MPUManager::config MPUManager::MPUConfig = {};
 
 LowPowerTimer lptim1(*LPTIM1, hlptim1, LPTIM1_PERIOD, "LPTIM 1");
 LowPowerTimer lptim2(*LPTIM2, hlptim2, LPTIM2_PERIOD, "LPTIM 2");
