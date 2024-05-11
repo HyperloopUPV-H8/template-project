@@ -26,7 +26,7 @@
 #include "lwip/sio.h"
 #endif /* MDK ARM Compiler */
 #include "ethernetif.h"
-
+#include "HALAL/Services/Communication/Ethernet/EthernetHelper.hpp"
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
@@ -186,6 +186,7 @@ static void ethernet_link_status_updated(struct netif *netif)
   else /* netif is down */
   {
 /* USER CODE BEGIN 6 */
+  ETH_is_cable_connected = false;
 /* USER CODE END 6 */
   }
 }
