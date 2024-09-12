@@ -1,13 +1,20 @@
+# Build
 Debug
 Release
 .settings
+build
 
+# CMake
 .cache
 CMakeFiles
 CMakeCache.txt
 Makefile
 
+# Misc
 template-project
 template-project.bin
 template-project.hex
 template-project.map
+
+# IDE
+compile_commands.json
