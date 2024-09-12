@@ -195,7 +195,7 @@ def main():
 
     shutil.rmtree(os.path.join(project_path, ".git"))
     new_project = Repo.init(project_path, mkdir=False)
-    new_project.index.add([os.path.join(project_path, "*")])
+    new_project.git.add(project_path, all=True)
     new_project.index.commit(f"Create {args.project_name} project")
 
     print(Fore.GREEN + f"Successfuly created {args.project_name} project")
