@@ -97,7 +97,7 @@ parser.add_argument(
 parser.add_argument(
     "-t",
     "--template",
-    default="https://github.com/HyperloopUPV-H8/template-project.git",
+    default="git@github.com:HyperloopUPV-H8/template-project.git",
     help="Original template project",
 )
 parser.add_argument(
