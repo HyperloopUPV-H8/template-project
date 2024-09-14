@@ -115,14 +115,12 @@ parser.add_argument(
     help="Name of the original template IOC file"
 )
 
-args = parser.parse_args()
-
-def main():
+def main(args: argparse.Namespace):
     project_path = os.path.join(args.output_dir, args.project_name)
     if (os.path.isdir(project_path) and len(os.listdir(project_path)) != 0):
         print(Fore.RED + f"Output path {project_path} already contains files")
         print(Fore.RESET, end="")
-        exit(1)
+        return 1
 
     # --------------
     # Clone template
@@ -140,7 +138,7 @@ def main():
         print()
         print(Fore.RED + f"Failed to clone: {clone_error}")
         print(Fore.RESET, end="")
-        exit(1)
+        return 1
 
     # -------------
     # Prepare files
@@ -187,7 +185,18 @@ def main():
     # Remove this script from output
     os.remove(os.path.join(project_path, "tools", "create-new-project.py"))
 
-    # TODO: check if something else needs to be changed
+    build_script_path = os.path.join(project_path, "tools", "build.py")
+    with open(build_script_path) as build_script:
+        template_build_script = build_script.read()
+    
+    project_build_script = re.sub(
+        r"PROJECT_NAME[ \t]*=[ \t]*\"template-project\"",
+        f"PROJECT_NAME = \"{args.project_name}\"",
+        template_build_script
+    )
+
+    with open(build_script_path, "w") as build_script:
+        build_script.write(project_build_script)
 
     # ---------------------------
     # Create new project git repo
@@ -201,7 +210,7 @@ def main():
     print(Fore.GREEN + f"Successfuly created {args.project_name} project")
     print(Fore.RESET, end="")
 
-    exit(0)
+    return 0
 
 if __name__ == "__main__":
-    main()
+    exit(main(parser.parse_args()))

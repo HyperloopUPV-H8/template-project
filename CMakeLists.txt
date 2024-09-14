@@ -28,11 +28,11 @@ endif()
 if(${RELEASE})
   set(OPTIMIZATION -O3)
   set(DEBUG_CONFIGURATION -g0)
-  set(STLIB_LIBRARY ${STLIB_DIR}/build/Release/lib)
+  set(STLIB_LIBRARY ${STLIB_DIR}/build/Release)
 else()
   set(OPTIMIZATION -O0)
   set(DEBUG_CONFIGURATION -g3)
-  set(STLIB_LIBRARY ${STLIB_DIR}/build/Debug/lib)
+  set(STLIB_LIBRARY ${STLIB_DIR}/build/Debug)
 endif()
 
 add_executable(${EXECUTABLE} 
@@ -67,14 +67,13 @@ target_compile_options(${EXECUTABLE} PUBLIC
   -ffunction-sections
   -fdata-sections
   -fno-exceptions
+  ## disable Warnings for C files, this is Driver code from ST
   $<$<COMPILE_LANGUAGE:C>:-w>
   $<$<COMPILE_LANGUAGE:CXX>:-fno-use-cxa-atexit>
   $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
   $<$<COMPILE_LANGUAGE:CXX>:-Wall>
   $<$<COMPILE_LANGUAGE:CXX>:-Wpedantic>
   $<$<COMPILE_LANGUAGE:CXX>:-Werror>
-
-  -Wall
   -specs=nosys.specs
 )
 
@@ -110,8 +109,6 @@ target_include_directories(${EXECUTABLE} PUBLIC
   ${STLIB_DIR}/Inc/ST-LIB_LOW
   ${STLIB_DIR}/Inc/ST-LIB_HIGH
 )
-
-
 
 target_link_options(${EXECUTABLE} PUBLIC 
         -T${CMAKE_SOURCE_DIR}/STM32H723ZGTX_FLASH.ld
