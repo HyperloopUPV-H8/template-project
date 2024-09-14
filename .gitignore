@@ -2,6 +2,9 @@
 # |        General        |
 # *-----------------------*
 
+# Python
+__pycache__/
+
 # Build
 Debug
 Release
