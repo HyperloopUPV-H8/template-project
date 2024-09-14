@@ -19,26 +19,20 @@ parser = argparse.ArgumentParser(
 parser.add_argument(
     '-bb',
     '--build_behaviour',
-    choices=['Release','Debug'],
+    choices=['Release', 'ReleaseDebug', 'Debug'],
     required=True
 )
 parser.add_argument(
     '-target',
     '--target',
-    choices=['NUCLEO','BOARD'],
+    choices=['NUCLEO', 'BOARD'],
     required=True
 )
 parser.add_argument(
     '-eth',
     '--ethernet_config',
-    choices=['ON','OFF'],
+    choices=['ON', 'OFF'],
     required=True
-)
-parser.add_argument(
-    '-f',
-    '--flash',
-    choices=['True','False'],
-    required=False
 )
 
 stlib_path = os.environ.get('STLIB_PATH')
@@ -99,7 +93,7 @@ def main(args: argparse.Namespace):
         "cmake",
         project_dir,
         "-B", output_dir,
-        f"-DRELEASE={'TRUE' if args.build_behaviour == "Release" else 'FALSE'}",
+        f"-DRELEASE={args.build_behaviour}",
         f"-DNUCLEO={'TRUE' if args.target == "NUCLEO" else 'FALSE'}",
         f"-DETHERNET={'TRUE' if args.ethernet_config == "ON" else 'FALSE'}",
         "-G", "Unix Makefiles"

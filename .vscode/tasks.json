@@ -5,7 +5,7 @@
       "id": "buildBehaviour",
       "description": "Build Behaviour",
       "type": "pickString",
-      "options": ["Debug", "Release"],
+      "options": ["Debug", "Release", "ReleaseDebug"],
       "default": "Debug"
     },
     {
