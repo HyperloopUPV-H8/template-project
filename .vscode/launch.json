@@ -33,7 +33,7 @@
       "executable": "build/latest.elf",
       "device": "STM32H723ZG",
       "configFiles": [".vscode/stlink.cfg", ".vscode/stm32h7x.cfg"],
-      "svdFile": ".vscode/STM32H723.svd",
+      "svdFile": "./STM32H723.svd",
       "swoConfig": {
         "enabled": true,
         "cpuFrequency": 8000000,
