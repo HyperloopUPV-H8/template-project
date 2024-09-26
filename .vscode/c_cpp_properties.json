@@ -1,0 +1,50 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${STLIB_PATH}/Inc",
+                "${STLIB_PATH}/Inc/HALAL/Models",
+                "${STLIB_PATH}/Inc/HALAL/Services",
+                "${STLIB_PATH}/Inc/ST-LIB_LOW",
+                "${STLIB_PATH}/Inc/ST-LIB_HIGH",
+                "${STLIB_PATH}/Drivers/STM32H7xx_HAL_Driver/Inc/",
+                "${STLIB_PATH}/Drivers/CMSIS/Device/ST/STM32H7xx/Include/",
+                "${workspaceFolder}/Drivers/CMSIS/Device/ST/STM32H7xx/Include",
+                "${workspaceFolder}/Drivers/CMSIS/Include",
+                "${workspaceFolder}/Drivers/STM32H7xx_HAL_Driver/Inc",
+                "${workspaceFolder}/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy",
+                "${workspaceFolder}/Middlewares/Third_Party/LwIP/src/include",
+                "${workspaceFolder}/Middlewares/Third_Party/LwIP/system",
+                "${workspaceFolder}/Middlewares/Third_Party/LwIP/src/netif/ppp",
+                "${workspaceFolder}/Middlewares/Third_Party/LwIP/src/include/lwip",
+                "${workspaceFolder}/Middlewares/Third_Party/LwIP/src/include/lwip/apps",
+                "${workspaceFolder}/Middlewares/Third_Party/LwIP/src/include/lwip/priv",
+                "${workspaceFolder}/Middlewares/Third_Party/LwIP/src/include/lwip/prot",
+                "${workspaceFolder}/Middlewares/Third_Party/LwIP/src/include/netif",
+                "${workspaceFolder}/Middlewares/Third_Party/LwIP/src/include/compat",
+                "${workspaceFolder}/Middlewares/Third_Party/LwIP/src/include/compat/posix",
+                "${workspaceFolder}/Middlewares/Third_Party/LwIP/src/include/compat/posix/arpa",
+                "${workspaceFolder}/Middlewares/Third_Party/LwIP/src/include/compat/posix/net",
+                "${workspaceFolder}/Middlewares/Third_Party/LwIP/src/include/compat/posix/sys",
+                "${workspaceFolder}/Middlewares/Third_Party/LwIP/src/include/compat/stdc",
+                "${workspaceFolder}/Middlewares/Third_Party/LwIP/system/arch",
+                "${workspaceFolder}/Middlewares/Third_Party/",
+                "${workspaceFolder}/Drivers/BSP/Components",
+                "${workspaceFolder}/Drivers/BSP/Components/lan8742",
+                "${workspaceFolder}/LWIP/App",
+                "${workspaceFolder}/LWIP/Target",
+                "${workspaceFolder}/Core/Inc"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "c++20",
+            "intelliSenseMode": "linux-gcc-x64",
+            "configurationProvider": "ms-vscode.cmake-tools",
+            "compileCommands": "compile_commands.json"
+        }
+    ],
+    "version": 4
+}

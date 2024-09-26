@@ -26,9 +26,9 @@
 #include "lwip/sio.h"
 #endif /* MDK ARM Compiler */
 #include "ethernetif.h"
-
+#include "HALAL/Services/Communication/Ethernet/EthernetHelper.hpp"
 /* USER CODE BEGIN 0 */
-
+bool ETH_is_cable_connected = false;
 /* USER CODE END 0 */
 /* Private function prototypes -----------------------------------------------*/
 static void ethernet_link_status_updated(struct netif *netif);
@@ -62,8 +62,8 @@ void MX_LWIP_Init(void)
   /* IP addresses initialization */
   IP_ADDRESS[0] = 192;
   IP_ADDRESS[1] = 168;
-  IP_ADDRESS[2] = 1;
-  IP_ADDRESS[3] = 4;
+  IP_ADDRESS[2] = 0;
+  IP_ADDRESS[3] = 3;
   NETMASK_ADDRESS[0] = 255;
   NETMASK_ADDRESS[1] = 255;
   NETMASK_ADDRESS[2] = 0;
@@ -186,6 +186,7 @@ static void ethernet_link_status_updated(struct netif *netif)
   else /* netif is down */
   {
 /* USER CODE BEGIN 6 */
+  ETH_is_cable_connected = false;
 /* USER CODE END 6 */
   }
 }
