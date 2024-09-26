@@ -1,25 +1,53 @@
 cmake_minimum_required (VERSION 3.4)
+
+include(arm-none-eabi.cmake)
+
 project (template-project ASM C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(STLIB_DIR ${CMAKE_SOURCE_DIR}/../ST-LIB)
 set(EXECUTABLE ${PROJECT_NAME}.elf)
 
-add_subdirectory(${STLIB_DIR} ${STLIB_DIR}/build)
+file(GLOB_RECURSE SOURCE_C ${CMAKE_SOURCE_DIR}/Core/*.c ${CMAKE_SOURCE_DIR}/Drivers/*.c ${CMAKE_SOURCE_DIR}/Middlewares/*.c ${CMAKE_SOURCE_DIR}/LWIP/*.c) 
+file(GLOB_RECURSE SOURCE_CPP ${CMAKE_SOURCE_DIR}/Core/*.cpp ${CMAKE_SOURCE_DIR}/Drivers/*.cpp ${CMAKE_SOURCE_DIR}/Middlewares/*.cpp ${CMAKE_SOURCE_DIR}/LWIP/*.cpp) 
+file(GLOB_RECURSE SOURCE_H ${CMAKE_SOURCE_DIR}/Core/*.h ${CMAKE_SOURCE_DIR}/Drivers/*.h ${CMAKE_SOURCE_DIR}/Middlewares/*.h ${CMAKE_SOURCE_DIR}/LWIP/*.h) 
+file(GLOB_RECURSE SOURCE_HPP ${CMAKE_SOURCE_DIR}/Core/*.hpp ${CMAKE_SOURCE_DIR}/Drivers/*.hpp ${CMAKE_SOURCE_DIR}/Middlewares/*.hpp ${CMAKE_SOURCE_DIR}/LWIP/*.hpp) 
+
+set(STLIB_DIR "$ENV{STLIB_PATH}")
+
+if(${NUCLEO})
+  add_definitions(-DNUCLEO)
+  add_definitions(-DHSE_VALUE=8000000)
+else()
+  add_definitions(-DBOARD)
+  add_definitions(-DHSE_VALUE=25000000)
+endif()
+
+if(${RELEASE} STREQUAL "Release")
+  set(OPTIMIZATION -O3)
+  set(DEBUG_CONFIGURATION -g0)
+  set(STLIB_LIBRARY ${STLIB_DIR}/build/Release)
+elseif(${RELEASE} STREQUAL "ReleaseDebug")
+  set(OPTIMIZATION -O3)
+  set(DEBUG_CONFIGURATION -g3)
+  set(STLIB_LIBRARY ${STLIB_DIR}/build/ReleaseDebug)
+else()
+  set(OPTIMIZATION -O0)
+  set(DEBUG_CONFIGURATION -g3)
+  set(STLIB_LIBRARY ${STLIB_DIR}/build/Debug)
+endif()
+
 add_executable(${EXECUTABLE} 
-  ${CMAKE_SOURCE_DIR}/Core/Src/main.cpp 
-  ${CMAKE_SOURCE_DIR}/Core/Src/syscalls.c 
-  ${CMAKE_SOURCE_DIR}/Core/Src/stm32h7xx_hal_msp.c
-  ${CMAKE_SOURCE_DIR}/Core/Src/stm32h7xx_it.c
-  ${CMAKE_SOURCE_DIR}/Core/Src/sysmem.c
-  ${CMAKE_SOURCE_DIR}/Core/Src/system_stm32h7xx.c
-  ${CMAKE_SOURCE_DIR}/Core/Startup/startup_stm32h723zgtx.s
+  ${SOURCE_C}
+  ${SOURCE_CPP}
+  ${SOURCE_H}
+  ${SOURCE_HPP}
+  Core/Startup/startup_stm32h723zgtx.s
   )
 
-target_link_libraries(${EXECUTABLE} ${STLIB_DIR}/build/libst-lib.a)
+target_link_libraries(${EXECUTABLE} PUBLIC ${STLIB_LIBRARY}/libst-lib.a)
 
 target_compile_definitions(${EXECUTABLE} PUBLIC
   -DUSE_HAL_DRIVER
@@ -27,51 +55,58 @@ target_compile_definitions(${EXECUTABLE} PUBLIC
   -DDATA_IN_D2_SRAM
 )
 
+message("\n\nCMAKE:\n")
+message(STATUS "[Debug, Release, ReleaseDebug]: " ${RELEASE})
+message(STATUS "Optimization value: " ${OPTIMIZATION})
+message(STATUS "Debug configuration value: " ${DEBUG_CONFIGURATION})
+message(STATUS "[BOARD, NUCLEO] Config: NUCLEO: " ${NUCLEO})
+
+target_compile_options(${EXECUTABLE} PUBLIC
+  -mcpu=cortex-m7
+  -mfpu=fpv5-d16
+  -mfloat-abi=hard
+  -mthumb
+  ${OPTIMIZATION}
+  ${DEBUG_CONFIGURATION}
+  -ffunction-sections
+  -fdata-sections
+  -fno-exceptions
+  ## disable Warnings for C files, this is Driver code from ST
+  $<$<COMPILE_LANGUAGE:C>:-w>
+  $<$<COMPILE_LANGUAGE:CXX>:-fno-use-cxa-atexit>
+  $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
+  $<$<COMPILE_LANGUAGE:CXX>:-Wall>
+  $<$<COMPILE_LANGUAGE:CXX>:-Wpedantic>
+  $<$<COMPILE_LANGUAGE:CXX>:-Werror>
+  -specs=nosys.specs
+)
+
 target_include_directories(${EXECUTABLE} PUBLIC
-  ${CMAKE_SOURCE_DIR}/Core/Inc
-  ${CMAKE_SOURCE_DIR}/Drivers/STM32H7xx_HAL_Driver/Inc
-  ${CMAKE_SOURCE_DIR}/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy
-  ${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Device/ST/STM32H7xx/Include
-  ${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Include
-  ${CMAKE_SOURCE_DIR}/LWIP/App
-  ${CMAKE_SOURCE_DIR}/LWIP/Target 
-  ${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/LwIP/src/include
-  ${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/LwIP/system
-  ${CMAKE_SOURCE_DIR}/Drivers/BSP/components/lan8742
-  ${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/LwIP/src/include/netif/ppp
-  ${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/LwIP/src/include/lwip
-  ${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/LwIP/src/include/lwip/apps
-  ${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/LwIP/src/include/lwip/priv
-  ${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/LwIP/src/include/lwip/prot
-  ${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/LwIP/src/include/netif
-  ${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/posix
-  ${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/posix/arpa
-  ${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/posix/net
-  ${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/posix/sys
-  ${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/stdc
-  ${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/LwIP/system/arch
-  ${STLIB_DIR}/Drivers/CMSIS/Device/ST/STM32H7xx/Include
-  ${STLIB_DIR}/Drivers/CMSIS/Include
-  ${STLIB_DIR}/Drivers/STM32H7xx_HAL_Driver/Inc
-  ${STLIB_DIR}/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/system
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/netif/ppp
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/lwip
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/lwip/apps
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/lwip/priv
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/lwip/prot
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/netif
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/posix
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/posix/arpa
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/posix/net
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/posix/sys
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/stdc
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/system/arch
-  ${STLIB_DIR}/Drivers/BSP/Components
-  ${STLIB_DIR}/LWIP/App
-  ${STLIB_DIR}/LWIP/Target
+  Drivers/CMSIS/Device/ST/STM32H7xx/Include
+  Drivers/CMSIS/Include
+  Drivers/STM32H7xx_HAL_Driver/Inc
+  Drivers/STM32H7xx_HAL_Driver/Inc/Legacy
+  Middlewares/Third_Party/LwIP/src/include
+  Middlewares/Third_Party/LwIP/system
+  Middlewares/Third_Party/LwIP/src/netif/ppp
+  Middlewares/Third_Party/LwIP/src/include/lwip
+  Middlewares/Third_Party/LwIP/src/include/lwip/apps
+  Middlewares/Third_Party/LwIP/src/include/lwip/priv
+  Middlewares/Third_Party/LwIP/src/include/lwip/prot
+  Middlewares/Third_Party/LwIP/src/include/netif
+  Middlewares/Third_Party/LwIP/src/include/compat
+  Middlewares/Third_Party/LwIP/src/include/compat/posix
+  Middlewares/Third_Party/LwIP/src/include/compat/posix/arpa
+  Middlewares/Third_Party/LwIP/src/include/compat/posix/net
+  Middlewares/Third_Party/LwIP/src/include/compat/posix/sys
+  Middlewares/Third_Party/LwIP/src/include/compat/stdc
+  Middlewares/Third_Party/LwIP/system/arch
+  Middlewares/Third_Party/
+  Drivers/BSP/Components
+  Drivers/BSP/Components/lan8742
+  LWIP/App
+  LWIP/Target
+  Core/Inc
   ${STLIB_DIR}/Inc
   ${STLIB_DIR}/Inc/HALAL/Models
   ${STLIB_DIR}/Inc/HALAL/Services
@@ -79,24 +114,6 @@ target_include_directories(${EXECUTABLE} PUBLIC
   ${STLIB_DIR}/Inc/ST-LIB_HIGH
 )
 
-
-target_compile_options(${EXECUTABLE} PUBLIC
-  -mcpu=cortex-m7
-  -mfpu=fpv5-d16
-  -mfloat-abi=hard
-  -mthumb
-  
-  -O3
-  -ffunction-sections
-  -fdata-sections
-  -fno-exceptions
-  -fno-use-cxa-atexit
-  -fno-use-cxa-atexit
-
-  -Wall
-
-  --specs=nosys.specs
-)
 target_link_options(${EXECUTABLE} PUBLIC 
         -T${CMAKE_SOURCE_DIR}/STM32H723ZGTX_FLASH.ld
         -mcpu=cortex-m7
