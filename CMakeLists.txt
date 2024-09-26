@@ -15,7 +15,7 @@ file(GLOB_RECURSE SOURCE_CPP ${CMAKE_SOURCE_DIR}/Core/*.cpp ${CMAKE_SOURCE_DIR}/
 file(GLOB_RECURSE SOURCE_H ${CMAKE_SOURCE_DIR}/Core/*.h ${CMAKE_SOURCE_DIR}/Drivers/*.h ${CMAKE_SOURCE_DIR}/Middlewares/*.h ${CMAKE_SOURCE_DIR}/LWIP/*.h) 
 file(GLOB_RECURSE SOURCE_HPP ${CMAKE_SOURCE_DIR}/Core/*.hpp ${CMAKE_SOURCE_DIR}/Drivers/*.hpp ${CMAKE_SOURCE_DIR}/Middlewares/*.hpp ${CMAKE_SOURCE_DIR}/LWIP/*.hpp) 
 
-set(STLIB_DIR "/opt/ST-LIB")
+set(STLIB_DIR "$ENV{STLIB_PATH}")
 
 if(${NUCLEO})
   add_definitions(-DNUCLEO)
@@ -25,14 +25,18 @@ else()
   add_definitions(-DHSE_VALUE=25000000)
 endif()
 
-if(${RELEASE})
+if(${RELEASE} STREQUAL "Release")
   set(OPTIMIZATION -O3)
   set(DEBUG_CONFIGURATION -g0)
-  set(STLIB_LIBRARY ${STLIB_DIR}/build/Release/lib)
+  set(STLIB_LIBRARY ${STLIB_DIR}/build/Release)
+elseif(${RELEASE} STREQUAL "ReleaseDebug")
+  set(OPTIMIZATION -O3)
+  set(DEBUG_CONFIGURATION -g3)
+  set(STLIB_LIBRARY ${STLIB_DIR}/build/ReleaseDebug)
 else()
   set(OPTIMIZATION -O0)
   set(DEBUG_CONFIGURATION -g3)
-  set(STLIB_LIBRARY ${STLIB_DIR}/build/Debug/lib)
+  set(STLIB_LIBRARY ${STLIB_DIR}/build/Debug)
 endif()
 
 add_executable(${EXECUTABLE} 
@@ -52,7 +56,7 @@ target_compile_definitions(${EXECUTABLE} PUBLIC
 )
 
 message("\n\nCMAKE:\n")
-message(STATUS "[DEBUG, RELEASE]: RELEASE: " ${RELEASE})
+message(STATUS "[Debug, Release, ReleaseDebug]: " ${RELEASE})
 message(STATUS "Optimization value: " ${OPTIMIZATION})
 message(STATUS "Debug configuration value: " ${DEBUG_CONFIGURATION})
 message(STATUS "[BOARD, NUCLEO] Config: NUCLEO: " ${NUCLEO})
@@ -67,10 +71,13 @@ target_compile_options(${EXECUTABLE} PUBLIC
   -ffunction-sections
   -fdata-sections
   -fno-exceptions
+  ## disable Warnings for C files, this is Driver code from ST
+  $<$<COMPILE_LANGUAGE:C>:-w>
   $<$<COMPILE_LANGUAGE:CXX>:-fno-use-cxa-atexit>
   $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
-
-  -Wall
+  $<$<COMPILE_LANGUAGE:CXX>:-Wall>
+  $<$<COMPILE_LANGUAGE:CXX>:-Wpedantic>
+  $<$<COMPILE_LANGUAGE:CXX>:-Werror>
   -specs=nosys.specs
 )
 
@@ -106,8 +113,6 @@ target_include_directories(${EXECUTABLE} PUBLIC
   ${STLIB_DIR}/Inc/ST-LIB_LOW
   ${STLIB_DIR}/Inc/ST-LIB_HIGH
 )
-
-
 
 target_link_options(${EXECUTABLE} PUBLIC 
         -T${CMAKE_SOURCE_DIR}/STM32H723ZGTX_FLASH.ld

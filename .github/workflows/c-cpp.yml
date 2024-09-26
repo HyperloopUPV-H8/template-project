@@ -19,7 +19,9 @@ jobs:
      - name: Install dependencies
        run: pip install GitPython colorama
      - name: Set up ST-LIB
-       run: ls && cp -r ../* /opt/ && mv /opt/template-project /opt/ST-LIB
+       run: ls && cp -r ../* /opt/ && mv /opt/${{ github.event.repository.name }} /opt/ST-LIB
+     - name: Print repo data
+       run: echo ${{ github.event.repository.name }}
      - name: Display ST-LIB
        run: ls /opt/ST-LIB
      - uses: actions/checkout@v3 

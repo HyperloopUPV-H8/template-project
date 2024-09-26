@@ -1,28 +1,5 @@
 {
-    "files.exclude": {
-        "**/.cache": true,
-        "**/.cproject": true,
-        "**/.gitignore": true,
-        "**/.mxproject": true,
-        "**/.project": true,
-        "**/.settings": true,
-        "**/arm-none-eabi.cmake": false,
-        "**/build": true,
-        "**/cmake_install.cmake": true,
-        "**/CMakeFiles": true,
-        "**/CMakeLists.txt": false,
-        "**/compile_commands.json": true,
-        "**/Debug": true,
-        "**/Release":true,
-        "**/libst-lib.a": true,
-        "**/Makefile": true
-    },
-    "C_Cpp.default.cppStandard": "c++20",
-    "C_Cpp.default.cStandard": "c17",
-    "stm32-for-vscode.openOCDPath": "/usr/bin/openocd",
-    "files.associations": {
-        "bitset": "cpp",
-        "cstdlib": "cpp"
-    },
-    "cmake.configureOnOpen": true
+  "C_Cpp.default.cppStandard": "c++20",
+  "C_Cpp.default.cStandard": "c17",
+  "cmake.configureOnOpen": true
 }
