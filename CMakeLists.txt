@@ -8,7 +8,6 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-
 set(EXECUTABLE ${PROJECT_NAME}.elf)
 
 file(GLOB_RECURSE SOURCE_C ${CMAKE_SOURCE_DIR}/Core/*.c ${CMAKE_SOURCE_DIR}/Drivers/*.c ${CMAKE_SOURCE_DIR}/Middlewares/*.c ${CMAKE_SOURCE_DIR}/LWIP/*.c) 
@@ -16,8 +15,7 @@ file(GLOB_RECURSE SOURCE_CPP ${CMAKE_SOURCE_DIR}/Core/*.cpp ${CMAKE_SOURCE_DIR}/
 file(GLOB_RECURSE SOURCE_H ${CMAKE_SOURCE_DIR}/Core/*.h ${CMAKE_SOURCE_DIR}/Drivers/*.h ${CMAKE_SOURCE_DIR}/Middlewares/*.h ${CMAKE_SOURCE_DIR}/LWIP/*.h) 
 file(GLOB_RECURSE SOURCE_HPP ${CMAKE_SOURCE_DIR}/Core/*.hpp ${CMAKE_SOURCE_DIR}/Drivers/*.hpp ${CMAKE_SOURCE_DIR}/Middlewares/*.hpp ${CMAKE_SOURCE_DIR}/LWIP/*.hpp) 
 
-set(STLIB_DIR /opt/ST-LIB)
-
+set(STLIB_DIR "$ENV{STLIB_PATH}")
 
 if(${NUCLEO})
   add_definitions(-DNUCLEO)
@@ -27,17 +25,19 @@ else()
   add_definitions(-DHSE_VALUE=25000000)
 endif()
 
-if(${RELEASE})
+if(${RELEASE} STREQUAL "Release")
   set(OPTIMIZATION -O3)
   set(DEBUG_CONFIGURATION -g0)
   set(STLIB_LIBRARY ${STLIB_DIR}/build/Release)
+elseif(${RELEASE} STREQUAL "ReleaseDebug")
+  set(OPTIMIZATION -O3)
+  set(DEBUG_CONFIGURATION -g3)
+  set(STLIB_LIBRARY ${STLIB_DIR}/build/ReleaseDebug)
 else()
-  set(OPTIMIZATION -Og)
+  set(OPTIMIZATION -O0)
   set(DEBUG_CONFIGURATION -g3)
   set(STLIB_LIBRARY ${STLIB_DIR}/build/Debug)
 endif()
-
-
 
 add_executable(${EXECUTABLE} 
   ${SOURCE_C}
@@ -55,14 +55,8 @@ target_compile_definitions(${EXECUTABLE} PUBLIC
   -DDATA_IN_D2_SRAM
 )
 
-
-
-
-
-
-#default to debug
 message("\n\nCMAKE:\n")
-message(STATUS "[DEBUG, RELEASE]: RELEASE: " ${RELEASE})
+message(STATUS "[Debug, Release, ReleaseDebug]: " ${RELEASE})
 message(STATUS "Optimization value: " ${OPTIMIZATION})
 message(STATUS "Debug configuration value: " ${DEBUG_CONFIGURATION})
 message(STATUS "[BOARD, NUCLEO] Config: NUCLEO: " ${NUCLEO})
@@ -77,11 +71,14 @@ target_compile_options(${EXECUTABLE} PUBLIC
   -ffunction-sections
   -fdata-sections
   -fno-exceptions
+  ## disable Warnings for C files, this is Driver code from ST
+  $<$<COMPILE_LANGUAGE:C>:-w>
   $<$<COMPILE_LANGUAGE:CXX>:-fno-use-cxa-atexit>
   $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
-
-  -Wall
-  -specs=/usr/lib/arm-none-eabi/lib/nosys.specs
+  $<$<COMPILE_LANGUAGE:CXX>:-Wall>
+  $<$<COMPILE_LANGUAGE:CXX>:-Wpedantic>
+  $<$<COMPILE_LANGUAGE:CXX>:-Werror>
+  -specs=nosys.specs
 )
 
 target_include_directories(${EXECUTABLE} PUBLIC
@@ -104,6 +101,7 @@ target_include_directories(${EXECUTABLE} PUBLIC
   Middlewares/Third_Party/LwIP/src/include/compat/posix/sys
   Middlewares/Third_Party/LwIP/src/include/compat/stdc
   Middlewares/Third_Party/LwIP/system/arch
+  Middlewares/Third_Party/
   Drivers/BSP/Components
   Drivers/BSP/Components/lan8742
   LWIP/App
@@ -115,8 +113,6 @@ target_include_directories(${EXECUTABLE} PUBLIC
   ${STLIB_DIR}/Inc/ST-LIB_LOW
   ${STLIB_DIR}/Inc/ST-LIB_HIGH
 )
-
-
 
 target_link_options(${EXECUTABLE} PUBLIC 
         -T${CMAKE_SOURCE_DIR}/STM32H723ZGTX_FLASH.ld
