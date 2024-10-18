@@ -9,6 +9,8 @@ on:
 jobs:
   build_template_project:
     runs-on: ubuntu-latest
+    env:
+      STLIB_PATH: "/opt/ST-LIB"
     steps:
      - uses: actions/checkout@v3 
        with:
