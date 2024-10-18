@@ -78,6 +78,7 @@ extern TIM_HandleTypeDef htim7;
 extern TIM_HandleTypeDef htim8;
 extern TIM_HandleTypeDef htim23;
 extern TIM_HandleTypeDef htim24;
+extern FDCAN_HandleTypeDef hfdcan1;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -219,6 +220,38 @@ void SysTick_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32h7xx.s).                    */
 /******************************************************************************/
+
+/** 
+ * @brief This function handles FDCAN 1 Line 0 interrupt
+ */
+void FDCAN1_IT0_IRQHandler(void)
+{
+    HAL_FDCAN_IRQHandler(&hfdcan1);
+}
+
+/** 
+ * @brief This function handles FDCAN 1 Line 1 interrupt
+ */
+void FDCAN1_IT1_IRQHandler(void)
+{
+    HAL_FDCAN_IRQHandler(&hfdcan1);
+}
+
+/** 
+ * @brief This function handles FDCAN 3 Line 0 interrupt
+ */
+void FDCAN3_IT0_IRQHandler(void)
+{
+    HAL_FDCAN_IRQHandler(&hfdcan1);
+}
+
+/** 
+ * @brief This function handles FDCAN 3 Line 1 interrupt
+ */
+void FDCAN3_IT1_IRQHandler(void)
+{
+    HAL_FDCAN_IRQHandler(&hfdcan1);
+}
 
 /**
   * @brief This function handles EXTI line0 interrupt.

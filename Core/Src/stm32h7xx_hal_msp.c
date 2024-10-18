@@ -454,7 +454,10 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan)
     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /* USER CODE BEGIN FDCAN1_MspInit 1 */
-
+    HAL_NVIC_SetPriority(FDCAN1_IT0_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(FDCAN1_IT1_IRQn, 0, 0);
+	  HAL_NVIC_EnableIRQ(FDCAN1_IT0_IRQn);
+	  HAL_NVIC_EnableIRQ(FDCAN1_IT1_IRQn);
   /* USER CODE END FDCAN1_MspInit 1 */
   }
   else if(hfdcan->Instance==FDCAN3)
@@ -481,7 +484,10 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan)
     HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
   /* USER CODE BEGIN FDCAN3_MspInit 1 */
-
+    HAL_NVIC_SetPriority(FDCAN3_IT0_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(FDCAN3_IT1_IRQn, 0, 0);
+	  HAL_NVIC_EnableIRQ(FDCAN3_IT0_IRQn);
+	  HAL_NVIC_EnableIRQ(FDCAN3_IT1_IRQn);
   /* USER CODE END FDCAN3_MspInit 1 */
   }
 
@@ -513,7 +519,8 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* hfdcan)
     HAL_GPIO_DeInit(GPIOD, GPIO_PIN_0|GPIO_PIN_1);
 
   /* USER CODE BEGIN FDCAN1_MspDeInit 1 */
-
+	  HAL_NVIC_DisableIRQ(FDCAN1_IT0_IRQn);
+	  HAL_NVIC_DisableIRQ(FDCAN1_IT1_IRQn);
   /* USER CODE END FDCAN1_MspDeInit 1 */
   }
   else if(hfdcan->Instance==FDCAN3)
@@ -534,7 +541,8 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* hfdcan)
     HAL_GPIO_DeInit(GPIOG, GPIO_PIN_9|GPIO_PIN_10);
 
   /* USER CODE BEGIN FDCAN3_MspDeInit 1 */
-
+	  HAL_NVIC_DisableIRQ(FDCAN3_IT0_IRQn);
+	  HAL_NVIC_DisableIRQ(FDCAN3_IT1_IRQn);
   /* USER CODE END FDCAN3_MspDeInit 1 */
   }
 
