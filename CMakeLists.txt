@@ -81,33 +81,35 @@ target_compile_options(${EXECUTABLE} PUBLIC
   -specs=nosys.specs
 )
 
+# REMEMBER TO CHANGE `.vscode/C_cpp_properties.json` TO MATCH THIS LIST
 target_include_directories(${EXECUTABLE} PUBLIC
-  Drivers/CMSIS/Device/ST/STM32H7xx/Include
-  Drivers/CMSIS/Include
-  Drivers/STM32H7xx_HAL_Driver/Inc
-  Drivers/STM32H7xx_HAL_Driver/Inc/Legacy
-  Middlewares/Third_Party/LwIP/src/include
-  Middlewares/Third_Party/LwIP/system
-  Middlewares/Third_Party/LwIP/src/netif/ppp
-  Middlewares/Third_Party/LwIP/src/include/lwip
-  Middlewares/Third_Party/LwIP/src/include/lwip/apps
-  Middlewares/Third_Party/LwIP/src/include/lwip/priv
-  Middlewares/Third_Party/LwIP/src/include/lwip/prot
-  Middlewares/Third_Party/LwIP/src/include/netif
-  Middlewares/Third_Party/LwIP/src/include/compat
-  Middlewares/Third_Party/LwIP/src/include/compat/posix
-  Middlewares/Third_Party/LwIP/src/include/compat/posix/arpa
-  Middlewares/Third_Party/LwIP/src/include/compat/posix/net
-  Middlewares/Third_Party/LwIP/src/include/compat/posix/sys
-  Middlewares/Third_Party/LwIP/src/include/compat/stdc
-  Middlewares/Third_Party/LwIP/system/arch
-  Middlewares/Third_Party/
-  Drivers/BSP/Components
-  Drivers/BSP/Components/lan8742
-  LWIP/App
-  LWIP/Target
   Core/Inc
+  ${STLIB_DIR}/Drivers/CMSIS/Device/ST/STM32H7xx/Include
+  ${STLIB_DIR}/Drivers/CMSIS/Include
+  ${STLIB_DIR}/Drivers/STM32H7xx_HAL_Driver/Inc
+  ${STLIB_DIR}/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy
+  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include
+  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/system
+  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/netif/ppp
+  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/lwip
+  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/lwip/apps
+  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/lwip/priv
+  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/lwip/prot
+  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/netif
+  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat
+  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/posix
+  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/posix/arpa
+  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/posix/net
+  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/posix/sys
+  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/stdc
+  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/system/arch
+  ${STLIB_DIR}/Drivers/BSP/Components
+  ${STLIB_DIR}/Drivers/BSP/Components/lan8742
+  ${STLIB_DIR}/LWIP/App
+  ${STLIB_DIR}/LWIP/Target
   ${STLIB_DIR}/Inc
+  ${STLIB_DIR}/Inc/HALAL
+  ${STLIB_DIR}/Inc/HALALMock
   ${STLIB_DIR}/Inc/HALAL/Models
   ${STLIB_DIR}/Inc/HALAL/Services
   ${STLIB_DIR}/Inc/ST-LIB_LOW
