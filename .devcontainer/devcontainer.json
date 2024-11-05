@@ -1,0 +1,12 @@
+{
+	"name" : "Dev Container for Template Project",
+	"build" : {
+		"dockerfile" : "Dockerfile"
+	},
+	"containerUser": "vscode",
+	"customizations" : {
+		"vscode" : {
+			"extensions" : ["ms-vscode.cpptools-extension-pack"]
+		}
+	}
+}
