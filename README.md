@@ -21,7 +21,7 @@ There are a few extra options, all with default values:
 * `--ioc`: Specify the name of the template `.ioc` file used for code generation
 
 ## Setup
-To use it you must install [Podman](https://podman.io) (you can try to use docker, but it hasn't been tested), and set dev containers extension to use Podman (you can see how [here](https://code.visualstudio.com/remote/advancedcontainers/docker-options#_podman)). 
+To use it you must install [Dev Containers Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) and [Podman](https://podman.io) (you can try to use docker, but it hasn't been tested), and set dev containers extension to use Podman (you can see how [here](https://code.visualstudio.com/remote/advancedcontainers/docker-options#_podman)). 
 Then, you must configure podman machine to increase memory (by default is 2GB) to 4 - 8 GB (the more the better). This step can be done through the GUI or using command line like this: 
 ```sh
 podman machine stop
