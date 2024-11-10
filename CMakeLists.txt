@@ -1,6 +1,12 @@
 cmake_minimum_required (VERSION 3.4)
 
-include(arm-none-eabi.cmake)
+if(${SIMULATE})
+  include(linux-64.cmake)
+  add_definitions(-DSIM_ON)
+else()
+  include(arm-none-eabi.cmake)
+endif()
+  
 
 project (template-project ASM C CXX)
 
@@ -36,7 +42,7 @@ elseif(${RELEASE} STREQUAL "ReleaseDebug")
 else()
   set(OPTIMIZATION -O0)
   set(DEBUG_CONFIGURATION -g3)
-  set(STLIB_LIBRARY ${STLIB_DIR}/build/Debug)
+  set(STLIB_LIBRARY ${STLIB_DIR}/build/Simulator/Debug/NUCLEO/NoEthernet) #This way by the moment just for compile
 endif()
 
 add_executable(${EXECUTABLE} 
@@ -44,7 +50,7 @@ add_executable(${EXECUTABLE}
   ${SOURCE_CPP}
   ${SOURCE_H}
   ${SOURCE_HPP}
-  Core/Startup/startup_stm32h723zgtx.s
+  $<$<STREQUAL:${SIMULATE},FALSE>:Core/Startup/startup_stm32h723zgtx.s>
   )
 
 target_link_libraries(${EXECUTABLE} PUBLIC ${STLIB_LIBRARY}/libst-lib.a)
@@ -62,10 +68,10 @@ message(STATUS "Debug configuration value: " ${DEBUG_CONFIGURATION})
 message(STATUS "[BOARD, NUCLEO] Config: NUCLEO: " ${NUCLEO})
 
 target_compile_options(${EXECUTABLE} PUBLIC
-  -mcpu=cortex-m7
-  -mfpu=fpv5-d16
-  -mfloat-abi=hard
-  -mthumb
+  $<$<STREQUAL:${SIMULATE},FALSE>:-mcpu=cortex-m7>
+  $<$<STREQUAL:${SIMULATE},FALSE>:-mfpu=fpv5-d16>
+  $<$<STREQUAL:${SIMULATE},FALSE>:-mfloat-abi=hard>
+  $<$<STREQUAL:${SIMULATE},FALSE>:-mthumb>
   ${OPTIMIZATION}
   ${DEBUG_CONFIGURATION}
   -ffunction-sections
@@ -78,35 +84,36 @@ target_compile_options(${EXECUTABLE} PUBLIC
   $<$<COMPILE_LANGUAGE:CXX>:-Wall>
   $<$<COMPILE_LANGUAGE:CXX>:-Wpedantic>
   $<$<COMPILE_LANGUAGE:CXX>:-Werror>
-  -specs=nosys.specs
+  -Wno-psabi
+  $<$<STREQUAL:${SIMULATE},FALSE>:-specs=nosys.specs>
 )
 
 # REMEMBER TO CHANGE `.vscode/C_cpp_properties.json` TO MATCH THIS LIST
 target_include_directories(${EXECUTABLE} PUBLIC
   Core/Inc
-  ${STLIB_DIR}/Drivers/CMSIS/Device/ST/STM32H7xx/Include
-  ${STLIB_DIR}/Drivers/CMSIS/Include
-  ${STLIB_DIR}/Drivers/STM32H7xx_HAL_Driver/Inc
-  ${STLIB_DIR}/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/system
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/netif/ppp
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/lwip
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/lwip/apps
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/lwip/priv
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/lwip/prot
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/netif
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/posix
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/posix/arpa
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/posix/net
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/posix/sys
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/stdc
-  ${STLIB_DIR}/Middlewares/Third_Party/LwIP/system/arch
-  ${STLIB_DIR}/Drivers/BSP/Components
-  ${STLIB_DIR}/Drivers/BSP/Components/lan8742
-  ${STLIB_DIR}/LWIP/App
-  ${STLIB_DIR}/LWIP/Target
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Drivers/CMSIS/Device/ST/STM32H7xx/Include>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Drivers/CMSIS/Include>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Drivers/STM32H7xx_HAL_Driver/Inc>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Middlewares/Third_Party/LwIP/system>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/netif/ppp>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/lwip>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/lwip/apps>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/lwip/priv>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/lwip/prot>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/netif>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/posix>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/posix/arpa>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/posix/net>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/posix/sys>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Middlewares/Third_Party/LwIP/src/include/compat/stdc>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Middlewares/Third_Party/LwIP/system/arch>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Drivers/BSP/Components>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/Drivers/BSP/Components/lan8742>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/LWIP/App>
+  $<$<STREQUAL:${SIMULATE},FALSE>:${STLIB_DIR}/LWIP/Target>
   ${STLIB_DIR}/Inc
   ${STLIB_DIR}/Inc/HALAL
   ${STLIB_DIR}/Inc/HALALMock
@@ -115,17 +122,18 @@ target_include_directories(${EXECUTABLE} PUBLIC
   ${STLIB_DIR}/Inc/ST-LIB_LOW
   ${STLIB_DIR}/Inc/ST-LIB_HIGH
 )
-
-target_link_options(${EXECUTABLE} PUBLIC 
-        -T${CMAKE_SOURCE_DIR}/STM32H723ZGTX_FLASH.ld
-        -mcpu=cortex-m7
-        -mthumb
-        -mfpu=fpv5-d16
-        -mfloat-abi=hard
-        -specs=nosys.specs
-        -lc
-        -lm
-        -lnosys
-        -Wl,-Map=${PROJECT_NAME}.map,--cref
-        -Wl,--gc-sections
-        )
+if(!${SIMULATE})
+  target_link_options(${EXECUTABLE} PUBLIC 
+          -T${CMAKE_SOURCE_DIR}/STM32H723ZGTX_FLASH.ld
+          -mcpu=cortex-m7
+          -mthumb
+          -mfpu=fpv5-d16
+          -mfloat-abi=hard
+          -specs=nosys.specs
+          -lc
+          -lm
+          -lnosys
+          -Wl,-Map=${PROJECT_NAME}.map,--cref
+          -Wl,--gc-sections
+          )
+endif()

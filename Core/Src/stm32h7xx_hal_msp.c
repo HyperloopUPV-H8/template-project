@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
+#ifndef SIM_ON
 #include "main.h"
 /* USER CODE BEGIN Includes */
 
@@ -1910,6 +1911,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
   }
 
 }
+#endif //SIM_ON
 
 /* USER CODE BEGIN 1 */
 

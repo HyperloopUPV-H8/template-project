@@ -18,6 +18,7 @@
  */
 /* USER CODE END Header */
 /* Define to prevent recursive inclusion -------------------------------------*/
+#ifndef SIM_ON
 #ifndef STM32H7xx_HAL_CONF_H
 #define STM32H7xx_HAL_CONF_H
 
@@ -565,3 +566,5 @@ void assert_failed(uint8_t *file, uint32_t line);
 #endif
 
 #endif /* STM32H7xx_HAL_CONF_H */
+
+#endif //SIM_ON

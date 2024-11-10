@@ -36,7 +36,9 @@
         "${STLIB_PATH}/Inc/ST-LIB_LOW",
         "${STLIB_PATH}/Inc/ST-LIB_HIGH"
       ],
-      "defines": [],
+      "defines": [
+        "SIM_ON"
+      ],
       "compileCommands": "build/compile_commands.json",
       "cStandard": "c17",
       "cppStandard": "c++20",

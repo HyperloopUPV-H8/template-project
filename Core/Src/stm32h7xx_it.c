@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
+#ifndef SIM_ON
 #include "main.h"
 #include "stm32h7xx_it.h"
 /* Private includes ----------------------------------------------------------*/
@@ -556,7 +557,7 @@ void TIM24_IRQHandler(void)
 
   /* USER CODE END TIM24_IRQn 1 */
 }
-
+#endif //SIM_ON
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */

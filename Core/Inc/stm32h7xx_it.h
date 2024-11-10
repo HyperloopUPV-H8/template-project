@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
+#ifndef SIM_ON
 #ifndef __STM32H7xx_IT_H
 #define __STM32H7xx_IT_H
 
@@ -89,3 +90,4 @@ void TIM24_IRQHandler(void);
 #endif
 
 #endif /* __STM32H7xx_IT_H */
+#endif //SIM_ON

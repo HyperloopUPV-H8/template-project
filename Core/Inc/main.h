@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
+#ifndef SIM_ON
 #ifndef __MAIN_H
 #define __MAIN_H
 
@@ -152,3 +153,4 @@ void Error_Handler(void);
 #endif
 
 #endif /* __MAIN_H */
+#endif

@@ -1,6 +1,6 @@
 #pragma once
 #include "Pins.hpp"
-
+#ifndef SIM_ON
 DMA_HandleTypeDef hdma_adc1;
 DMA_HandleTypeDef hdma_adc2;
 DMA_HandleTypeDef hdma_adc3;
@@ -315,3 +315,5 @@ MultiplierAccelerator::FMACInstance MultiplierAccelerator::Instance = {
     .dma_write = DMA::Stream::DMA2Stream2,
 };
 #endif
+
+#endif//SIM_ON

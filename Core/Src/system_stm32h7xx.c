@@ -44,6 +44,7 @@
   * @{
   */
 
+#ifndef SIM_ON
 #include "stm32h7xx.h"
 #include <math.h>
 
@@ -435,7 +436,7 @@ void SystemCoreClockUpdate (void)
   SystemCoreClock = common_system_clock;
 #endif /* DUAL_CORE && CORE_CM4 */
 }
-
+#endif //SIM_ON
 
 /**
   * @}
