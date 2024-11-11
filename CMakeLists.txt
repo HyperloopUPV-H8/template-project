@@ -24,6 +24,8 @@ add_executable(${EXECUTABLE}
 
 target_link_libraries(${EXECUTABLE} PUBLIC st-lib)
 
+set_target_properties(${EXECUTABLE} PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED C_STANDARD 11 C_STANDARD_REQUIRED)
+
 target_compile_definitions(${EXECUTABLE} PRIVATE
   $<$<BOOL:${CMAKE_CROSSCOMPILING}>:USE_HAL_DRIVER>
   $<$<BOOL:${CMAKE_CROSSCOMPILING}>:STM32H723xx>
@@ -102,11 +104,8 @@ target_link_options(${EXECUTABLE} PRIVATE
   $<$<BOOL:${CMAKE_CROSSCOMPILING}>:-lc>
   $<$<BOOL:${CMAKE_CROSSCOMPILING}>:-lm>                
   $<$<BOOL:${CMAKE_CROSSCOMPILING}>:-lnosys>
-  $<$<BOOL:${CMAKE_CROSSCOMPILING}>:-Wl>
-  $<$<BOOL:${CMAKE_CROSSCOMPILING}>:-Map=${PROJECT_NAME}.map>
-  $<$<BOOL:${CMAKE_CROSSCOMPILING}>:--cref>
-  $<$<BOOL:${CMAKE_CROSSCOMPILING}>:-Wl>
-  $<$<BOOL:${CMAKE_CROSSCOMPILING}>:--gc-sections>
+  $<$<BOOL:${CMAKE_CROSSCOMPILING}>:-Wl,-Map=${PROJECT_NAME}.map,--cref>
+  $<$<BOOL:${CMAKE_CROSSCOMPILING}>:-Wl,--gc-sections>
 )
 
 if (PROJECT_IS_TOP_LEVEL)
