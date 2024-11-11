@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.5)
+cmake_minimum_required (VERSION 3.14)
 
 project (template-project ASM C CXX)
 set(EXECUTABLE ${PROJECT_NAME}.elf)
@@ -6,6 +6,14 @@ set(STLIB_DIR "$ENV{STLIB_PATH}")
 
 option(USE_ETHERNET "Enable ethernet peripheral" OFF)
 option(TARGET_NUCLEO "Targets the STM32H723 Nucleo development board" OFF)
+
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  DOWNLOAD_EXTRACT_TIMESTAMP URL https://github.com/google/googletest/archive/b514bdc898e2951020cbdca1304b75f5950d1f59.zip
+)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
 
 add_subdirectory(${STLIB_DIR} out/stlib)
 
@@ -22,7 +30,10 @@ add_executable(${EXECUTABLE}
   ${CMAKE_SOURCE_DIR}/Core/Startup/startup_stm32h723zgtx.s
 )
 
-target_link_libraries(${EXECUTABLE} PUBLIC st-lib)
+target_link_libraries(${EXECUTABLE} PUBLIC 
+  st-lib
+  GTest::gtest_main
+)
 
 set_target_properties(${EXECUTABLE} PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED C_STANDARD 11 C_STANDARD_REQUIRED)
 
@@ -116,3 +127,6 @@ if (PROJECT_IS_TOP_LEVEL)
             ${CMAKE_CURRENT_SOURCE_DIR}/compile_commands.json
     )
 endif()
+
+include(GoogleTest)
+gtest_discover_tests(${EXECUTABLE})
