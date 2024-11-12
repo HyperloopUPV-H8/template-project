@@ -7,30 +7,59 @@ set(STLIB_DIR "$ENV{STLIB_PATH}")
 option(USE_ETHERNET "Enable ethernet peripheral" OFF)
 option(TARGET_NUCLEO "Targets the STM32H723 Nucleo development board" OFF)
 
-include(FetchContent)
-FetchContent_Declare(
-  googletest
-  DOWNLOAD_EXTRACT_TIMESTAMP URL https://github.com/google/googletest/archive/b514bdc898e2951020cbdca1304b75f5950d1f59.zip
-)
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
+if (PROJECT_IS_TOP_LEVEL)
+  include(FetchContent)
+  option(BUILD_GMOCK OFF)
+  option(INSTALL_GTEST OFF)
+  FetchContent_Declare(
+    googletest
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    GIT_TAG        v1.15.2
+  )
+  FetchContent_MakeAvailable(googletest)
+  add_library(GTest::GTest INTERFACE IMPORTED)
+  target_link_libraries(GTest::GTest INTERFACE gtest_main)
+endif()
 
-add_subdirectory(${STLIB_DIR} out/stlib)
+add_subdirectory(${STLIB_DIR} deps/stlib)
+
+list(APPEND HAL_HEADER 
+  ${CMAKE_SOURCE_DIR}/Core/Inc/main.h
+  ${CMAKE_SOURCE_DIR}/Core/Inc/stm32h7xx_hal_config.h
+  ${CMAKE_SOURCE_DIR}/Core/Inc/stm32h7xx_it.h
+)
+list(APPEND HAL_RUNES
+  ${CMAKE_SOURCE_DIR}/Core/Src/Runes/Pins.hpp
+  ${CMAKE_SOURCE_DIR}/Core/Src/Runes/Runes.hpp
+)
+list(APPEND HAL_SOURCE
+  ${CMAKE_SOURCE_DIR}/Core/Src/stm32h7xx_hal_msp.c
+  ${CMAKE_SOURCE_DIR}/Core/Src/stm32h7xx_it.c
+  ${CMAKE_SOURCE_DIR}/Core/Src/syscalls.c
+  ${CMAKE_SOURCE_DIR}/Core/Src/sysmem.c
+  ${CMAKE_SOURCE_DIR}/Core/Src/system_stm32h7xx.c
+)
 
 file(GLOB_RECURSE SOURCE_C ${CMAKE_SOURCE_DIR}/Core/*.c) 
+list(REMOVE_ITEM SOURCE_C HAL_SOURCE)
 file(GLOB_RECURSE SOURCE_CPP ${CMAKE_SOURCE_DIR}/Core/*.cpp) 
 file(GLOB_RECURSE SOURCE_H ${CMAKE_SOURCE_DIR}/Core/*.h) 
+list(REMOVE_ITEM SOURCE_H HAL_HEADER)
+list(REMOVE_ITEM SOURCE_H HAL_RUNES)
 file(GLOB_RECURSE SOURCE_HPP ${CMAKE_SOURCE_DIR}/Core/*.hpp) 
 
-add_executable(${EXECUTABLE} 
+add_executable(${EXECUTABLE}
+  $<$<BOOL:${CMAKE_CROSSCOMPILING}>:${CMAKE_SOURCE_DIR}/Core/Startup/startup_stm32h723zgtx.s>
+  $<$<BOOL:${CMAKE_CROSSCOMPILING}>:${HAL_HEADER}>
+  $<$<BOOL:${CMAKE_CROSSCOMPILING}>:${HAL_RUNES}>
+  $<$<BOOL:${CMAKE_CROSSCOMPILING}>:${HAL_SOURCE}>
   ${SOURCE_C}
   ${SOURCE_CPP}
   ${SOURCE_H}
   ${SOURCE_HPP}
-  ${CMAKE_SOURCE_DIR}/Core/Startup/startup_stm32h723zgtx.s
 )
 
-target_link_libraries(${EXECUTABLE} PUBLIC 
+target_link_libraries(${EXECUTABLE} PRIVATE 
   st-lib
   GTest::gtest_main
 )
@@ -97,10 +126,6 @@ target_include_directories(${EXECUTABLE} PRIVATE
   $<$<BOOL:${CMAKE_CROSSCOMPILING}>:${STLIB_DIR}/LWIP/App>
   $<$<BOOL:${CMAKE_CROSSCOMPILING}>:${STLIB_DIR}/LWIP/Target>
   ${STLIB_DIR}/Inc
-  ${STLIB_DIR}/Inc/HALAL
-  ${STLIB_DIR}/Inc/HALALMock
-  ${STLIB_DIR}/Inc/HALAL/Models
-  ${STLIB_DIR}/Inc/HALAL/Services
   ${STLIB_DIR}/Inc/ST-LIB_LOW
   ${STLIB_DIR}/Inc/ST-LIB_HIGH
 )
