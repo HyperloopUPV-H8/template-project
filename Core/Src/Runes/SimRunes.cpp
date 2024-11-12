@@ -1,20 +1,32 @@
 #include "Pins.hpp"
 #include "HALALMock/Services/Communication/SPI/SPI.hpp"
-#include "HALALMock/Services/InputCapture/InputCapture.hpp"
-#include "HALALMock/Services/ADC/ADC.hpp"
-#include "HALALMock/Services/EXTI/EXTI.hpp"
 
 /************************************************
  *              Communication-FDCAN
  ***********************************************/
 
-// WAIT. There are still HAL stuff
+// TODO IP and ports. Wait for Firmware meeting to clarify concepts
+
+FDCAN::Instance FDCAN::instance1 = {
+    .TX = PD1,
+    .RX = PD0,
+    .dlc = DLC::BYTES_64,
+    .rx_location = FDCAN_RX_FIFO0,
+    .fdcan_number = 1
+    //.socket
+};
+
+FDCAN::Peripheral FDCAN::fdcan1 = FDCAN::Peripheral::peripheral1;
+
+unordered_map<FDCAN::Peripheral, FDCAN::Instance*> FDCAN::available_fdcans = {
+    {FDCAN::fdcan1, &FDCAN::instance1}
+};
 
 /************************************************
  *              Communication-SPI
  ***********************************************/
 
-SPI::spi_ip = "192.168.1.10";
+std::string SPI::ip = "192.168.1.10";
 
 SPI::Instance SPI::instance3 = {
     .SCK = &PC10,
@@ -35,13 +47,8 @@ unordered_map<SPI::Peripheral, SPI::Instance*> SPI::available_spi = {
  *                 	  Encoder
  ***********************************************/
 
-// TODO
-
-/************************************************
- *                     PWM
- ***********************************************/
-
-// TODO
+map<pair<Pin, Pin>, TimerPeripheral*> Encoder::pin_timer_map = {
+    {{PC6, PC7}, nullptr}};
 
 /************************************************
  *                 Input Capture
