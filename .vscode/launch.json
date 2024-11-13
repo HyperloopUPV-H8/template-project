@@ -9,7 +9,7 @@
       "cwd": "${workspaceRoot}",
       "runToEntryPoint": "main",
       "showDevDebugOutput": "raw",
-      "executable": "build/latest.elf",
+      "executable": "out/build/latest.elf",
       "device": "STM32H723ZG",
       "configFiles": [".vscode/stlink.cfg", ".vscode/stm32h7x.cfg"],
       "svdFile": ".vscode/STM32H723.svd",
@@ -20,7 +20,7 @@
         "source": "probe",
         "decoders": [{ "type": "console", "label": "ITM", "port": 0 }]
       },
-      "preLaunchTask": "Build Project"
+      "preLaunchTask": "CMake: build"
     },
     {
       "type": "cortex-debug",
@@ -30,7 +30,7 @@
       "cwd": "${workspaceRoot}",
       "runToEntryPoint": "main",
       "showDevDebugOutput": "raw",
-      "executable": "build/latest.elf",
+      "executable": "out/build/latest.elf",
       "device": "STM32H723ZG",
       "configFiles": [".vscode/stlink.cfg", ".vscode/stm32h7x.cfg"],
       "svdFile": "./STM32H723.svd",

@@ -156,6 +156,14 @@ if (PROJECT_IS_TOP_LEVEL)
             ${CMAKE_BINARY_DIR}/compile_commands.json
             ${CMAKE_CURRENT_SOURCE_DIR}/compile_commands.json
     )
+    # Create symlink to executable for IDE to pick it up
+    add_custom_command(
+        TARGET ${EXECUTABLE}
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E create_symlink
+        ${CMAKE_BINARY_DIR}/${EXECUTABLE}
+        ${CMAKE_CURRENT_SOURCE_DIR}/out/build/latest.elf
+    )
 endif()
 
 include(GoogleTest)
