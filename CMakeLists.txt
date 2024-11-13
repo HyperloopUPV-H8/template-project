@@ -23,16 +23,15 @@ endif()
 
 add_subdirectory(${STLIB_DIR} deps/stlib)
 
-list(APPEND HAL_HEADER 
+set(HAL_HEADER 
   ${CMAKE_SOURCE_DIR}/Core/Inc/main.h
-  ${CMAKE_SOURCE_DIR}/Core/Inc/stm32h7xx_hal_config.h
+  ${CMAKE_SOURCE_DIR}/Core/Inc/stm32h7xx_hal_conf.h
   ${CMAKE_SOURCE_DIR}/Core/Inc/stm32h7xx_it.h
 )
-list(APPEND HAL_RUNES
-  ${CMAKE_SOURCE_DIR}/Core/Src/Runes/Pins.hpp
-  ${CMAKE_SOURCE_DIR}/Core/Src/Runes/Runes.hpp
+set(HAL_RUNES
+  ${CMAKE_SOURCE_DIR}/Core/Src/Runes/Runes.cpp
 )
-list(APPEND HAL_SOURCE
+set(HAL_SOURCE
   ${CMAKE_SOURCE_DIR}/Core/Src/stm32h7xx_hal_msp.c
   ${CMAKE_SOURCE_DIR}/Core/Src/stm32h7xx_it.c
   ${CMAKE_SOURCE_DIR}/Core/Src/syscalls.c
@@ -40,23 +39,29 @@ list(APPEND HAL_SOURCE
   ${CMAKE_SOURCE_DIR}/Core/Src/system_stm32h7xx.c
 )
 
+set(HALAL_MOCK_RUNES
+  ${CMAKE_SOURCE_DIR}/Core/Src/Runes/SimRunes.cpp
+)
+
 file(GLOB_RECURSE SOURCE_C ${CMAKE_SOURCE_DIR}/Core/*.c) 
-list(REMOVE_ITEM SOURCE_C HAL_SOURCE)
+list(REMOVE_ITEM SOURCE_C ${HAL_SOURCE})
 file(GLOB_RECURSE SOURCE_CPP ${CMAKE_SOURCE_DIR}/Core/*.cpp) 
+list(REMOVE_ITEM SOURCE_CPP ${HAL_RUNES})
+list(REMOVE_ITEM SOURCE_CPP ${HALAL_MOCK_RUNES})
 file(GLOB_RECURSE SOURCE_H ${CMAKE_SOURCE_DIR}/Core/*.h) 
-list(REMOVE_ITEM SOURCE_H HAL_HEADER)
-list(REMOVE_ITEM SOURCE_H HAL_RUNES)
+list(REMOVE_ITEM SOURCE_H ${HAL_HEADER})
 file(GLOB_RECURSE SOURCE_HPP ${CMAKE_SOURCE_DIR}/Core/*.hpp) 
 
 add_executable(${EXECUTABLE}
-  $<$<BOOL:${CMAKE_CROSSCOMPILING}>:${CMAKE_SOURCE_DIR}/Core/Startup/startup_stm32h723zgtx.s>
-  $<$<BOOL:${CMAKE_CROSSCOMPILING}>:${HAL_HEADER}>
-  $<$<BOOL:${CMAKE_CROSSCOMPILING}>:${HAL_RUNES}>
-  $<$<BOOL:${CMAKE_CROSSCOMPILING}>:${HAL_SOURCE}>
-  ${SOURCE_C}
-  ${SOURCE_CPP}
-  ${SOURCE_H}
-  ${SOURCE_HPP}
+$<$<BOOL:${CMAKE_CROSSCOMPILING}>:${HAL_HEADER}>
+${SOURCE_H}
+$<$<BOOL:${CMAKE_CROSSCOMPILING}>:${HAL_SOURCE}>
+${SOURCE_C}
+${SOURCE_HPP}
+$<$<BOOL:${CMAKE_CROSSCOMPILING}>:${CMAKE_SOURCE_DIR}/Core/Startup/startup_stm32h723zgtx.s>
+${CMAKE_SOURCE_DIR}/Core/Src/Runes/Pins.cpp
+$<IF:$<BOOL:${CMAKE_CROSSCOMPILING}>,${HAL_RUNES},${HALAL_MOCK_RUNES}>
+${SOURCE_CPP}
 )
 
 target_link_libraries(${EXECUTABLE} PRIVATE 
@@ -154,4 +159,4 @@ if (PROJECT_IS_TOP_LEVEL)
 endif()
 
 include(GoogleTest)
-gtest_discover_tests(${EXECUTABLE})
+gtest_discover_tests(${EXECUTABLE} DISCOVERY_MODE PRE_TEST)

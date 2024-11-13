@@ -5,9 +5,6 @@
 #endif
 
 #include "ST-LIB.hpp"
-#ifndef SIM_ON
-#include "Runes/Runes.hpp"
-#endif
 
 int main(void) {
     STLIB::start();
