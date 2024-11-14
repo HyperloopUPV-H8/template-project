@@ -1,10 +1,10 @@
 {
 	"name" : "Dev Container for Template Project",
 	"build" : {
-		"dockerfile" : "Dockerfile"
+		"dockerfile" : "Dockerfile",
+		"options": [ "--platform=linux/amd64" ]
 	},
-	"runArgs": ["--platform=linux/amd64" ],
-	"containerUser": "vscode",
+	"remoteUser": "root",
 	"customizations" : {
 		"vscode" : {
 			"extensions" : [
