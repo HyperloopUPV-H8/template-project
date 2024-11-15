@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.14)
 
 project (template-project ASM C CXX)
 set(EXECUTABLE ${PROJECT_NAME}.elf)
-set(STLIB_DIR "$ENV{STLIB_PATH}")
+set(STLIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/deps/ST-LIB)
 
 option(USE_ETHERNET "Enable ethernet peripheral" OFF)
 option(TARGET_NUCLEO "Targets the STM32H723 Nucleo development board" OFF)
@@ -21,7 +21,7 @@ if (PROJECT_IS_TOP_LEVEL)
   target_link_libraries(GTest::GTest INTERFACE gtest_main)
 endif()
 
-add_subdirectory(${STLIB_DIR} deps/stlib)
+add_subdirectory(${STLIB_DIR})
 
 set(HAL_HEADER 
   ${CMAKE_SOURCE_DIR}/Core/Inc/main.h
