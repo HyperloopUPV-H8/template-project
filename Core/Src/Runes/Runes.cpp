@@ -1,5 +1,4 @@
-#pragma once
-#include "Pins.hpp"
+#include "HALAL/HALAL.hpp"
 
 DMA_HandleTypeDef hdma_adc1;
 DMA_HandleTypeDef hdma_adc2;
