@@ -5,7 +5,7 @@
     },
     {
       "name": "ST-LIB",
-      "path": "/home/jmaralo/hyperloop-upv/H10/firmware/ST-LIB"
+      "path": "../ST-LIB"
     }
   ],
   "settings": {

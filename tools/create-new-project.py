@@ -165,18 +165,11 @@ def main(args: argparse.Namespace):
     with open(vscode_workspace_path) as vscode_workspace:
         template_vscode_workspace = vscode_workspace.read()
 
-    stlib_path = os.environ.get('STLIB_PATH')
-    if stlib_path:
-        project_vscode_workspace = re.sub(
-            r"\"name\"\s*:\s*\"ST-LIB\"\s*,\s*\"path\"\s*:\s*\".*\"",
-            f"\"name\": \"ST-LIB\",\n\t\t\"path\": \"{stlib_path}\"",
-            template_vscode_workspace
-        )
-    else:
-        project_vscode_workspace = template_vscode_workspace
-        print(Fore.YELLOW + "Couldn't find STLIB_PATH, VSCode code workspace needs to be manually configured")
-        print(Fore.RESET)
-
+    project_vscode_workspace = re.sub(
+        r"\"name\"\s*:\s*\"ST-LIB\"\s*,\s*\"path\"\s*:\s*\".*\"",
+        f"\"name\": \"ST-LIB\",\n\t\t\"path\": \"../ST-LIB\"",
+        template_vscode_workspace
+    )
 
     with open(os.path.join(project_path, f"{args.project_name}.code-workspace"), "w") as vscode_workspace:
         vscode_workspace.write(project_vscode_workspace)

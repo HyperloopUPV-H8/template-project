@@ -1,48 +1,12 @@
 {
   "configurations": [
-    {
-      "name": "Linux",
-      // REMEMBER TO CHANGE `CMakeLists.txt` TO MATCH THIS LIST
-      "includePath": [
-        "${workspaceFolder}/Core/Inc",
-        "${STLIB_PATH}/Drivers/CMSIS/Device/ST/STM32H7xx/Include",
-        "${STLIB_PATH}/Drivers/CMSIS/Include",
-        "${STLIB_PATH}/Drivers/STM32H7xx_HAL_Driver/Inc",
-        "${STLIB_PATH}/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy",
-        "${STLIB_PATH}/Middlewares/Third_Party/LwIP/src/include",
-        "${STLIB_PATH}/Middlewares/Third_Party/LwIP/system",
-        "${STLIB_PATH}/Middlewares/Third_Party/LwIP/src/netif/ppp",
-        "${STLIB_PATH}/Middlewares/Third_Party/LwIP/src/include/lwip",
-        "${STLIB_PATH}/Middlewares/Third_Party/LwIP/src/include/lwip/apps",
-        "${STLIB_PATH}/Middlewares/Third_Party/LwIP/src/include/lwip/priv",
-        "${STLIB_PATH}/Middlewares/Third_Party/LwIP/src/include/lwip/prot",
-        "${STLIB_PATH}/Middlewares/Third_Party/LwIP/src/include/netif",
-        "${STLIB_PATH}/Middlewares/Third_Party/LwIP/src/include/compat",
-        "${STLIB_PATH}/Middlewares/Third_Party/LwIP/src/include/compat/posix",
-        "${STLIB_PATH}/Middlewares/Third_Party/LwIP/src/include/compat/posix/arpa",
-        "${STLIB_PATH}/Middlewares/Third_Party/LwIP/src/include/compat/posix/net",
-        "${STLIB_PATH}/Middlewares/Third_Party/LwIP/src/include/compat/posix/sys",
-        "${STLIB_PATH}/Middlewares/Third_Party/LwIP/src/include/compat/stdc",
-        "${STLIB_PATH}/Middlewares/Third_Party/LwIP/system/arch",
-        "${STLIB_PATH}/Drivers/BSP/Components",
-        "${STLIB_PATH}/Drivers/BSP/Components/lan8742",
-        "${STLIB_PATH}/LWIP/App",
-        "${STLIB_PATH}/LWIP/Target",
-        "${STLIB_PATH}/Inc",
-        "${STLIB_PATH}/Inc/HALAL",
-        "${STLIB_PATH}/Inc/HALALMock",
-        "${STLIB_PATH}/Inc/HALAL/Models",
-        "${STLIB_PATH}/Inc/HALAL/Services",
-        "${STLIB_PATH}/Inc/ST-LIB_LOW",
-        "${STLIB_PATH}/Inc/ST-LIB_HIGH"
-      ],
-      "defines": [],
-      "compileCommands": "build/compile_commands.json",
-      "cStandard": "c17",
-      "cppStandard": "c++20",
-      "intelliSenseMode": "gcc-arm",
-      "configurationProvider": "ms-vscode.cmake-tools"
-    }
+      {
+          "name": "CMake",
+          "cStandard": "c17",
+          "cppStandard": "c++20",
+          "configurationProvider": "ms-vscode.cmake-tools",
+          "compileCommands": "compile_commands.json"
+        }
   ],
   "version": 4
 }
