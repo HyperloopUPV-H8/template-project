@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.14)
 
 project (template-project ASM C CXX)
 set(EXECUTABLE ${PROJECT_NAME}.elf)
-set(STLIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/deps/ST-LIB)
+set(STLIB_DIR ${CMAKE_CURRENT_LIST_DIR}/deps/ST-LIB)
 
 option(USE_ETHERNET "Enable ethernet peripheral" OFF)
 option(TARGET_NUCLEO "Targets the STM32H723 Nucleo development board" OFF)
@@ -165,6 +165,3 @@ if (PROJECT_IS_TOP_LEVEL)
         ${CMAKE_CURRENT_SOURCE_DIR}/out/build/latest.elf
     )
 endif()
-
-include(GoogleTest)
-gtest_discover_tests(${EXECUTABLE} DISCOVERY_MODE PRE_TEST)
