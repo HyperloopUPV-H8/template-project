@@ -7,7 +7,7 @@ set(STLIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/deps/ST-LIB)
 option(USE_ETHERNET "Enable ethernet peripheral" OFF)
 option(TARGET_NUCLEO "Targets the STM32H723 Nucleo development board" OFF)
 
-if (PROJECT_IS_TOP_LEVEL)
+if (PROJECT_IS_TOP_LEVEL AND (NOT CMAKE_CROSSCOMPILING))
   include(FetchContent)
   option(BUILD_GMOCK OFF)
   option(INSTALL_GTEST OFF)
@@ -66,7 +66,7 @@ ${SOURCE_CPP}
 
 target_link_libraries(${EXECUTABLE} PRIVATE 
   st-lib
-  GTest::gtest_main
+  $<$<NOT:$<BOOL:${CMAKE_CROSSCOMPILING}>>:GTest::gtest_main>
 )
 
 set_target_properties(${EXECUTABLE} PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED C_STANDARD 11 C_STANDARD_REQUIRED)
