@@ -22,6 +22,7 @@ class DataPackets {
     }
 };
 
+// Example of user code
 class OBCCU {
     DataPackets data;
     OBCCU() { data = DataPackets(soc1, cell1, cell2, cell3); }
