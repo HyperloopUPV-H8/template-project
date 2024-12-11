@@ -40,7 +40,27 @@
         "swoFrequency": 2000000,
         "source": "probe",
         "decoders": [{ "type": "console", "label": "ITM", "port": 0 }]
-      }
+      },
+      "stm32cubeprogrammer": "/opt/st/stm32cubeclt_1.16.0/STM32CubeProgrammer/bin"
+    },
+    {
+      "name": "Debug simulator on Rosetta",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "out/build/latest.elf",
+      "miDebuggerServerAddress": "localhost:1234",
+      "miDebuggerPath": "/usr/bin/gdb",
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Set architecture to x86-64",
+          "text": "set architecture i386:x86-64",
+          "ignoreFailures": false
+        }
+      ],
+      "preLaunchTask": "Start Debug Server for Simulator on emulated arch",
+      "cwd": "${workspaceFolder}",
+      "externalConsole": false
     }
   ]
 }
