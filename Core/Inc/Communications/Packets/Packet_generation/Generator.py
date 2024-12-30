@@ -1,11 +1,22 @@
 import json 
 import Packet_descriptions as Pd
+import os
 
 packet_name= "        StackPacket* %name%;\n"
 packet_struct = "   %name% = new StackPacket(%packet_data%);\n   packets[id] = %name%;\n   id++;"
 
+def Generate_PacketDescription():
+    with open("Core/Inc/Communications/Packets/Packet_generation/JSON_ADE/boards.json") as f:
+        boards = json.load(f)
 
-def GenerateEnum(board:Pd.BoardDescription):
+    for board in boards["boards"]:
+        with open("Core/Inc/Communications/Packets/Packet_generation/JSON_ADE/" + (boards["boards"][board])) as f:
+            b = json.load(f)
+        board_instance = Pd.BoardDescription(board, b)
+        globals()[board] = board_instance
+
+
+def GenerateDataEnum(board:Pd.BoardDescription):
     Enums = set()
     for packet in board.packets:
         if packet != "orders":
@@ -67,30 +78,27 @@ def GenerateDataPackets(board:Pd.BoardDescription,packet_struct:str):
     return packets_data
 
 def Generate_DataPackets_hpp(board_input:str):
-    with open("Core/Inc/Communications/Packets/Packet_generation/JSON_ADE/boards.json") as f:
-        boards = json.load(f)
-
-    for board in boards["boards"]:
-        with open("Core/Inc/Communications/Packets/Packet_generation/JSON_ADE/" + (boards["boards"][board])) as f:
-            b = json.load(f)
-        board_instance = Pd.BoardDescription(board, b)
-        globals()[board] = board_instance
-
     board_instance = globals()[board_input]
-  
-    with open("Core/Inc/Communications/Packets/Packet_generation/Template.hpp","r") as Input:
+
+    if board_instance.data_size == 0:
+        if os.path.exists("Core/Inc/Communications/Packets/DataPackets.hpp"):
+            os.remove("Core/Inc/Communications/Packets/DataPackets.hpp")
+        return
+
+    with open("Core/Inc/Communications/Packets/Packet_generation/DataTemplate.hpp","r") as Input:
         data= Input.read()
 
     data = data.replace("%board%", board_instance.name)
-    data = data.replace("%enums%", GenerateEnum(board_instance))
+    data = data.replace("%enums%", GenerateDataEnum(board_instance))
     data = data.replace("%packetnames%", GenerateDataNames(board_instance,packet_name))
-    data = data.replace("%size%", str(board_instance.size))
+    data = data.replace("%size%", str(board_instance.data_size))
     data = data.replace("%data%", GenerateData(board_instance))
     data = data.replace("%packets%", GenerateDataPackets(board_instance,packet_struct))
-    
+
     with open("Core/Inc/Communications/Packets/DataPackets.hpp","w") as Output:
         Output.write(data)
 
+Generate_PacketDescription()
 board = input("Enter board name: ")
 while board not in ["VCU","OBCCU","LCU"]:
     print("Board not found, only VCU, OBCCU and LCU are available")
