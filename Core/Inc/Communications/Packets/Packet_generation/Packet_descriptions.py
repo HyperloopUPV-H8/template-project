@@ -7,7 +7,8 @@ class BoardDescription:
         self.name = name
         self.id = board["board_id"]
         self.ip = board["board_ip"]
-        self.size =0
+        self.data_size =0
+        self.order_size =0
         i = 0
         self.packets = {}
         for packets in board["packets"]:
@@ -21,7 +22,10 @@ class BoardDescription:
             i += 1
             for packet in p["packets"]:
                 self.packets[packets_name].append(PacketDescription(packet,m))
-                self.size = self.size +1
+                if packets_name != "orders":
+                    self.data_size += 1
+                else:
+                    self.order_size += 1
     @staticmethod            
     def _MeasurementFileSearch(packet:str,measurements:dict):
         packet_name = packet.split('_')[0]
