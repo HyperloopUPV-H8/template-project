@@ -257,10 +257,10 @@ function_header_code+="\n"
 with open('Core/Inc/template_state_machine.hpp', "r") as template:
     template_content = template.read()
 
-final_content=template_content.replace("%STATE_DEFINITION%", enum_code + state_machine_code)
-final_content=final_content.replace("%TRANSITION_DEFINITION%",transitions_code)
-final_content=final_content.replace("%ACTION_DEFINITION%",actions_code)
-final_content=final_content.replace("%FUNCTION_HEADERS%",function_header_code)
+final_content=template_content.replace("//%STATE_DEFINITION%", enum_code + state_machine_code)
+final_content=final_content.replace("//%TRANSITION_DEFINITION%",transitions_code)
+final_content=final_content.replace("//%ACTION_DEFINITION%",actions_code)
+final_content=final_content.replace("//%FUNCTION_HEADERS%",function_header_code)
 
 ########################################################
 #                 REWRITE THE .HPP FILE
