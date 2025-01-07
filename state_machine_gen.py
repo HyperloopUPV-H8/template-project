@@ -11,20 +11,24 @@ with open("state_machine.json","r") as file:
 #           ENUM + STATE MACHINE + STATES
 ########################################################
 
+name=data["name"]
 states=data["states"]
 
-enum_code = "enum GeneralStates {\n"
+enum_code = f"enum {name}States"
+enum_code+=" {\n"
+
 for state in states:
     if isinstance(state,str):
         enum_code += f"        {state.upper()},\n"
 enum_code +="    };\n\n"
 
-state_machine_code ="    GeneratedStateMachine(){\n"
-state_machine_code += f"\n        StateMachine general_state_machine = StateMachine(GeneralStates::{states[0].upper()});\n"
+state_machine_code =f"    {name}()"
+state_machine_code+="{\n"
+state_machine_code += f"\n        StateMachine {name} = StateMachine({name}States::{states[0].upper()});\n"
 
 for i in range (1,len(states)):
     if isinstance(states[i],str):
-        state_machine_code += f"        general_state_machine.add_state(GeneralStates::{states[i].upper()});\n"
+        state_machine_code += f"        {name}.add_state({name}States::{states[i].upper()});\n"
     elif isinstance(states[i], dict):
         nested_sm_name=states[i]["name"]
         nested_sm_states=states[i]["sub-states"]
@@ -37,7 +41,7 @@ for i in range (1,len(states)):
         enum_code +="    };\n\n"
 
         state_machine_code += f"\n        StateMachine {nested_sm_name} = StateMachine({nested_sm_states[0].upper()});\n"
-        state_machine_code += f"        general_state_machine.add_state_machine({nested_sm_name},{nested_sm_states[0].upper()});\n"
+        state_machine_code += f"        {name}.add_state_machine({nested_sm_name},{nested_sm_states[0].upper()});\n"
         for j in range (1,len(nested_sm_states)):
             state_machine_code += f"        {nested_sm_name}.add_state({nested_sm_states[j].upper()});\n"
 
@@ -59,22 +63,22 @@ for transition in transitions:
     if(isinstance(old_state,dict)):
         if description:
             transitions_code+=f"        // {description}\n"
-        transitions_code+=f"        general_state_machine.add_transition({old_state["name"]}::{old_state["sub-state"].upper()},GeneralStates::{new_state.upper()},{transition_name});\n"
+        transitions_code+=f"        {name}.add_transition({old_state["name"]}::{old_state["sub-state"].upper()},{name}States::{new_state.upper()},{transition_name});\n"
         function_header_code+=f"    static bool {transition_name}();\n"
     elif(isinstance(new_state,dict)):
         if description:
             transitions_code+=f"        // {description}\n"
-            transitions_code+=f"    general_state_machine.add_transition(GeneralStates::{old_state.upper()},{new_state["name"]}::{new_state["sub-state"].upper()},{transition_name});\n"
+            transitions_code+=f"    {name}.add_transition({name}States::{old_state.upper()},{new_state["name"]}::{new_state["sub-state"].upper()},{transition_name});\n"
         function_header_code+=f"    static bool {transition_name}();\n"
     elif(isinstance(old_state,dict) and isinstance(new_state,dict)):
         if description:
             transitions_code+=f"        // {description}\n"
-        transitions_code+=f"        general_state_machine.add_transition({old_state["name"]}::{old_state["sub-state"].upper()},GeneralStates::{new_state.upper()},{transition_name});\n"
+        transitions_code+=f"        {name}.add_transition({old_state["name"]}::{old_state["sub-state"].upper()},{name}States::{new_state.upper()},{transition_name});\n"
         function_header_code+=f"    static bool {transition_name}();\n"
     else:
         if description:
             transitions_code+=f"        // {description}\n"
-        transitions_code+=f"        general_state_machine.add_transition(GeneralStates::{old_state.upper()},GeneralStates::{new_state.upper()},{transition_name});\n"
+        transitions_code+=f"        {name}.add_transition({name}States::{old_state.upper()},{name}States::{new_state.upper()},{transition_name});\n"
         function_header_code+=f"    static bool {transition_name}();\n"
     
 
@@ -104,19 +108,19 @@ for enter_action in enter_actions:
         for state_action in state_actions:
             if(isinstance(state_action,dict)):
                 actions_code+=f"        // {state_action[description]}\n"
-                actions_code+=f"        general_state_machine.add_enter_action({state_action["name"]},{state["name"]}::{state["sub-state"].upper()});\n"
+                actions_code+=f"        {name}.add_enter_action({state_action["name"]},{state["name"]}::{state["sub-state"].upper()});\n"
                 function_header_code+=f"    static void {state_action["name"]}();\n"
             else:
-                actions_code+=f"        general_state_machine.add_enter_action({state_action},{state["name"]}::{state["sub-state"].upper()});\n"
+                actions_code+=f"        {name}.add_enter_action({state_action},{state["name"]}::{state["sub-state"].upper()});\n"
                 function_header_code+=f"    static void {state_action}();\n"
     else:
         for state_action in state_actions:
             if(isinstance(state_action,dict)):
                 actions_code+=f"        // {state_action["description"]}\n"
-                actions_code+=f"        general_state_machine.add_enter_action({state_action["name"]},GeneralStates::{state.upper()});\n"
+                actions_code+=f"        {name}.add_enter_action({state_action["name"]},{name}States::{state.upper()});\n"
                 function_header_code+=f"    static void {state_action["name"]}();\n"
             else:
-                actions_code+=f"        general_state_machine.add_enter_action({state_action},GeneralStates::{state.upper()});\n"
+                actions_code+=f"        {name}.add_enter_action({state_action},{name}States::{state.upper()});\n"
                 function_header_code+=f"    static void {state_action}();\n"
 
 actions_code+="\n"
@@ -136,20 +140,20 @@ for low_precision_cyclic_action in low_precision_cyclic_actions :
                 description=state_action.get("description")
                 if(description):
                     actions_code+=f"        // {description}\n"
-                    actions_code+=f"        general_state_machine.add_low_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},{state["name"]}::{state["sub-state"].upper()});\n"
+                    actions_code+=f"        {name}.add_low_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},{state["name"]}::{state["sub-state"].upper()});\n"
                     function_header_code+=f"    static void {state_action["action_name"]}();\n"
                 else:
-                    actions_code+=f"        general_state_machine.add_low_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},{state["name"]}::{state["sub-state"].upper()});\n"
+                    actions_code+=f"        {name}.add_low_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},{state["name"]}::{state["sub-state"].upper()});\n"
                     function_header_code+=f"    static void {state_action["action_name"]}();\n"
         else:
             for state_action in state_actions :
                 description=state_action.get("description")
                 if(description):
                     actions_code+=f"        // {description}\n"
-                    actions_code+=f"        general_state_machine.add_low_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},GeneralStates::{state.upper()});\n"
+                    actions_code+=f"        {name}.add_low_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},{name}States::{state.upper()});\n"
                     function_header_code+=f"    static void {state_action["action_name"]}();\n"
                 else:
-                    actions_code+=f"        general_state_machine.add_low_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},GeneralStates::{state.upper()});\n"
+                    actions_code+=f"        {name}.add_low_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},{name}States::{state.upper()});\n"
                     function_header_code+=f"    static void {state_action["action_name"]}();\n"
 
 actions_code+="\n"
@@ -168,20 +172,20 @@ for mid_precision_cyclic_action in mid_precision_cyclic_actions:
                 description = state_action.get("description")
                 if(description):
                     actions_code += f"        // {description}\n"
-                    actions_code += f"        general_state_machine.add_mid_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},{state["name"]}::{state["sub-state"].upper()});\n"
+                    actions_code += f"        {name}.add_mid_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},{state["name"]}::{state["sub-state"].upper()});\n"
                     function_header_code += f"    static void {state_action["action_name"]}();\n"
                 else:
-                    actions_code += f"        general_state_machine.add_mid_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},{state["name"]}::{state["sub-state"].upper()});\n"
+                    actions_code += f"        {name}.add_mid_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},{state["name"]}::{state["sub-state"].upper()});\n"
                     function_header_code += f"    static void {state_action["action_name"]}();\n"
         else:
             for state_action in state_actions:
                 description = state_action.get("description")
                 if(description):
                     actions_code += f"        // {description}\n"
-                    actions_code += f"        general_state_machine.add_mid_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},GeneralStates::{state.upper()});\n"
+                    actions_code += f"        {name}.add_mid_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},{name}States::{state.upper()});\n"
                     function_header_code += f"    static void {state_action["action_name"]}();\n"
                 else:
-                    actions_code += f"        general_state_machine.add_mid_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},GeneralStates::{state.upper()});\n"
+                    actions_code += f"        {name}.add_mid_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},{name}States::{state.upper()});\n"
                     function_header_code += f"    static void {state_action["action_name"]}();\n"
 
 actions_code += "\n"
@@ -200,20 +204,20 @@ for high_precision_cyclic_action in high_precision_cyclic_actions:
                 description = state_action.get("description")
                 if(description):
                     actions_code += f"        // {description}\n"
-                    actions_code += f"        general_state_machine.add_high_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},{state["name"]}::{state["sub-state"].upper()});\n"
+                    actions_code += f"        {name}.add_high_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},{state["name"]}::{state["sub-state"].upper()});\n"
                     function_header_code += f"    static void {state_action["action_name"]}();\n"
                 else:
-                    actions_code += f"        general_state_machine.add_high_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},{state["name"]}::{state["sub-state"].upper()});\n"
+                    actions_code += f"        {name}.add_high_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},{state["name"]}::{state["sub-state"].upper()});\n"
                     function_header_code += f"    static void {state_action["action_name"]}();\n"
         else:
             for state_action in state_actions:
                 description = state_action.get("description")
                 if(description):
                     actions_code += f"        // {description}\n"
-                    actions_code += f"        general_state_machine.add_high_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},GeneralStates::{state.upper()});\n"
+                    actions_code += f"        {name}.add_high_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},{name}States::{state.upper()});\n"
                     function_header_code += f"    static void {state_action["action_name"]}();\n"
                 else:
-                    actions_code += f"        general_state_machine.add_high_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},GeneralStates::{state.upper()});\n"
+                    actions_code += f"        {name}.add_high_precision_cyclic_action({state_action["action_name"]},{state_action["action_period"]},{name}States::{state.upper()});\n"
                     function_header_code += f"    static void {state_action["action_name"]}();\n"
 
 actions_code += "\n"
@@ -228,19 +232,19 @@ for exit_action in exit_actions:
         for state_action in state_actions:
             if(isinstance(state_action, dict)):
                 actions_code += f"        // {state_action['description']}\n"
-                actions_code += f"        general_state_machine.add_exit_action({state_action['name']},{state['name']}::{state['sub-state'].upper()});\n"
+                actions_code += f"        {name}.add_exit_action({state_action['name']},{state['name']}::{state['sub-state'].upper()});\n"
                 function_header_code += f"    static void {state_action['name']}();\n"
             else:
-                actions_code += f"        general_state_machine.add_exit_action({state_action},{state['name']}::{state['sub-state'].upper()});\n"
+                actions_code += f"        {name}.add_exit_action({state_action},{state['name']}::{state['sub-state'].upper()});\n"
                 function_header_code += f"    static void {state_action}();\n"
     else:
         for state_action in state_actions:
             if(isinstance(state_action, dict)):
                 actions_code += f"        // {state_action['description']}\n"
-                actions_code += f"        general_state_machine.add_exit_action({state_action['name']},GeneralStates::{state.upper()});\n"
+                actions_code += f"        {name}.add_exit_action({state_action['name']},{name}States::{state.upper()});\n"
                 function_header_code += f"    static void {state_action['name']}();\n"
             else:
-                actions_code += f"        general_state_machine.add_exit_action({state_action},GeneralStates::{state.upper()});\n"
+                actions_code += f"        {name}.add_exit_action({state_action},{name}States::{state.upper()});\n"
                 function_header_code += f"    static void {state_action}();\n"
 
 actions_code += "\n"
@@ -261,6 +265,7 @@ final_content=template_content.replace("//%STATE_DEFINITION%", enum_code + state
 final_content=final_content.replace("//%TRANSITION_DEFINITION%",transitions_code)
 final_content=final_content.replace("//%ACTION_DEFINITION%",actions_code)
 final_content=final_content.replace("//%FUNCTION_HEADERS%",function_header_code)
+final_content=final_content.replace("GeneratedStateMachine",name)
 
 ########################################################
 #                 REWRITE THE .HPP FILE

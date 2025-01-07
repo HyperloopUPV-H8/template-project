@@ -1,4 +1,6 @@
 {
+    "name" : "ExampleStateMachine",
+    
     "states" : [
         "name_1",
         {
