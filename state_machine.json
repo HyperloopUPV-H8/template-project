@@ -16,26 +16,24 @@
 
     "transitions" : [
         {
-            "old_state" : "name_1",
-            "new_state" : "name_2",
+            "from_state" : "name_1",
+            "to_state" : "name_2",
             "transition_name": "from_1_to_2"
         },
         {
-            "old_state" : "name_1",
-            "new_state" : "name_2",
+            "from_state" : "name_1",
+            "to_state" : "name_2",
             "transition_name": "from_1_to_2",
             "description" : "Transitioning from 1 to 2"
         },
         {
-            "old_state" : "name_1",
-            "new_state" : {
+            "from_state" : "name_1",
+            "to_state" : {
                 "name" : "Nested_sm",
                 "sub-state" : "nested_name_1"
             },
             "transition_name": "from_1_to_nested_1"
         }
-
-
     ],
 
     "actions" : {

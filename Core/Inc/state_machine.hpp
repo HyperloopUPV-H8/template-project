@@ -7,7 +7,7 @@ using namespace std::chrono_literals;
 class ExampleStateMachine{
 
     public:
-    
+
     static bool from_1_to_2();
     static bool from_1_to_2();
     static bool from_1_to_nested_1();
@@ -16,19 +16,14 @@ class ExampleStateMachine{
     static void enter_action_2();
     static void enter_action_3();
     static void enter_action_4();
-
     static void low_precision_action();
     static void low_precision_action();
-
     static void mid_precision_action_to_nested_state();
     static void mid_precision_action_to_nested_state();
-
     static void high_precision_action_with_description();
     static void high_precision_action_with_description();
-
     static void exit_action_1();
     static void exit_action_2();
-
 
 
     enum ExampleStateMachineStates {
@@ -45,40 +40,33 @@ class ExampleStateMachine{
 
         StateMachine ExampleStateMachine = StateMachine(ExampleStateMachineStates::NAME_1);
 
-        StateMachine Nested_sm = StateMachine(NESTED_NAME_1);
-        ExampleStateMachine.add_state_machine(Nested_sm,NESTED_NAME_1);
-        Nested_sm.add_state(NESTED_NAME_2);
+        StateMachine Nested_sm = StateMachine(Nested_sm::NESTED_NAME_1);
+        ExampleStateMachine.add_state_machine(Nested_sm,Nested_sm::NESTED_NAME_1);
+        Nested_sm.add_state(Nested_sm::NESTED_NAME_2);
+
         ExampleStateMachine.add_state(ExampleStateMachineStates::NAME_2);
 
-    
         ExampleStateMachine.add_transition(ExampleStateMachineStates::NAME_1,ExampleStateMachineStates::NAME_2,from_1_to_2);
         // Transitioning from 1 to 2
         ExampleStateMachine.add_transition(ExampleStateMachineStates::NAME_1,ExampleStateMachineStates::NAME_2,from_1_to_2);
+        ExampleStateMachine.add_transition(ExampleStateMachineStates::NAME_1,Nested_sm::NESTED_NAME_1,from_1_to_nested_1);
 
-    
         ExampleStateMachine.add_enter_action(enter_action_1,ExampleStateMachineStates::NAME_1);
         ExampleStateMachine.add_enter_action(enter_action_2,ExampleStateMachineStates::NAME_1);
         // Description of enter_action_3
         ExampleStateMachine.add_enter_action(enter_action_3,ExampleStateMachineStates::NAME_2);
         ExampleStateMachine.add_enter_action(enter_action_4,ExampleStateMachineStates::NAME_2);
-
         ExampleStateMachine.add_low_precision_cyclic_action(low_precision_action,30ms,ExampleStateMachineStates::NAME_1);
         ExampleStateMachine.add_low_precision_cyclic_action(low_precision_action,30ms,ExampleStateMachineStates::NAME_2);
-
         ExampleStateMachine.add_mid_precision_cyclic_action(mid_precision_action_to_nested_state,60ms,ExampleStateMachineStates::NAME_1);
         ExampleStateMachine.add_mid_precision_cyclic_action(mid_precision_action_to_nested_state,60ms,Nested_sm::NESTED_NAME_1);
-
         // Cyclic action example with description
         ExampleStateMachine.add_high_precision_cyclic_action(high_precision_action_with_description,90ms,ExampleStateMachineStates::NAME_1);
         // Cyclic action example with description
         ExampleStateMachine.add_high_precision_cyclic_action(high_precision_action_with_description,90ms,ExampleStateMachineStates::NAME_2);
-
         ExampleStateMachine.add_exit_action(exit_action_1,Nested_sm::NESTED_NAME_2);
         ExampleStateMachine.add_exit_action(exit_action_2,Nested_sm::NESTED_NAME_2);
 
-
     }
 
-    
 };
-
