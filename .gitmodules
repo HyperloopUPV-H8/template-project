@@ -1,3 +1,6 @@
 [submodule "deps/ST-LIB"]
 	path = deps/ST-LIB
 	url = https://github.com/HyperloopUPV-H8/ST-LIB
+[submodule "Core/Inc/Communications/JSON_ADE"]
+	path= Core/Inc/Communications/JSON_ADE
+	url = https://github.com/HyperloopUPV-H8/JSON_ADE
