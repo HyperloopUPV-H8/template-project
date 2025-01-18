@@ -6,7 +6,6 @@ on:
 jobs:
   compile-checks:
     name: Check project compiles
-    runs-on: ubuntu-24.04
     strategy:
       matrix:
         preset:
@@ -23,8 +22,7 @@ jobs:
           - board-release-eth
           - board-relwithdebinfo-eth
           - simulator
-    steps:
-      - name: Build
-        uses: ./.github/workflows/build.yml
-        with:
-          preset: ${{ matrix.preset }}
+      fail-fast: false
+    uses: ./.github/workflows/build.yml
+    with:
+      preset: ${{ matrix.preset }}
