@@ -33,10 +33,8 @@ jobs:
     steps:
       - name: Clone Project
         uses: actions/checkout@v3
-      - name: Prepare submodules
-        run: |
-          git submodule init |
-          git submodule update
+        with:
+          submodules: recursive
       - name: Build
         run: |
           cmake --preset ${{ inputs.preset }} .
