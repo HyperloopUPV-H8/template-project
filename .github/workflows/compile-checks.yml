@@ -1,0 +1,30 @@
+name: Compile Checks
+
+on:
+  push:
+
+jobs:
+  compile-checks:
+    name: Check project compiles
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        preset:
+          - nucleo-debug
+          - nucleo-release
+          - nucleo-relwithdebinfo
+          - nucleo-debug-eth
+          - nucleo-release-eth
+          - nucleo-relwithdebinfo-eth
+          - board-debug
+          - board-release
+          - board-relwithdebinfo
+          - board-debug-eth
+          - board-release-eth
+          - board-relwithdebinfo-eth
+          - simulator
+    steps:
+      - name: Build
+        uses: ./.github/workflows/build.yml
+        with:
+          preset: ${{ matrix.preset }}
