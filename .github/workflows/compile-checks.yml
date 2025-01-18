@@ -2,6 +2,11 @@ name: Compile Checks
 
 on:
   push:
+    paths:
+      - '**.cpp'
+      - '**.hpp'
+      - '**.c'
+      - '**.h'
 
 jobs:
   compile-checks:
