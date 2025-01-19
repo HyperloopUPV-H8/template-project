@@ -179,6 +179,7 @@ def Generate_OrderPackets_hpp(board_input:str):
         Output.write(data)
     
 
+
 Generate_PacketDescription()
 board = input("Enter board name: ")
 while board not in ["VCU","OBCCU","LCU"]:

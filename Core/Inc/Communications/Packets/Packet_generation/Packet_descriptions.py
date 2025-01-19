@@ -2,6 +2,7 @@ import re
 import json
 enum_template = "enum class %name%{ \n %values% \n};"
 
+
 class BoardDescription:    
     def __init__(self,name:str,board:dict):
         self.name = name
