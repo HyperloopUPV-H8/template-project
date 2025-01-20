@@ -6,11 +6,11 @@ packet_name= "        StackPacket* %name%;\n"
 packet_struct = "   %name% = new StackPacket(%packet_data%);\n   packets[id] = %name%;\n   id++;"
 
 def Generate_PacketDescription():
-    with open("Core/Inc/Communications/Packets/Packet_generation/JSON_ADE/boards.json") as f:
+    with open("Core/Inc/Communications/JSON_ADE/boards.json") as f:
         boards = json.load(f)
 
     for board in boards["boards"]:
-        with open("Core/Inc/Communications/Packets/Packet_generation/JSON_ADE/" + (boards["boards"][board])) as f:
+        with open("Core/Inc/Communications/JSON_ADE/" + (boards["boards"][board])) as f:
             b = json.load(f)
         board_instance = Pd.BoardDescription(board, b)
         globals()[board] = board_instance
