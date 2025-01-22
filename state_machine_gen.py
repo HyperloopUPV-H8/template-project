@@ -102,4 +102,5 @@ if __name__ == "__main__":
         data = json.load(file)
     sm = parse_state_machine(data)
     generate_code(sm)
+    
 
