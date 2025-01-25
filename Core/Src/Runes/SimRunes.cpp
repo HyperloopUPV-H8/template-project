@@ -79,24 +79,45 @@ SPI::Instance SPI::instance1 = {.SCK = &PC10,
                                 .MOSI = &PC12,
                                 .MISO = &PC11,
                                 .SS = &PD3,
-                                .destination_address = {"127.0.0.1", 50001},
+                                .destination_address = {"127.0.0.1", 50005},
                                 .mode = SPIMode::MASTER,
                                 .use_DMA = false,
                                 .port = 50000};
 SPI::Instance SPI::instance2 = {.SCK = &PG4,
                                 .MOSI = &PG1,
                                 .MISO = &PG2,
-                                .SS = &PG3,
-                                .destination_address = {"127.0.0.1", 50003},
+                                .SS = &PD4,
+                                .destination_address = {"127.0.0.1", 50007},
                                 .mode = SPIMode::SLAVE,
                                 .use_DMA = false,
                                 .port = 50002};
+SPI::Instance SPI::instance3 = {.SCK = &PC13,
+                                .MOSI = &PC14,
+                                .MISO = &PC15,
+                                .SS = &PD5,
+                                .destination_address = {"127.0.0.1", 50004},
+                                .mode = SPIMode::MASTER,
+                                .use_DMA = false,
+                                .port = 50001};
+SPI::Instance SPI::instance4 = {.SCK = &PB10,
+                                .MOSI = &PB11,
+                                .MISO = &PB12,
+                                .SS = &PD6,
+                                .destination_address = {"127.0.0.1", 50006},
+                                .mode = SPIMode::SLAVE,
+                                .use_DMA = false,
+                                .port = 50003};
 
 SPI::Peripheral SPI::spi1 = SPI::Peripheral::peripheral1;
 SPI::Peripheral SPI::spi2 = SPI::Peripheral::peripheral2;
+SPI::Peripheral SPI::spi3 = SPI::Peripheral::peripheral3;
+SPI::Peripheral SPI::spi4 = SPI::Peripheral::peripheral4;
 
 unordered_map<SPI::Peripheral, SPI::Instance *> SPI::available_spi = {
-    {SPI::spi1, &SPI::instance1}, {SPI::spi2, &SPI::instance2}};
+    {SPI::spi1, &SPI::instance1},
+    {SPI::spi2, &SPI::instance2},
+    {SPI::spi3, &SPI::instance3},
+    {SPI::spi4, &SPI::instance4}};
 
 /************************************************
  *                 	  Encoder

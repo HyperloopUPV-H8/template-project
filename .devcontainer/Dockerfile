@@ -11,3 +11,5 @@ RUN echo "deb http://security.ubuntu.com/ubuntu focal-security main universe" > 
 RUN mkdir /temp && cd /temp && git clone https://github.com/HyperloopUPV-H8/cubeclt.git && \
     cd cubeclt && git lfs pull && chmod +x cubeclt_1.16.0_installer.sh && \
     echo | LICENSE_ALREADY_ACCEPTED=1 ./cubeclt_1.16.0_installer.sh
+
+ENV PYTHONPATH="/workspace/template-project/Tests/VirtualMCU/src/:${PYTHONPATH}"
