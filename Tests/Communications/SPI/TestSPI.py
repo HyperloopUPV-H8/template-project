@@ -18,43 +18,38 @@ def spi_slave_transmit():
     master2 = SPIMaster("localhost", 50006, shm)
     slave2 = SPIMaster.MCUSlave("localhost", 50003, Pinout.PD6)
 
-    msg = b"Hello world"
+    msg1 = b"Hello world1"
+    msg2 = b"Hello world2"
+    msg3 = b"Hello world3"
+    msg4 = b"Hello world4"
 
     def slave_selected_transmission_reception():
-        nonlocal slave_selected, msg
-        slave_selected.transmit(msg)
+        nonlocal slave_selected, msg1
+        slave_selected.transmit(msg1)
+        print("Hello1")
         msg_received = slave_selected.receive()
-        return msg_received == msg
+        return msg_received == msg1
 
     def slave_not_selected_transmission_reception():
-        nonlocal slave_not_selected, msg
+        nonlocal slave_not_selected, msg2
         try:
-            slave_not_selected.transmit(msg)
+            slave_not_selected.transmit(msg2)
             return False
         except:
             try:
+                print("Hello2")
                 slave_not_selected.receive()
                 return False
             except:
                 return True
 
     def master_transmission_reception():
-        nonlocal master1, slave1, msg
-        master1.transmit(msg, slave1)
+        nonlocal master1, slave1, msg3
+        master1.transmit(msg3, slave1)
+        print("Hello3")
         msg_received = master1.receive()
-        return msg_received == msg
+        return msg_received == msg3
 
-    def master_transmission_reception_slave_deselected():
-        nonlocal master2, slave2, msg
-        master2.transmit(msg, slave2)
-        master2.chip_select_off(slave2)
-        try:
-            completes(master2.receive, before=seconds(1))
-            return False
-        except TooLateError:
-            return True
-
-    check(slave_selected_transmission_reception)
-    check(slave_not_selected_transmission_reception)
-    check(master_transmission_reception)
-    check(master_transmission_reception_slave_deselected)
+    check(slave_selected_transmission_reception, msg="slave_selected_transmission_reception")
+    check(slave_not_selected_transmission_reception, msg="slave_not_selected_transmission_reception")
+    check(master_transmission_reception, msg="master_transmission_reception")

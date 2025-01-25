@@ -16,10 +16,9 @@ int main(void) {
 
     while (1) {
         STLIB::update();
-        SPI::chip_select_on(master1);
         SPI::chip_select_off(master2);
 
-        uint8_t data_array[11];
+        uint8_t data_array[12];
         std::span<uint8_t> data(data_array);
         SPI::receive(master1, data);
 
@@ -28,7 +27,7 @@ int main(void) {
 
         SPI::transmit(master1, data);
 
-        uint8_t data_array_2[11];
+        uint8_t data_array_2[12];
         std::span<uint8_t> data_2(data_array_2);
         SPI::receive(slave_selected, data_2);
 
@@ -37,7 +36,7 @@ int main(void) {
 
         SPI::transmit(slave_selected, data_2);
 
-        uint8_t data_array_3[11];
+        uint8_t data_array_3[12];
         std::span<uint8_t> data_3(data_array_3);
         SPI::receive(slave_not_selected, data_3);
 
