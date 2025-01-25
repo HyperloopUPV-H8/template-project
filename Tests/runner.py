@@ -104,7 +104,7 @@ class TestRunner:
                 test.run_prepare()
 
                 with self._uut:
-                    time.sleep(0.1)
+                    time.sleep(2)
                     try:
                         print(f"[{name}] Running...")
                         result = test()
