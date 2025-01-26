@@ -15,13 +15,10 @@ def spi_slave_transmit():
     )
     master1 = SPIMaster("localhost", 50004, shm)
     slave1 = SPIMaster.MCUSlave("localhost", 50001, Pinout.PD5)
-    master2 = SPIMaster("localhost", 50006, shm)
-    slave2 = SPIMaster.MCUSlave("localhost", 50003, Pinout.PD6)
 
     msg1 = b"Hello world1"
     msg2 = b"Hello world2"
     msg3 = b"Hello world3"
-    msg4 = b"Hello world4"
 
     def slave_selected_transmission_reception():
         nonlocal slave_selected, msg1
