@@ -3,48 +3,62 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "VirtualMCU", "src"))
 
 from runner import runner
 from vmcu.shared_memory import SharedMemory
-from vmcu.pin import Pinout, DigitalOut
-from vmcu.services.digital_out import DigitalOutService
+from vmcu.services.communications.DatagramSocket import DatagramSocket
+from vmcu.services.communications.Packets import Packets
 from vmcu.assertions import *
-
+from random import *
+import time
+import struct
+from typing import Optional
 
 @runner.test()
-def led_toggle():
-    TOGGLE_PERIOD = milliseconds(100 * 2)
-    ALLOWED_SLACK = milliseconds(5)
 
-    shm = SharedMemory("gpio__blinking_led", "state_machine__blinking_led")
-    led = DigitalOutService(shm, Pinout.PA1)
+#values 
+def datagramsocket_test():
+    ALLOWED_SLACK = 1
+    shm = SharedMemory("gpio_ethernet_test", "state_machine_ethernet_test")
+    datagramsocket = DatagramSocket("127.0.0.1",9015,"127.0.0.1",9006)
+    packets = {
+        0:["enum(OFF,ON)"],
+        1: ["uint16","int32","enum(OFF,ON)","float32"]
+    }
+    packet = Packets(packets)
 
-    def led_turns_on():
-        nonlocal led
-        return led.get_pin_state() is DigitalOut.State.High
-
-    def led_turns_off():
-        nonlocal led
-        return led.get_pin_state() is DigitalOut.State.Low
-
-    #sync with board
-    completes(
-        wait_until_true(led_turns_on),
-        before=(TOGGLE_PERIOD / 2) + ALLOWED_SLACK,
-        msg="Sync fails"
-    )
-
-    for i in range(150):
-        completes(
-            wait_until_true(led_turns_off),
-            before=(TOGGLE_PERIOD / 2) + ALLOWED_SLACK,
-            after=(TOGGLE_PERIOD / 2) - ALLOWED_SLACK,
-            msg="turns off"
-        )
-        completes(
-            wait_until_true(led_turns_on),
-            before=(TOGGLE_PERIOD / 2) + ALLOWED_SLACK,
-            after=(TOGGLE_PERIOD / 2) - ALLOWED_SLACK,
-            msg="turns on"
-        )
-        print("toggle", i)
+    def check_datagram_socket_running()->bool:
+        return datagramsocket.is_running()
     
+    def check_received_packet()->bool:
+        raw_data = datagramsocket.get_packet()
+        if raw_data is None: 
+            return False
+        if(len(raw_data) == 13):
+            id,uint16,uint32,sensor,float32 = struct.unpack("<HHiBf",raw_data)
+            if sensor == 0:
+                string_ = "OFF"
+            else:
+                string_ = "ON"
+            print(f"paquete recibido id = {id}, paquete numero: {uint16}, valores : {uint32}, {float32}, el sensor esta {string_}")
+        return True
+    
+    print("Conectar el datagramSocket")
+    datagramsocket.connect()
+    completes(
+        wait_until_true(check_datagram_socket_running),
+        before=ALLOWED_SLACK,
+        msg="Connection Completed"
+    )
+    print("conexion establecida")
+    
+    print("Comenzar a enviar paquetes id = 0, y recibir paquetes id = 1")
+    for i in range(100):
+        raw_data = packet.serialize_packet(0,"ON") 
+        datagramsocket.transmit(raw_data)
+        completes(
+            wait_until_true(check_received_packet),
+            before=ALLOWED_SLACK,
+            msg="Received echo"
+        )
+        time.sleep(0.5)
+  
 
 runner.run() # Runs the tests, do not delete!
