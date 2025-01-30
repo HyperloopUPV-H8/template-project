@@ -104,14 +104,12 @@ class MeasurmentsDescription:
         protections = [[None, None], [None, None]]
         
         if safeRange is not None:
-            protections[0] = safeRange
+            for i in range(len(safeRange)):
+                protections[0][i] = safeRange[i]
         
         if warningRange is not None:
-            if len(warningRange) == 2:
-                protections[1][0] = warningRange[0]  
-                protections[1][1] = warningRange[1]  
-            elif len(warningRange) == 1:
-                protections[1][1] = warningRange[0]
+            for i in range(len(warningRange)):
+                protections[1][i] = warningRange[i]
             
         return protections
     

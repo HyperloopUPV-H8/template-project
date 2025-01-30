@@ -1,8 +1,7 @@
 //Data protections for VCU
 class DataProtections{
     public:
-    DataProtections(new_reference_pressure,ldu_id,ldu_id,lcu_desired_current,ldu_buffer_id,ldu_buffer_id,lcu_desired_distance,lcu_desired_distance,lower_position_limit,upper_position_limit,lower_position_limit,upper_position_limit,reference_pressure,actual_pressure,high_pressure,position,speed,acceleration,output_voltage)
-{
+    DataProtections(new_reference_pressure,ldu_id,ldu_id,lcu_desired_current,ldu_buffer_id,ldu_buffer_id,lcu_desired_distance,lcu_desired_distance,lower_position_limit,upper_position_limit,lower_position_limit,upper_position_limit,reference_pressure,actual_pressure,high_pressure,position,speed,acceleration,output_voltage){
 
 ProtectionManager::_add_protection(new_reference_pressure,Boundary<float32,Below>(0),Boundary<float32,Below>(0),Boundary<float32,Above>(10),Boundary<float32,Above>(10)}).set_name("new_reference_pressure");
 ProtectionManager::_add_protection(ldu_id,Boundary<uint16_t,Below>(1),Boundary<uint16_t,Below>(1),Boundary<uint16_t,Above>(10),Boundary<uint16_t,Above>(10)}).set_name("ldu_id");
