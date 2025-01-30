@@ -1,87 +1,121 @@
 #include "ST-LIB.hpp"
 
-//Data packets for OBCCU
+//Data packets for VCU
 class DataPacket{
     
-
+enum class general_state{ 
+ CONNECTING,
+OPERATIONAL,
+FAULT 
+};
+enum class voltage_state{ 
+ NOT_HV,
+HV 
+};
+enum class bmsl_connection{ 
+ Disconnected,
+Connected 
+};
+enum class reed2{ 
+ EXTENDED,
+RETRACTED 
+};
+enum class pcu_connection{ 
+ Disconnected,
+Connected 
+};
+enum class valve_state{ 
+ VALVE_OPEN,
+VALVE_CLOSED 
+};
+enum class lcu_connection{ 
+ Disconnected,
+Connected 
+};
+enum class reed1{ 
+ EXTENDED,
+RETRACTED 
+};
+enum class obccu_connection{ 
+ Disconnected,
+Connected 
+};
+enum class emergency_tape{ 
+ DISABLED,
+ENABLED 
+};
+enum class specific_state{ 
+ IDLE,
+TAKING OFF,
+STABLE LEVITATION,
+PROPULSION,
+LANDING,
+UNLOADING,
+LOADING,
+TRACTION 
+};
+enum class emergency_tape_value{ 
+ NORMAL,
+EMERGENCY 
+};
+enum class reed4{ 
+ EXTENDED,
+RETRACTED 
+};
+enum class reed3{ 
+ EXTENDED,
+RETRACTED 
+};
 
     private:
-        constexpr static size_t size =17;
+        constexpr static size_t size =10;
         uint32_t id{0};
     public:
         std::array<StackPacket*,size> packets; 
-        StackPacket* battery_1;
-        StackPacket* battery_2;
-        StackPacket* battery_3;
-        StackPacket* battery_4;
-        StackPacket* battery_5;
-        StackPacket* battery_6;
-        StackPacket* battery_7;
-        StackPacket* battery_8;
-        StackPacket* battery_9;
-        StackPacket* battery_10;
-        StackPacket* Fault;
-        StackPacket* Total_Voltage;
-        StackPacket* IMD;
-        StackPacket* Measurements;
-        StackPacket* OBCPU_Measurements;
-        StackPacket* Contactors_State;
-        StackPacket* Output_Voltage;
+        StackPacket* vcu_regulator_packet;
+        StackPacket* vcu_reed_packet;
+        StackPacket* vcu_bottle_temperature_packet;
+        StackPacket* vcu_pressure_packet;
+        StackPacket* encoder_packet;
+        StackPacket* state_machines_packet;
+        StackPacket* emergency_tape_state;
+        StackPacket* output_vtg;
+        StackPacket* Tcp_connections;
+        StackPacket* waterblock_data;
 
         
-    DataPacket(uint16_t &idpacket911,float32 &battery2_SOC,float32 &battery2_cell1,float32 &battery2_cell2,float32 &battery2_cell3,float32 &battery2_cell4,float32 &battery2_cell5,float32 &battery2_cell6,float32 &battery2_minimum_cell,float32 &battery2_maximum_cell,float32 &battery2_temperature1,float32 &battery2_temperature2,bool &battery2_is_balancing,float32 &battery2_total_voltage,uint16_t &idpacket910,float32 &battery1_SOC,float32 &battery1_cell1,float32 &battery1_cell2,float32 &battery1_cell3,float32 &battery1_cell4,float32 &battery1_cell5,float32 &battery1_cell6,float32 &battery1_minimum_cell,float32 &battery1_maximum_cell,float32 &battery1_temperature1,float32 &battery1_temperature2,bool &battery1_is_balancing,float32 &battery1_total_voltage,uint16_t &idpacket924,float32 &battery_current,uint16_t &idpacket925,float32 &obcpu_input_current,float32 &obcpu_input_voltage,float32 &obcpu_output_current,float32 &obcpu_output_voltage,uint16_t &idpacket926,uint8_t &contactors_state,uint8_t &plug_state,uint8_t &board_state,uint16_t &idpacket0,uint16_t &idpacket981,float32 &output_voltage_lpus,bool &driving_mosfets,uint16_t &idpacket919,float32 &battery10_SOC,float32 &battery10_cell1,float32 &battery10_cell2,float32 &battery10_cell3,float32 &battery10_cell4,float32 &battery10_cell5,float32 &battery10_cell6,float32 &battery10_minimum_cell,float32 &battery10_maximum_cell,float32 &battery10_temperature1,float32 &battery10_temperature2,bool &battery10_is_balancing,float32 &battery10_total_voltage,uint16_t &idpacket916,float32 &battery7_SOC,float32 &battery7_cell1,float32 &battery7_cell2,float32 &battery7_cell3,float32 &battery7_cell4,float32 &battery7_cell5,float32 &battery7_cell6,float32 &battery7_minimum_cell,float32 &battery7_maximum_cell,float32 &battery7_temperature1,float32 &battery7_temperature2,bool &battery7_is_balancing,float32 &battery7_total_voltage,uint16_t &idpacket921,float32 &total_voltage_high,uint16_t &idpacket918,float32 &battery9_SOC,float32 &battery9_cell1,float32 &battery9_cell2,float32 &battery9_cell3,float32 &battery9_cell4,float32 &battery9_cell5,float32 &battery9_cell6,float32 &battery9_minimum_cell,float32 &battery9_maximum_cell,float32 &battery9_temperature1,float32 &battery9_temperature2,bool &battery9_is_balancing,float32 &battery9_total_voltage,uint16_t &idpacket914,float32 &battery5_SOC,float32 &battery5_cell1,float32 &battery5_cell2,float32 &battery5_cell3,float32 &battery5_cell4,float32 &battery5_cell5,float32 &battery5_cell6,float32 &battery5_minimum_cell,float32 &battery5_maximum_cell,float32 &battery5_temperature1,float32 &battery5_temperature2,bool &battery5_is_balancing,float32 &battery5_total_voltage,uint16_t &idpacket917,float32 &battery8_SOC,float32 &battery8_cell1,float32 &battery8_cell2,float32 &battery8_cell3,float32 &battery8_cell4,float32 &battery8_cell5,float32 &battery8_cell6,float32 &battery8_minimum_cell,float32 &battery8_maximum_cell,float32 &battery8_temperature1,float32 &battery8_temperature2,bool &battery8_is_balancing,float32 &battery8_total_voltage,uint16_t &idpacket912,float32 &battery3_SOC,float32 &battery3_cell1,float32 &battery3_cell2,float32 &battery3_cell3,float32 &battery3_cell4,float32 &battery3_cell5,float32 &battery3_cell6,float32 &battery3_minimum_cell,float32 &battery3_maximum_cell,float32 &battery3_temperature1,float32 &battery3_temperature2,bool &battery3_is_balancing,float32 &battery3_total_voltage,uint16_t &idpacket913,float32 &battery4_SOC,float32 &battery4_cell1,float32 &battery4_cell2,float32 &battery4_cell3,float32 &battery4_cell4,float32 &battery4_cell5,float32 &battery4_cell6,float32 &battery4_minimum_cell,float32 &battery4_maximum_cell,float32 &battery4_temperature1,float32 &battery4_temperature2,bool &battery4_is_balancing,float32 &battery4_total_voltage,uint16_t &idpacket915,float32 &battery6_SOC,float32 &battery6_cell1,float32 &battery6_cell2,float32 &battery6_cell3,float32 &battery6_cell4,float32 &battery6_cell5,float32 &battery6_cell6,float32 &battery6_minimum_cell,float32 &battery6_maximum_cell,float32 &battery6_temperature1,float32 &battery6_temperature2,bool &battery6_is_balancing,float32 &battery6_total_voltage,uint16_t &idpacket922,uint8_t &imd_status,float32 &freq_imd,float32 &duty_imd)
+    DataPacket(uint16_t &idpacket231,float32 &waterblock_temperature,float32 &waterblock_pressure,uint16_t &idpacket981,uint16_t &output_voltage,bool &driving_mosfets,uint16_t &idpacket214,float32 &high_pressure,float32 &low_pressure_1,float32 &low_pressure_2,uint16_t &idpacket212,reed1 &reed1,reed2 &reed2,reed3 &reed3,reed4 &reed4,uint16_t &idpacket221,emergency_tape &emergency_tape,emergency_tape_value &emergency_tape_value,uint16_t &idpacket230,pcu_connection &pcu_connection,obccu_connection &obccu_connection,lcu_connection &lcu_connection,bmsl_connection &bmsl_connection,uint16_t &idpacket211,valve_state &valve_state,float32 &reference_pressure,float32 &actual_pressure,uint16_t &idpacket220,uint32_t &longest_update_ms,general_state &general_state,specific_state &specific_state,voltage_state &voltage_state,uint16_t &idpacket213,float64 &bottle_temp_1,float64 &bottle_temp_2,uint16_t &idpacket219,float64 &direction,float64 &position,float64 &speed,float64 &acceleration)
 {
 
-   battery_1 = new StackPacket(idpacket910,battery1_SOC,battery1_cell1,battery1_cell2,battery1_cell3,battery1_cell4,battery1_cell5,battery1_cell6,battery1_minimum_cell,battery1_maximum_cell,battery1_temperature1,battery1_temperature2,battery1_is_balancing,battery1_total_voltage);
-   packets[id] = battery_1;
+   vcu_regulator_packet = new StackPacket(idpacket211,valve_state,reference_pressure,actual_pressure);
+   packets[id] = vcu_regulator_packet;
    id++;
-   battery_2 = new StackPacket(idpacket911,battery2_SOC,battery2_cell1,battery2_cell2,battery2_cell3,battery2_cell4,battery2_cell5,battery2_cell6,battery2_minimum_cell,battery2_maximum_cell,battery2_temperature1,battery2_temperature2,battery2_is_balancing,battery2_total_voltage);
-   packets[id] = battery_2;
+   vcu_reed_packet = new StackPacket(idpacket212,reed1,reed2,reed3,reed4);
+   packets[id] = vcu_reed_packet;
    id++;
-   battery_3 = new StackPacket(idpacket912,battery3_SOC,battery3_cell1,battery3_cell2,battery3_cell3,battery3_cell4,battery3_cell5,battery3_cell6,battery3_minimum_cell,battery3_maximum_cell,battery3_temperature1,battery3_temperature2,battery3_is_balancing,battery3_total_voltage);
-   packets[id] = battery_3;
+   vcu_bottle_temperature_packet = new StackPacket(idpacket213,bottle_temp_1,bottle_temp_2);
+   packets[id] = vcu_bottle_temperature_packet;
    id++;
-   battery_4 = new StackPacket(idpacket913,battery4_SOC,battery4_cell1,battery4_cell2,battery4_cell3,battery4_cell4,battery4_cell5,battery4_cell6,battery4_minimum_cell,battery4_maximum_cell,battery4_temperature1,battery4_temperature2,battery4_is_balancing,battery4_total_voltage);
-   packets[id] = battery_4;
+   vcu_pressure_packet = new StackPacket(idpacket214,high_pressure,low_pressure_1,low_pressure_2);
+   packets[id] = vcu_pressure_packet;
    id++;
-   battery_5 = new StackPacket(idpacket914,battery5_SOC,battery5_cell1,battery5_cell2,battery5_cell3,battery5_cell4,battery5_cell5,battery5_cell6,battery5_minimum_cell,battery5_maximum_cell,battery5_temperature1,battery5_temperature2,battery5_is_balancing,battery5_total_voltage);
-   packets[id] = battery_5;
+   encoder_packet = new StackPacket(idpacket219,direction,position,speed,acceleration);
+   packets[id] = encoder_packet;
    id++;
-   battery_6 = new StackPacket(idpacket915,battery6_SOC,battery6_cell1,battery6_cell2,battery6_cell3,battery6_cell4,battery6_cell5,battery6_cell6,battery6_minimum_cell,battery6_maximum_cell,battery6_temperature1,battery6_temperature2,battery6_is_balancing,battery6_total_voltage);
-   packets[id] = battery_6;
+   state_machines_packet = new StackPacket(idpacket220,longest_update_ms,general_state,specific_state,voltage_state);
+   packets[id] = state_machines_packet;
    id++;
-   battery_7 = new StackPacket(idpacket916,battery7_SOC,battery7_cell1,battery7_cell2,battery7_cell3,battery7_cell4,battery7_cell5,battery7_cell6,battery7_minimum_cell,battery7_maximum_cell,battery7_temperature1,battery7_temperature2,battery7_is_balancing,battery7_total_voltage);
-   packets[id] = battery_7;
+   emergency_tape_state = new StackPacket(idpacket221,emergency_tape,emergency_tape_value);
+   packets[id] = emergency_tape_state;
    id++;
-   battery_8 = new StackPacket(idpacket917,battery8_SOC,battery8_cell1,battery8_cell2,battery8_cell3,battery8_cell4,battery8_cell5,battery8_cell6,battery8_minimum_cell,battery8_maximum_cell,battery8_temperature1,battery8_temperature2,battery8_is_balancing,battery8_total_voltage);
-   packets[id] = battery_8;
+   output_vtg = new StackPacket(idpacket981,output_voltage,driving_mosfets);
+   packets[id] = output_vtg;
    id++;
-   battery_9 = new StackPacket(idpacket918,battery9_SOC,battery9_cell1,battery9_cell2,battery9_cell3,battery9_cell4,battery9_cell5,battery9_cell6,battery9_minimum_cell,battery9_maximum_cell,battery9_temperature1,battery9_temperature2,battery9_is_balancing,battery9_total_voltage);
-   packets[id] = battery_9;
+   Tcp_connections = new StackPacket(idpacket230,pcu_connection,obccu_connection,lcu_connection,bmsl_connection);
+   packets[id] = Tcp_connections;
    id++;
-   battery_10 = new StackPacket(idpacket919,battery10_SOC,battery10_cell1,battery10_cell2,battery10_cell3,battery10_cell4,battery10_cell5,battery10_cell6,battery10_minimum_cell,battery10_maximum_cell,battery10_temperature1,battery10_temperature2,battery10_is_balancing,battery10_total_voltage);
-   packets[id] = battery_10;
-   id++;
-   Fault = new StackPacket(idpacket0);
-   packets[id] = Fault;
-   id++;
-   Total_Voltage = new StackPacket(idpacket921,total_voltage_high);
-   packets[id] = Total_Voltage;
-   id++;
-   IMD = new StackPacket(idpacket922,imd_status,freq_imd,duty_imd);
-   packets[id] = IMD;
-   id++;
-   Measurements = new StackPacket(idpacket924,battery_current);
-   packets[id] = Measurements;
-   id++;
-   OBCPU_Measurements = new StackPacket(idpacket925,obcpu_input_current,obcpu_input_voltage,obcpu_output_current,obcpu_output_voltage);
-   packets[id] = OBCPU_Measurements;
-   id++;
-   Contactors_State = new StackPacket(idpacket926,contactors_state,plug_state,board_state);
-   packets[id] = Contactors_State;
-   id++;
-   Output_Voltage = new StackPacket(idpacket981,output_voltage_lpus,driving_mosfets);
-   packets[id] = Output_Voltage;
+   waterblock_data = new StackPacket(idpacket231,waterblock_temperature,waterblock_pressure);
+   packets[id] = waterblock_data;
    id++;
 
 }

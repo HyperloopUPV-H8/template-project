@@ -16,9 +16,9 @@ class BoardDescription:
             packets_name = re.split(r'_|\.', packets)[0]  
             self.packets[packets_name] = []
             measurement = self._MeasurementFileSearch(packets,board["measurements"])
-            with open("Core/Inc/Communications/Packets/Packet_generation/JSON_ADE/boards/" + name+"/" + board["packets"][i]) as f:
+            with open("Core/Inc/Communications/JSON_ADE/boards/" + name+"/" + board["packets"][i]) as f:
                 p= json.load(f)
-            with open("Core/Inc/Communications/Packets/Packet_generation/JSON_ADE/boards/" + name + "/" + measurement) as f:
+            with open("Core/Inc/Communications/JSON_ADE/boards/" + name + "/" + measurement) as f:
                 m = json.load(f)
             i += 1
             for packet in p["packets"]:
@@ -43,7 +43,6 @@ class PacketDescription:
         self.type = packet["type"]
         self.variables = []
         self.measurements = []
-        i=0
         for variable in packet["variables"]:
             self.variables.append(variable["name"])
             self.measurements.append(MeasurmentsDescription(measurements,variable["name"]))
@@ -61,6 +60,10 @@ class MeasurmentsDescription:
             if self.type == "enum":
                 self.enum = self._create_enum(measurement)
                 self.type = measurement["id"]
+            protections = self._protection_search(measurement)
+            if protections is not None:
+                self.protections = self.Protections(protections)
+                
                 
     @staticmethod
     def _MeasurementSearch(measurements:dict, variable:str):
@@ -90,4 +93,50 @@ class MeasurmentsDescription:
         if aux_type == "uint":
             type += "_t"
         return type
+    
+    @staticmethod
+    def _protection_search(measurement:dict):
+        warningRange = measurement.get("warningRange")
+        safeRange = measurement.get("safeRange")
+        if warningRange is None and safeRange is None:
+            return None
+    
+        protections = [[None, None], [None, None]]
         
+        if safeRange is not None:
+            protections[0] = safeRange
+        
+        if warningRange is not None:
+            if len(warningRange) == 2:
+                protections[1][0] = warningRange[0]  
+                protections[1][1] = warningRange[1]  
+            elif len(warningRange) == 1:
+                protections[1][1] = warningRange[0]
+            
+        return protections
+    
+    class Protections:
+        class Below:
+            def __init__(self, protections:list):
+                self.Protectionvalue = [None, None]
+                self.ProtectionType = "Below"
+                if protections is not None:
+                    if protections[0] is not None and protections[0][0] is not None:
+                        self.Protectionvalue[0] = protections[0][0]
+                    if protections[1] is not None and protections[1][0] is not None:
+                        self.Protectionvalue[1] = protections[1][0]
+
+        class Above:
+            def __init__(self, protections:list):
+                self.Protectionvalue = [None, None]
+                self.ProtectionType = "Above"
+                if protections is not None:
+                    if protections[0] is not None and protections[0][1] is not None:
+                        self.Protectionvalue[0] = protections[0][1]
+                    if protections[1] is not None and protections[1][1] is not None:
+                        self.Protectionvalue[1] = protections[1][1]
+                        
+        def __init__(self, protections:list):
+            self.protections = [None, None]
+            self.protections[0] = self.Below(protections)
+            self.protections[1] = self.Above(protections)

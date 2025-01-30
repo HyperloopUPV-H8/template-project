@@ -4,8 +4,7 @@
       "path": "."
     },
     {
-      "name": "ST-LIB",
-      "path": "../ST-LIB"
+      "path": "../Projectos/ST-LIB"
     }
   ],
   "settings": {
