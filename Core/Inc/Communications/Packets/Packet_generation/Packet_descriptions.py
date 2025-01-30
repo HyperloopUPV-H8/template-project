@@ -118,21 +118,19 @@ class MeasurmentsDescription:
             def __init__(self, protections:list):
                 self.Protectionvalue = [None, None]
                 self.ProtectionType = "Below"
-                if protections is not None:
-                    if protections[0] is not None and protections[0][0] is not None:
-                        self.Protectionvalue[0] = protections[0][0]
-                    if protections[1] is not None and protections[1][0] is not None:
-                        self.Protectionvalue[1] = protections[1][0]
+                if protections[0] is not None and protections[0][0] is not None:
+                    self.Protectionvalue[0] = protections[0][0]
+                if protections[1] is not None and protections[1][0] is not None:
+                    self.Protectionvalue[1] = protections[1][0]
 
         class Above:
             def __init__(self, protections:list):
                 self.Protectionvalue = [None, None]
                 self.ProtectionType = "Above"
-                if protections is not None:
-                    if protections[0] is not None and protections[0][1] is not None:
-                        self.Protectionvalue[0] = protections[0][1]
-                    if protections[1] is not None and protections[1][1] is not None:
-                        self.Protectionvalue[1] = protections[1][1]
+                if protections[0] is not None and protections[0][1] is not None:
+                    self.Protectionvalue[0] = protections[0][1]
+                if protections[1] is not None and protections[1][1] is not None:
+                    self.Protectionvalue[1] = protections[1][1]
                         
         def __init__(self, protections:list):
             self.protections = [None, None]
