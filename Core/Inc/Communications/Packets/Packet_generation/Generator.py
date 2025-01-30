@@ -217,6 +217,8 @@ def Generate_Protections_context(board:Pd.BoardDescription):
     for measurement in protection_packets:
         Boundaries = Get_Bondaries(measurement)
         aux_protection = {"packet": measurement.id, "Boundaries": Boundaries}
+        if aux_protection in protections:
+            continue
         protections.append(aux_protection)
         data += aux_protection["packet"]+","
     data = data[:-1]
