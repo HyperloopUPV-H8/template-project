@@ -12,4 +12,4 @@ RUN mkdir /temp && cd /temp && git clone https://github.com/HyperloopUPV-H8/cube
 
 ENV PATH="$PATH:/opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin:/opt/st/stm32cubeclt_1.16.0/CMake/bin:/opt/st/stm32cubeclt_1.16.0/Ninja/bin"
 
-ENV PYTHONPATH="/workspaces/PCU-H10/Tests/VirtualMCU/src/:$PYTHONPATH"
+ENV PYTHONPATH="/workspaces/template-project/Tests/VirtualMCU/src/:$PYTHONPATH"
