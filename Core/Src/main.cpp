@@ -7,7 +7,9 @@
 #include "ST-LIB.hpp"
 
 int main(void) {
+#ifdef SIM_ON
     SharedMemory::start("gpio_SPI", "state_machine_SPI");
+#else
     uint8_t master1 = SPI::inscribe(SPI::spi1);
     uint8_t master2 = SPI::inscribe(SPI::spi2);
     uint8_t slave_selected = SPI::inscribe(SPI::spi3);
