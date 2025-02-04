@@ -1,21 +1,26 @@
 #include "ST-LIB.hpp"
 
-//Data packets for %board%
-class DataPacket{
-    
-%enums%
+//Order packets for {{board}}
+class DataPackets{
+{% for enum in enums %}
+{{enum.enum}}
+{% endfor %}
 
     private:
-        constexpr static size_t size =%size%;
+        constexpr static size_t size ={{size}};
         uint32_t id{0};
     public:
         std::array<StackPacket*,size> packets; 
-%packetnames%
+        {%for packet in packets%}StackPacket* {{packet.name}};
+        {% endfor %}
         
-    DataPacket(%data%)
+    DataPackets({{data}})
 {
 
-%packets%
+{% for packet in packets %}{{packet.name}} = new StackPacket({{packet.id}}{% if packet.data%},{{packet.data}}{% endif%});
+packets[id] = {{packet.name}};
+id++;
+{% endfor %}
 
 }
 };

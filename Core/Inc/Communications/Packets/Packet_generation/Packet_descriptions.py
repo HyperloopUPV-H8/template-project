@@ -1,6 +1,6 @@
 import re
 import json
-enum_template = "enum class %name%{ \n %values% \n};"
+enum_template = "enum class %name%{\n %values% \n};"
 
 
 class BoardDescription:    
@@ -13,7 +13,7 @@ class BoardDescription:
         i = 0
         self.packets = {}
         for packets in board["packets"]:
-            packets_name = re.split(r'_|\.', packets)[0]  
+            packets_name = re.split(r'_|\.', packets)[0]
             self.packets[packets_name] = []
             measurement = self._MeasurementFileSearch(packets,board["measurements"])
             with open("Core/Inc/Communications/JSON_ADE/boards/" + name+"/" + board["packets"][i]) as f:
@@ -39,7 +39,7 @@ class BoardDescription:
 class PacketDescription:
     def __init__(self, packet:dict,measurements:dict):
         self.id =packet["id"]
-        self.name = (packet["name"].replace(" ", "_"))
+        self.name = (packet["name"].replace(" ", "_").replace("(", "").replace(")", ""))
         self.type = packet["type"]
         self.variables = []
         self.measurements = []

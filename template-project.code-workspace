@@ -71,7 +71,8 @@
       "stop_token": "cpp",
       "thread": "cpp",
       "format": "cpp",
-      "mutex": "cpp"
+      "mutex": "cpp",
+      "list": "cpp"
     }
   }
 }
