@@ -88,7 +88,7 @@ void CRUISING_DEMONSTRATION_callback();
         StackOrder* CRUISING_DEMONSTRATION;
         
         
-    OrderPackets(&ldu_id,&lcu_desired_current,&test_speed_control_direction,&ldu_buffer_id,&new_reference_pressure,&pwm_duty_cycle,&lcu_desired_distance,&upper_position_limit,&lower_position_limit,&target_test_speed_control_kmh)
+    OrderPackets(&float64 lower_position_limit,&float32 pwm_duty_cycle,&uint16_t ldu_id,&float32 target_test_speed_control_kmh,&float32 lcu_desired_current,&test_speed_control_direction test_speed_control_direction,&float32 lcu_desired_distance,&float32 new_reference_pressure,&float64 upper_position_limit,&uint16_t ldu_buffer_id)
 {
 
 propagate_fault = new StackOrder(0,propagate_fault_callback);

@@ -98,7 +98,7 @@ Connected=1
         StackPacket* waterblock_data;
         
         
-    DataPackets(&actual_pressure,&obccu_connection,&reed4,&general_state,&bottle_temp_1,&reed2,&reference_pressure,&low_pressure_1,&valve_state,&bottle_temp_2,&acceleration,&waterblock_temperature,&pcu_connection,&output_voltage,&reed3,&specific_state,&longest_update_ms,&driving_mosfets,&voltage_state,&emergency_tape_value,&speed,&waterblock_pressure,&reed1,&direction,&low_pressure_2,&lcu_connection,&position,&emergency_tape,&bmsl_connection,&high_pressure)
+    DataPackets(&specific_state specific_state,&float64 bottle_temp_2,&float64 direction,&uint32_t longest_update_ms,&float64 acceleration,&float64 bottle_temp_1,&float32 high_pressure,&emergency_tape emergency_tape,&lcu_connection lcu_connection,&float32 low_pressure_1,&float64 position,&float32 waterblock_temperature,&reed3 reed3,&valve_state valve_state,&emergency_tape_value emergency_tape_value,&bool driving_mosfets,&float32 waterblock_pressure,&reed2 reed2,&float32 reference_pressure,&obccu_connection obccu_connection,&reed1 reed1,&float64 speed,&float32 actual_pressure,&float32 low_pressure_2,&bmsl_connection bmsl_connection,&general_state general_state,&uint16_t output_voltage,&voltage_state voltage_state,&pcu_connection pcu_connection,&reed4 reed4)
 {
 
 vcu_regulator_packet = new StackPacket(211,valve_state,reference_pressure,actual_pressure);

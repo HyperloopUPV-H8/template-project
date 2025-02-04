@@ -40,13 +40,14 @@ def Get_data_context(board:Pd.BoardDescription):
                 for packet_instance in board.packets[packet]:
                     tempdata = ""
                     for variable in packet_instance.variables:
-                        auxdata = ("&"+str(variable) +",")
-                        totaldata.add(auxdata)
                         tempdata +=(str(variable) +",")
                     if tempdata.endswith(","):
                         tempdata = tempdata[:-1]  
                     aux_packet = {"name": packet_instance.name, "data":tempdata , "id": packet_instance.id}
                     Packets.append(aux_packet)
+                    for measurement in packet_instance.measurements:
+                        auxdata = ("&"+str(measurement.type)+" "+str(measurement.id) +",")
+                        totaldata.add(auxdata)
         totaldata = list(totaldata)
         totaldata = "".join(totaldata)
         if totaldata.endswith(","):
@@ -103,13 +104,14 @@ def Get_order_context(board:Pd.BoardDescription):
                 for packet_instance in board.packets[packet]:
                     tempdata = ""
                     for variable in packet_instance.variables:
-                        auxdata = ("&"+str(variable) +",")
-                        totaldata.add(auxdata)
                         tempdata +=(str(variable) +",")
                     if tempdata.endswith(","):
                         tempdata = tempdata[:-1]  
                     aux_packet = {"name": packet_instance.name, "data":tempdata , "id": packet_instance.id}
                     Packets.append(aux_packet)
+                    for measurement in packet_instance.measurements:
+                        auxdata = ("&"+str(measurement.type)+" "+str(measurement.id) +",")
+                        totaldata.add(auxdata)
         totaldata = list(totaldata)
         totaldata = "".join(totaldata)
         if totaldata.endswith(","):
