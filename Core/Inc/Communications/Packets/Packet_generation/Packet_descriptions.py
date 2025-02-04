@@ -1,6 +1,6 @@
 import re
 import json
-enum_template = "enum class %name%{\n %values% \n};"
+enum_template = "enum class %name% : uint8_t {\n%values% \n};"
 
 
 class BoardDescription:    
@@ -79,8 +79,11 @@ class MeasurmentsDescription:
 
         enum = enum_template.replace("%name%", measurement["id"])
         values = ""
+        num = []
+        i = 0
         for value in measurement["enumValues"]:
-            values += value + ",\n"
+            values += value + "="+str(i)+ ",\n"
+            i += 1
         if values.endswith(",\n"):
             values = values[:-2]
             values += "\n"

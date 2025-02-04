@@ -3,81 +3,81 @@
 //Order packets for VCU
 class DataPackets{
 
-enum class valve_state{
- VALVE_OPEN,
-VALVE_CLOSED 
+enum class valve_state : uint8_t {
+VALVE_OPEN=0,
+VALVE_CLOSED=1 
 };
 
-enum class reed1{
- EXTENDED,
-RETRACTED 
+enum class reed1 : uint8_t {
+EXTENDED=0,
+RETRACTED=1 
 };
 
-enum class reed2{
- EXTENDED,
-RETRACTED 
+enum class reed2 : uint8_t {
+EXTENDED=0,
+RETRACTED=1 
 };
 
-enum class reed3{
- EXTENDED,
-RETRACTED 
+enum class reed3 : uint8_t {
+EXTENDED=0,
+RETRACTED=1 
 };
 
-enum class reed4{
- EXTENDED,
-RETRACTED 
+enum class reed4 : uint8_t {
+EXTENDED=0,
+RETRACTED=1 
 };
 
-enum class general_state{
- CONNECTING,
-OPERATIONAL,
-FAULT 
+enum class general_state : uint8_t {
+CONNECTING=0,
+OPERATIONAL=1,
+FAULT=2 
 };
 
-enum class specific_state{
- IDLE,
-TAKING OFF,
-STABLE LEVITATION,
-PROPULSION,
-LANDING,
-UNLOADING,
-LOADING,
-TRACTION 
+enum class specific_state : uint8_t {
+IDLE=0,
+TAKING OFF=1,
+STABLE LEVITATION=2,
+PROPULSION=3,
+LANDING=4,
+UNLOADING=5,
+LOADING=6,
+TRACTION=7 
 };
 
-enum class voltage_state{
- NOT_HV,
-HV 
+enum class voltage_state : uint8_t {
+NOT_HV=0,
+HV=1 
 };
 
-enum class emergency_tape{
- DISABLED,
-ENABLED 
+enum class emergency_tape : uint8_t {
+DISABLED=0,
+ENABLED=1 
 };
 
-enum class emergency_tape_value{
- NORMAL,
-EMERGENCY 
+enum class emergency_tape_value : uint8_t {
+NORMAL=0,
+EMERGENCY=1 
 };
 
-enum class pcu_connection{
- Disconnected,
-Connected 
+enum class pcu_connection : uint8_t {
+Disconnected=0,
+Connected=1 
 };
 
-enum class obccu_connection{
- Disconnected,
-Connected 
+enum class obccu_connection : uint8_t {
+Disconnected=0,
+Connected=1 
 };
 
-enum class lcu_connection{
- Disconnected,
-Connected 
+enum class lcu_connection : uint8_t {
+Disconnected=0,
+Connected=1 
 };
 
-enum class bmsl_connection{
- Disconnected,
-Connected 
+enum class bmsl_connection : uint8_t {
+Disconnected=0,
+Connected=1 
 };
 
 
@@ -98,7 +98,7 @@ Connected
         StackPacket* waterblock_data;
         
         
-    DataPackets(&reed1,&acceleration,&valve_state,&high_pressure,&longest_update_ms,&voltage_state,&output_voltage,&low_pressure_1,&obccu_connection,&general_state,&emergency_tape,&lcu_connection,&reed3,&emergency_tape_value,&driving_mosfets,&specific_state,&actual_pressure,&reference_pressure,&direction,&low_pressure_2,&bottle_temp_1,&reed2,&position,&reed4,&speed,&pcu_connection,&waterblock_temperature,&bottle_temp_2,&bmsl_connection,&waterblock_pressure)
+    DataPackets(&actual_pressure,&obccu_connection,&reed4,&general_state,&bottle_temp_1,&reed2,&reference_pressure,&low_pressure_1,&valve_state,&bottle_temp_2,&acceleration,&waterblock_temperature,&pcu_connection,&output_voltage,&reed3,&specific_state,&longest_update_ms,&driving_mosfets,&voltage_state,&emergency_tape_value,&speed,&waterblock_pressure,&reed1,&direction,&low_pressure_2,&lcu_connection,&position,&emergency_tape,&bmsl_connection,&high_pressure)
 {
 
 vcu_regulator_packet = new StackPacket(211,valve_state,reference_pressure,actual_pressure);

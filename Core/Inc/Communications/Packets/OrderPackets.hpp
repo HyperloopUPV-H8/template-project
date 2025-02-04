@@ -3,9 +3,9 @@
 //Order packets for VCU
 class OrderPackets{
 
-enum class test_speed_control_direction{
- FORWARD,
-BACKWARD 
+enum class test_speed_control_direction : uint8_t {
+FORWARD=0,
+BACKWARD=1 
 };
 
 
@@ -88,7 +88,7 @@ void CRUISING_DEMONSTRATION_callback();
         StackOrder* CRUISING_DEMONSTRATION;
         
         
-    OrderPackets(&target_test_speed_control_kmh,&new_reference_pressure,&pwm_duty_cycle,&lcu_desired_current,&lcu_desired_distance,&ldu_buffer_id,&lower_position_limit,&upper_position_limit,&ldu_id,&test_speed_control_direction)
+    OrderPackets(&ldu_id,&lcu_desired_current,&test_speed_control_direction,&ldu_buffer_id,&new_reference_pressure,&pwm_duty_cycle,&lcu_desired_distance,&upper_position_limit,&lower_position_limit,&target_test_speed_control_kmh)
 {
 
 propagate_fault = new StackOrder(0,propagate_fault_callback);
