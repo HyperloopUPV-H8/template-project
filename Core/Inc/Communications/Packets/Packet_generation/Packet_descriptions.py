@@ -1,6 +1,5 @@
 import re
 import json
-enum_template = "enum class %name% : uint8_t {\n%values% \n};"
 
 
 class BoardDescription:    
@@ -58,7 +57,10 @@ class MeasurmentsDescription:
             self.name = measurement["name"]
             self.type = self._unsigned_int_correction(measurement["type"])
             if self.type == "enum":
-                self.enum = self._create_enum(measurement)
+                values = []
+                for value in measurement["enumValues"]:
+                    values.append(str(value))
+                self.enum ={"name": measurement["id"], "values": values}
                 self.type = measurement["id"]
             protections = self._protection_search(measurement)
             if protections is not None:
@@ -72,23 +74,6 @@ class MeasurmentsDescription:
                 return measurment
         return None
     
-    @staticmethod
-    def _create_enum(measurement: dict):
-        if "enumValues" not in measurement:
-            raise ValueError("Measurement does not contain 'enumValues'")
-
-        enum = enum_template.replace("%name%", measurement["id"])
-        values = ""
-        num = []
-        i = 0
-        for value in measurement["enumValues"]:
-            values += value + "="+str(i)+ ",\n"
-            i += 1
-        if values.endswith(",\n"):
-            values = values[:-2]
-            values += "\n"
-        enum = enum.replace("%values%", values.strip())
-        return enum
     
     @staticmethod
     def _unsigned_int_correction(type:str):

@@ -2,10 +2,10 @@
 
 //Order packets for VCU
 class OrderPackets{
-
 enum class test_speed_control_direction : uint8_t {
 FORWARD=0,
-BACKWARD=1 
+BACKWARD=1
+
 };
 
 
@@ -47,7 +47,7 @@ void CRUISING_DEMONSTRATION_callback();
 
 
     private:
-        constexpr static size_t size =35;
+        constexpr static size_t size= 35;
         uint32_t id{0};
     public:
         std::array<StackOrder*,size> packets; 
@@ -88,7 +88,7 @@ void CRUISING_DEMONSTRATION_callback();
         StackOrder* CRUISING_DEMONSTRATION;
         
         
-    OrderPackets(&float64 lower_position_limit,&float32 pwm_duty_cycle,&uint16_t ldu_id,&float32 target_test_speed_control_kmh,&float32 lcu_desired_current,&test_speed_control_direction test_speed_control_direction,&float32 lcu_desired_distance,&float32 new_reference_pressure,&float64 upper_position_limit,&uint16_t ldu_buffer_id)
+    OrderPackets(float32 &new_reference_pressure,uint16_t &ldu_id,float32 &pwm_duty_cycle,uint16_t &ldu_id,float32 &lcu_desired_current,uint16_t &ldu_buffer_id,uint16_t &ldu_buffer_id,float32 &lcu_desired_distance,float32 &lcu_desired_distance,float64 &lower_position_limit,float64 &upper_position_limit,float32 &target_test_speed_control_kmh,test_speed_control_direction &test_speed_control_direction,float64 &lower_position_limit,float64 &upper_position_limit}})
 {
 
 propagate_fault = new StackOrder(0,propagate_fault_callback);

@@ -28,13 +28,13 @@ def Get_data_context(board:Pd.BoardDescription):
                 for packet_instance in board.packets[packet]:
                     for measurement in packet_instance.measurements:
                         if hasattr(measurement, "enum"):
-                            Enums.append({"enum":measurement.enum})
+                            Enums.append(measurement.enum)
         return Enums
-
+    
     
     def GenerateDataPackets(board:Pd.BoardDescription):
         Packets =[]
-        totaldata = set()
+        totaldata = []
         for packet in board.packets:
             if packet != "orders":
                 for packet_instance in board.packets[packet]:
@@ -46,15 +46,10 @@ def Get_data_context(board:Pd.BoardDescription):
                     aux_packet = {"name": packet_instance.name, "data":tempdata , "id": packet_instance.id}
                     Packets.append(aux_packet)
                     for measurement in packet_instance.measurements:
-                        auxdata = ("&"+str(measurement.type)+" "+str(measurement.id) +",")
-                        totaldata.add(auxdata)
-        totaldata = list(totaldata)
-        totaldata = "".join(totaldata)
-        if totaldata.endswith(","):
-            totaldata = totaldata[:-1]
+                        aux_data = {"type": measurement.type, "name": measurement.id}
+                        totaldata.append(aux_data)
         
         return Packets,totaldata
-    
     
     packets,data = GenerateDataPackets(board)
     context = {
@@ -92,13 +87,13 @@ def Get_order_context(board:Pd.BoardDescription):
                 for packet_instance in board.packets[packet]:
                     for measurement in packet_instance.measurements:
                         if hasattr(measurement, "enum"):
-                            Enums.append({"enum":measurement.enum})
+                            Enums.append(measurement.enum)
         return Enums
     
     
     def GenerateOrderPackets(board:Pd.BoardDescription):
         Packets =[]
-        totaldata = set()
+        totaldata = []
         for packet in board.packets:
             if packet == "orders":
                 for packet_instance in board.packets[packet]:
@@ -110,12 +105,8 @@ def Get_order_context(board:Pd.BoardDescription):
                     aux_packet = {"name": packet_instance.name, "data":tempdata , "id": packet_instance.id}
                     Packets.append(aux_packet)
                     for measurement in packet_instance.measurements:
-                        auxdata = ("&"+str(measurement.type)+" "+str(measurement.id) +",")
-                        totaldata.add(auxdata)
-        totaldata = list(totaldata)
-        totaldata = "".join(totaldata)
-        if totaldata.endswith(","):
-            totaldata = totaldata[:-1]
+                        aux_data = {"type": measurement.type, "name": measurement.id}
+                        totaldata.append(aux_data)
         
         return Packets,totaldata
     
@@ -179,15 +170,16 @@ def Generate_Protections_context(board:Pd.BoardDescription):
     if protection_packets == False:
         return False
     protections=[]
-    data =""
+    data =[]
     for measurement in protection_packets:
         Boundaries = Get_Bondaries(measurement)
         aux_protection = {"packet": measurement.id, "Boundaries": Boundaries}
+        aux_data = {"type": measurement.type, "name": measurement.id}
+        if aux_data not in data:
+            data.append(aux_data)
         if aux_protection in protections:
             continue
         protections.append(aux_protection)
-        data += aux_protection["packet"]+","
-    data = data[:-1]
     
     context ={
         "board": board.name,
