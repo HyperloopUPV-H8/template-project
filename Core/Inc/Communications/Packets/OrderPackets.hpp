@@ -197,6 +197,5 @@ CRUISING_DEMONSTRATION = new StackOrder(646,CRUISING_DEMONSTRATION_callback,targ
 packets[id] = CRUISING_DEMONSTRATION;
 id++;
 
-
 }
 };
