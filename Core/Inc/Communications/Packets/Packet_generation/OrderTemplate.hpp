@@ -26,6 +26,5 @@ class OrderPackets{
 packets[id] = {{packet.name}};
 id++;
 {% endfor %}
-
 }
 };
