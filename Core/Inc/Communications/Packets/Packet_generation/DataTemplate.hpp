@@ -16,7 +16,7 @@ class DataPackets{
         {%for packet in packets%}StackPacket* {{packet.name}};
         {% endfor %}
         
-    OrderPackets({%for value in data %}{{value.type}} &{{value.name}}{%if not loop.last%},{%endif%}{%endfor%}}})
+    DataPackets({%for value in data %}{{value.type}} &{{value.name}}{%if not loop.last%},{%endif%}{%endfor%}}})
 {
 
 {% for packet in packets %}{{packet.name}} = new StackPacket({{packet.id}}{% if packet.data%},{{packet.data}}{% endif%});
