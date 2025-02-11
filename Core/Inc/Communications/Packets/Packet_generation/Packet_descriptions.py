@@ -21,11 +21,13 @@ class BoardDescription:
                 m = json.load(f)
             i += 1
             for packet in p["packets"]:
+                j=0
                 self.packets[packets_name].append(PacketDescription(packet,m))
-                if packets_name != "orders":
+                if self.packets[packets_name][j].type != "order":
                     self.data_size += 1
                 else:
                     self.order_size += 1
+                j += 1
     @staticmethod            
     def _MeasurementFileSearch(packet:str,measurements:dict):
         packet_name = packet.split('_')[0]

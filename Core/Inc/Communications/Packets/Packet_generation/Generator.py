@@ -24,8 +24,8 @@ def Get_data_context(board:Pd.BoardDescription):
     def GenerateDataEnum(board:Pd.BoardDescription):
         Enums = []
         for packet in board.packets:
-            if packet != "orders":
-                for packet_instance in board.packets[packet]:
+            for packet_instance in board.packets[packet]:
+                if packet_instance.type != "order":
                     for measurement in packet_instance.measurements:
                         if hasattr(measurement, "enum"):
                             Enums.append(measurement.enum)
@@ -36,8 +36,8 @@ def Get_data_context(board:Pd.BoardDescription):
         Packets =[]
         totaldata = []
         for packet in board.packets:
-            if packet != "orders":
-                for packet_instance in board.packets[packet]:
+            for packet_instance in board.packets[packet]:
+                if packet_instance.type != "order":
                     tempdata = ""
                     for variable in packet_instance.variables:
                         tempdata +=(str(variable) +",")
@@ -63,10 +63,9 @@ def Get_data_context(board:Pd.BoardDescription):
 
 def Generate_DataPackets_hpp(board_input:str):
     board_instance = globals()[board_input]
-    
-    if board_instance.order_size == 0:
-        if os.path.exists("Core/Inc/Communications/Packets/OrderPackets.hpp"):
-            os.remove("Core/Inc/Communications/Packets/OrderPackets.hpp")
+    if board_instance.data_size == 0:
+        if os.path.exists("Core/Inc/Communications/Packets/DataPackets.hpp"):
+            os.remove("Core/Inc/Communications/Packets/DataPackets.hpp")
         return    
   
     env= jinja2.Environment(loader=jinja2.FileSystemLoader("Core/Inc/Communications/Packets/Packet_generation"))
@@ -83,8 +82,8 @@ def Get_order_context(board:Pd.BoardDescription):
     def GenerateOrderEnum(board:Pd.BoardDescription):
         Enums = []
         for packet in board.packets:
-            if packet == "orders":
-                for packet_instance in board.packets[packet]:
+            for packet_instance in board.packets[packet]:
+                if packet_instance.type == "order":
                     for measurement in packet_instance.measurements:
                         if hasattr(measurement, "enum"):
                             Enums.append(measurement.enum)
@@ -95,8 +94,8 @@ def Get_order_context(board:Pd.BoardDescription):
         Packets =[]
         totaldata = []
         for packet in board.packets:
-            if packet == "orders":
-                for packet_instance in board.packets[packet]:
+            for packet_instance in board.packets[packet]:
+                if packet_instance.type == "order":
                     tempdata = ""
                     for variable in packet_instance.variables:
                         tempdata +=(str(variable) +",")
@@ -123,7 +122,6 @@ def Get_order_context(board:Pd.BoardDescription):
 
 def Generate_OrderPackets_hpp(board_input:str):
     board_instance = globals()[board_input]
-    
     if board_instance.order_size == 0:
         if os.path.exists("Core/Inc/Communications/Packets/OrderPackets.hpp"):
             os.remove("Core/Inc/Communications/Packets/OrderPackets.hpp")
