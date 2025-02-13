@@ -7,6 +7,7 @@ from datetime import datetime
 import traceback
 
 import logging
+import threading
 
 pathlogs = 'testsLog'
 
@@ -16,6 +17,10 @@ def LOG(*args, mode= 'INFO'):
         logging.info(args)
     elif(mode == 'ERR'):
         logging.error(args)
+    elif(mode=='ELF'):
+        logging.info(f'<CPP>{args}')
+
+
 
 class DuplicatedTestError(Exception):
     def __init__(self, name):
@@ -30,13 +35,28 @@ class UnitUnderTest:
         self._executable = executable
     
     def __enter__(self):
+        self._executable = f"stdbuf -oL {self._executable}"
         self._process = subprocess.Popen(
             self._executable,
             shell=True,
-            stdout=sys.stdout,
-            stderr=sys.stderr,
-            text=True
+            stdout=subprocess.PIPE,
+
+            #stdout=sys.stdout,
+            stderr=subprocess.PIPE,
+            text=True,
+            bufsize=1,
         )
+
+        stdout_thread = threading.Thread(target=self.stream_output)
+        stdout_thread.start()
+
+    def stream_output(self):
+        while True:
+            line = self._process.stdout.readline()
+            print("entra")
+            if not line: break
+            
+            LOG(line, mode = 'ELF')
 
     def __exit__(self, *args):
         try:
