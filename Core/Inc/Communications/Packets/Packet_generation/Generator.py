@@ -1,192 +1,214 @@
 import json 
 import Packet_descriptions as Pd
 import os
+import jinja2
 
-packet_name= "        StackPacket* %name%;\n"
-packet_struct = "   %name% = new StackPacket(%packet_data%);\n   packets[id] = %name%;\n   id++;"
 
 def Generate_PacketDescription():
     with open("Core/Inc/Communications/JSON_ADE/boards.json") as f:
         boards = json.load(f)
-
+    boards_name = []
     for board in boards["boards"]:
         with open("Core/Inc/Communications/JSON_ADE/" + (boards["boards"][board])) as f:
             b = json.load(f)
         board_instance = Pd.BoardDescription(board, b)
+        boards_name.append(board_instance.name)
         globals()[board] = board_instance
+    
+    return boards_name
+        
 
-def GenerateDataEnum(board:Pd.BoardDescription):
-    Enums = set()
-    for packet in board.packets:
-        if packet != "orders":
+#DataPackets generation:
+
+def Get_data_context(board:Pd.BoardDescription):
+    def GenerateDataEnum(board:Pd.BoardDescription):
+        Enums = []
+        for packet in board.packets:
             for packet_instance in board.packets[packet]:
-                for measurement in packet_instance.measurements:
-                    if hasattr(measurement, "enum"):
-                        Enums.add(measurement.enum)
-    Enums = list(Enums)
-    enums_data = "\n".join(Enums)
-    return enums_data
+                if packet_instance.type != "order":
+                    for measurement in packet_instance.measurements:
+                        if hasattr(measurement, "enum"):
+                            Enums.append(measurement.enum)
+        return Enums
     
-def GenerateData(board:Pd.BoardDescription):
-    Data =set()
-    for packet in board.packets:
-        if packet != "orders":
+    
+    def GenerateDataPackets(board:Pd.BoardDescription):
+        Packets =[]
+        totaldata = []
+        for packet in board.packets:
             for packet_instance in board.packets[packet]:
-                data = ""
-                i=0
-                data += "uint16_t &idpacket" + str(packet_instance.id) + ","
-                for variable in packet_instance.variables:
-                    data += (str(packet_instance.measurements[i].type)+" &"+ str(variable) +",")
-                    i += 1  
-                Data.add(data)
-    Data = list(Data)
-    if Data and Data[-1].endswith(","):
-        Data[-1] = Data[-1][:-1]
-    total_data ="".join(Data)
-    return total_data
+                if packet_instance.type != "order":
+                    tempdata = ""
+                    for variable in packet_instance.variables:
+                        tempdata +=(str(variable) +",")
+                    if tempdata.endswith(","):
+                        tempdata = tempdata[:-1]  
+                    aux_packet = {"name": packet_instance.name, "data":tempdata , "id": packet_instance.id}
+                    Packets.append(aux_packet)
+                    for measurement in packet_instance.measurements:
+                        aux_data = {"type": measurement.type, "name": measurement.id}
+                        totaldata.append(aux_data)
+        
+        return Packets,totaldata
     
-def GenerateDataNames(board:Pd.BoardDescription,packet_name:str):
-    Names =[]
-    for packet in board.packets:
-        if packet != "orders":
-            for packet_instance in board.packets[packet]:
-                data = ""
-                data += packet_name.replace("%name%",packet_instance.name)
-                Names.append(data)
-    names_data = "".join(Names)
-    return names_data
-    
-    
-def GenerateDataPackets(board:Pd.BoardDescription,packet_struct:str):
-    Packets =[]
-    for packet in board.packets:
-        if packet != "orders":
-            for packet_instance in board.packets[packet]:
-                data = ""
-                data +="idpacket"+str(packet_instance.id)+"," 
-                
-                for variable in packet_instance.variables:
-                    data += (str(variable) +",")
-                if data.endswith(","):
-                        data = data[:-1]  
-                aux = packet_struct
-                aux = aux.replace("%name%",packet_instance.name)    
-                Packets.append(aux.replace("%packet_data%", data))
-                
-    packets_data = "\n".join(Packets)
-    return packets_data
-    
+    packets,data = GenerateDataPackets(board)
+    context = {
+        "board": board.name,
+        "enums": GenerateDataEnum(board),
+        "packets" : packets,
+        "data": data,
+        "size": board.order_size,
+    }
+    return context
+
 def Generate_DataPackets_hpp(board_input:str):
     board_instance = globals()[board_input]
-    
     if board_instance.data_size == 0:
         if os.path.exists("Core/Inc/Communications/Packets/DataPackets.hpp"):
             os.remove("Core/Inc/Communications/Packets/DataPackets.hpp")
-        return
+        return    
+  
+    env= jinja2.Environment(loader=jinja2.FileSystemLoader("Core/Inc/Communications/Packets/Packet_generation"))
+    template = env.get_template("DataTemplate.hpp")
+    context = Get_data_context(board_instance)
+
     
-    with open("Core/Inc/Communications/Packets/Packet_generation/DataTemplate.hpp","r") as Input:
-        data= Input.read()
-
-    data = data.replace("%board%", board_instance.name)
-    data = data.replace("%enums%", GenerateDataEnum(board_instance))
-    data = data.replace("%packetnames%", GenerateDataNames(board_instance,packet_name))
-    data = data.replace("%size%", str(board_instance.data_size))
-    data = data.replace("%data%", GenerateData(board_instance))
-    data = data.replace("%packets%", GenerateDataPackets(board_instance,packet_struct))
-
     with open("Core/Inc/Communications/Packets/DataPackets.hpp","w") as Output:
-        Output.write(data)
+        Output.write(template.render(context))
             
-def GenerateOrderEnum(board:Pd.BoardDescription):
-    Enums = set()
-    for packet in board.packets:
-        if packet == "orders":
-            for packet_instance in board.packets[packet]:
-                for measurement in packet_instance.measurements:
-                    if hasattr(measurement, "enum"):
-                        Enums.add(measurement.enum)
-    Enums = list(Enums)
-    enums_data = "\n".join(Enums)
-    return enums_data
+#OrderPackets generation:
 
-def GenerateOrderData(board:Pd.BoardDescription):
-    Data =set()
-    for packet in board.packets:
-        if packet == "orders":
+def Get_order_context(board:Pd.BoardDescription):
+    def GenerateOrderEnum(board:Pd.BoardDescription):
+        Enums = []
+        for packet in board.packets:
             for packet_instance in board.packets[packet]:
-                data = ""
-                i=0
-                data += "uint16_t &idpacket" + str(packet_instance.id) + ","
-                for variable in packet_instance.variables:
-                    data += (str(packet_instance.measurements[i].type)+" &"+ str(variable) +",")
-                    i += 1  
-                Data.add(data)
-    Data = list(Data)
-    if Data and Data[-1].endswith(","):
-        Data[-1] = Data[-1][:-1]
-    total_data ="".join(Data)
-    return total_data
-
-def GenerateOrderNames(board:Pd.BoardDescription,packet_name:str):
-    Names =[]
-    for packet in board.packets:
-        if packet == "orders":
+                if packet_instance.type == "order":
+                    for measurement in packet_instance.measurements:
+                        if hasattr(measurement, "enum"):
+                            Enums.append(measurement.enum)
+        return Enums
+    
+    
+    def GenerateOrderPackets(board:Pd.BoardDescription):
+        Packets =[]
+        totaldata = []
+        for packet in board.packets:
             for packet_instance in board.packets[packet]:
-                data = ""
-                data += packet_name.replace("%name%",packet_instance.name)
-                Names.append(data)
-    names_data = "".join(Names)
-    return names_data
-
-def GenerateOrderPackets(board:Pd.BoardDescription,packet_struct:str):
-    Packets =[]
-    for packet in board.packets:
-        if packet == "orders":
-            for packet_instance in board.packets[packet]:
-                data = ""
-                data +="idpacket"+str(packet_instance.id)+"," 
-                
-                for variable in packet_instance.variables:
-                    data += (str(variable) +",")
-                if data.endswith(","):
-                        data = data[:-1]  
-                aux = packet_struct
-                aux = aux.replace("%name%",packet_instance.name)    
-                Packets.append(aux.replace("%packet_data%", data))
-                
-    packets_data = "\n".join(Packets)
-    return packets_data
+                if packet_instance.type == "order":
+                    tempdata = ""
+                    for variable in packet_instance.variables:
+                        tempdata +=(str(variable) +",")
+                    if tempdata.endswith(","):
+                        tempdata = tempdata[:-1]  
+                    aux_packet = {"name": packet_instance.name, "data":tempdata , "id": packet_instance.id}
+                    Packets.append(aux_packet)
+                    for measurement in packet_instance.measurements:
+                        aux_data = {"type": measurement.type, "name": measurement.id}
+                        totaldata.append(aux_data)
+        
+        return Packets,totaldata
+    
+    
+    packets,data = GenerateOrderPackets(board)
+    context = {
+        "board": board.name,
+        "enums": GenerateOrderEnum(board),
+        "packets" : packets,
+        "data": data,
+        "size": board.order_size,
+    }
+    return context
 
 def Generate_OrderPackets_hpp(board_input:str):
     board_instance = globals()[board_input]
-    
     if board_instance.order_size == 0:
         if os.path.exists("Core/Inc/Communications/Packets/OrderPackets.hpp"):
             os.remove("Core/Inc/Communications/Packets/OrderPackets.hpp")
         return    
   
-    with open("Core/Inc/Communications/Packets/Packet_generation/OrderTemplate.hpp","r") as Input:
-        data= Input.read()
+    env= jinja2.Environment(loader=jinja2.FileSystemLoader("Core/Inc/Communications/Packets/Packet_generation"))
+    template = env.get_template("OrderTemplate.hpp")
+    context = Get_order_context(board_instance)
 
-    data = data.replace("%board%", board_instance.name)
-    data = data.replace("%enums%", GenerateOrderEnum(board_instance))
-    data = data.replace("%packetnames%", GenerateOrderNames(board_instance,packet_name))
-    data = data.replace("%size%", str(board_instance.order_size))
-    data = data.replace("%data%", GenerateOrderData(board_instance))
-    data = data.replace("%packets%", GenerateOrderPackets(board_instance,packet_struct))
-
-    with open("Core/Inc/Communications/Packets/OrderPackets.hpp","w") as Output:
-        Output.write(data)
     
+    with open("Core/Inc/Communications/Packets/OrderPackets.hpp","w") as Output:
+        Output.write(template.render(context))
 
 
-Generate_PacketDescription()
+#Protections generation:
+
+def Generate_Protections_context(board:Pd.BoardDescription):
+    def Get_Bondaries(measurement:Pd.MeasurmentsDescription):
+        Boundaries = []
+        for i in {0,1}:
+            for j in {0,1}:
+                if measurement.protections.protections[i].Protectionvalue[j] is None:
+                    continue
+                temp_boundary= {"type": measurement.type, "Above_or_Below":measurement.protections.protections[i].ProtectionType, "value": measurement.protections.protections[i].Protectionvalue[j],"coma":"," }
+                Boundaries.append(temp_boundary)
+        
+        Boundaries[-1]["coma"] = ""
+        return Boundaries
+            
+
+    def Get_protection_packets(board:Pd.BoardDescription):
+        protections = []
+        for packet in board.packets:
+            for packet_instance in board.packets[packet]:
+                for measurement in packet_instance.measurements:
+                    if hasattr(measurement, "protections"):
+                        protections.append(measurement)
+        if len(protections) == 0:
+            return False
+        return protections
+    
+    
+    protection_packets = Get_protection_packets(board)
+    if protection_packets == False:
+        return False
+    protections=[]
+    data =[]
+    for measurement in protection_packets:
+        Boundaries = Get_Bondaries(measurement)
+        aux_protection = {"packet": measurement.id, "Boundaries": Boundaries}
+        aux_data = {"type": measurement.type, "name": measurement.id}
+        if aux_data not in data:
+            data.append(aux_data)
+        if aux_protection in protections:
+            continue
+        protections.append(aux_protection)
+    
+    context ={
+        "board": board.name,
+        "data": data,
+        "protections": protections 
+    }
+    return context
+
+def Generate_Protections_hpp(board_input:str):
+    board_instance = globals()[board_input]
+    env= jinja2.Environment(loader=jinja2.FileSystemLoader("Core/Inc/Communications/Packets/Packet_generation"))
+    template = env.get_template("ProtectionsTemplate.hpp")
+    context = Generate_Protections_context(board_instance)
+    if context == False:
+        if os.path.exists("Core/Inc/Communications/Packets/Protections.hpp"):
+            os.remove("Core/Inc/Communications/Packets/Protections.hpp")
+            return
+    with open("Core/Inc/Communications/Packets/Protections.hpp","w") as Output:
+        Output.write(template.render(context))
+
+
+#Main function:
+
+boards = Generate_PacketDescription()
 board = input("Enter board name: ")
-while board not in ["VCU","OBCCU","LCU"]:
-    print("Board not found, only VCU, OBCCU and LCU are available")
+while board not in boards: 
+    print("Board not found, select an available board")
     board = input("Enter board name: ")
 Generate_DataPackets_hpp(board)
 Generate_OrderPackets_hpp(board)
+Generate_Protections_hpp(board)
 
 
 

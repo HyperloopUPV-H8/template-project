@@ -1,21 +1,27 @@
 #include "ST-LIB.hpp"
 
-//Data packets for %board%
-class DataPacket{
-    
-%enums%
+//Data packets for {{board}}
+class DataPackets{
+{% for enum in enums %}enum class {{enum.name}} : uint8_t {
+{% for value in enum["values"] %}{{value}}={{loop.index0}}{%if not loop.last%},{%endif%}
+{% endfor %}};
+{% endfor %}
+
 
     private:
-        constexpr static size_t size =%size%;
+        constexpr static size_t size= {{size}};
         uint32_t id{0};
     public:
         std::array<StackPacket*,size> packets; 
-%packetnames%
+        {%for packet in packets%}StackPacket* {{packet.name}};
+        {% endfor %}
         
-    DataPacket(%data%)
+    DataPackets({%for value in data %}{{value.type}} &{{value.name}}{%if not loop.last%},{%endif%}{%endfor%}}})
 {
 
-%packets%
-
+{% for packet in packets %}{{packet.name}} = new StackPacket({{packet.id}}{% if packet.data%},{{packet.data}}{% endif%});
+packets[id] = {{packet.name}};
+id++;
+{% endfor %}
 }
 };
