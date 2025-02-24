@@ -260,6 +260,7 @@ def parse_state(data):
         return State(data)
     elif isinstance(data, dict):
         nested_sm = StateMachine(data["name"])
+        nested_sm.nested_to = data.get("nested_to")
         for sub_state in data["sub-states"]:
             nested_sm.add_state(State(sub_state))
         return nested_sm
