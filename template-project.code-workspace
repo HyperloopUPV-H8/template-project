@@ -72,7 +72,10 @@
       "thread": "cpp",
       "format": "cpp",
       "mutex": "cpp",
-      "list": "cpp"
+      "list": "cpp",
+      "expected": "cpp",
+      "regex": "cpp",
+      "variant": "cpp"
     }
   }
 }

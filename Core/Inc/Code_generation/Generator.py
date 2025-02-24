@@ -1,5 +1,5 @@
 import json 
-import Packet_descriptions as Pd
+from Packet_descriptions import *
 import os
 import jinja2
 
@@ -11,17 +11,17 @@ def Generate_PacketDescription():
     for board in boards["boards"]:
         with open("Core/Inc/Communications/JSON_ADE/" + (boards["boards"][board])) as f:
             b = json.load(f)
-        board_instance = Pd.BoardDescription(board, b)
+        board_instance = BoardDescription(board, b)
         boards_name.append(board_instance.name)
         globals()[board] = board_instance
     
     return boards_name
         
 
-#DataPackets generation:
+#--------------DataPackets.hpp generation---------------#
 
-def Get_data_context(board:Pd.BoardDescription):
-    def GenerateDataEnum(board:Pd.BoardDescription):
+def Get_data_context(board:BoardDescription):
+    def GenerateDataEnum(board:BoardDescription):
         Enums = []
         for packet in board.packets:
             for packet_instance in board.packets[packet]:
@@ -32,7 +32,7 @@ def Get_data_context(board:Pd.BoardDescription):
         return Enums
     
     
-    def GenerateDataPackets(board:Pd.BoardDescription):
+    def GenerateDataPackets(board:BoardDescription):
         Packets =[]
         totaldata = []
         for packet in board.packets:
@@ -68,7 +68,7 @@ def Generate_DataPackets_hpp(board_input:str):
             os.remove("Core/Inc/Communications/Packets/DataPackets.hpp")
         return    
   
-    env= jinja2.Environment(loader=jinja2.FileSystemLoader("Core/Inc/Communications/Packets/Packet_generation"))
+    env= jinja2.Environment(loader=jinja2.FileSystemLoader("Core/Inc/Code_generation"))
     template = env.get_template("DataTemplate.hpp")
     context = Get_data_context(board_instance)
 
@@ -76,10 +76,10 @@ def Generate_DataPackets_hpp(board_input:str):
     with open("Core/Inc/Communications/Packets/DataPackets.hpp","w") as Output:
         Output.write(template.render(context))
             
-#OrderPackets generation:
+#--------------OrderPackets.hpp generation---------------#
 
-def Get_order_context(board:Pd.BoardDescription):
-    def GenerateOrderEnum(board:Pd.BoardDescription):
+def Get_order_context(board:BoardDescription):
+    def GenerateOrderEnum(board:BoardDescription):
         Enums = []
         for packet in board.packets:
             for packet_instance in board.packets[packet]:
@@ -90,7 +90,7 @@ def Get_order_context(board:Pd.BoardDescription):
         return Enums
     
     
-    def GenerateOrderPackets(board:Pd.BoardDescription):
+    def GenerateOrderPackets(board:BoardDescription):
         Packets =[]
         totaldata = []
         for packet in board.packets:
@@ -127,7 +127,7 @@ def Generate_OrderPackets_hpp(board_input:str):
             os.remove("Core/Inc/Communications/Packets/OrderPackets.hpp")
         return    
   
-    env= jinja2.Environment(loader=jinja2.FileSystemLoader("Core/Inc/Communications/Packets/Packet_generation"))
+    env= jinja2.Environment(loader=jinja2.FileSystemLoader("Core/Inc/Code_generation"))
     template = env.get_template("OrderTemplate.hpp")
     context = Get_order_context(board_instance)
 
@@ -136,10 +136,10 @@ def Generate_OrderPackets_hpp(board_input:str):
         Output.write(template.render(context))
 
 
-#Protections generation:
+#--------------Protections.hpp generation---------------#
 
-def Generate_Protections_context(board:Pd.BoardDescription):
-    def Get_Bondaries(measurement:Pd.MeasurmentsDescription):
+def Generate_Protections_context(board:BoardDescription):
+    def Get_Bondaries(measurement:MeasurmentsDescription):
         Boundaries = []
         for i in {0,1}:
             for j in {0,1}:
@@ -152,7 +152,7 @@ def Generate_Protections_context(board:Pd.BoardDescription):
         return Boundaries
             
 
-    def Get_protection_packets(board:Pd.BoardDescription):
+    def Get_protection_packets(board:BoardDescription):
         protections = []
         for packet in board.packets:
             for packet_instance in board.packets[packet]:
@@ -188,7 +188,7 @@ def Generate_Protections_context(board:Pd.BoardDescription):
 
 def Generate_Protections_hpp(board_input:str):
     board_instance = globals()[board_input]
-    env= jinja2.Environment(loader=jinja2.FileSystemLoader("Core/Inc/Communications/Packets/Packet_generation"))
+    env= jinja2.Environment(loader=jinja2.FileSystemLoader("Core/Inc/Code_generation"))
     template = env.get_template("ProtectionsTemplate.hpp")
     context = Generate_Protections_context(board_instance)
     if context == False:
@@ -198,8 +198,105 @@ def Generate_Protections_hpp(board_input:str):
     with open("Core/Inc/Communications/Packets/Protections.hpp","w") as Output:
         Output.write(template.render(context))
 
+#--------------state_machine.hpp generation---------------#
+def generate_code(state_machine):
+    content = []
+    
+    content.extend([
+        "#pragma once",
+        '#include "ST-LIB.hpp"',
+        "using namespace std::chrono_literals;",
+        "",
+        "// AUTOGENERATED CODE, DO NOT EDIT MANUALLY",
+        "",
+        f"class {state_machine.name}{{",
+        "",
+        "    public:",
+        ""
+    ])
 
-#Main function:
+    for t in state_machine.transitions:
+        content.append(f"    static bool {t.name}();")
+    content.append("")
+
+    for action in state_machine.actions:
+        for sa in action.state_actions:
+            content.append(f"    static void {sa.name}();")
+    content.append("\n")
+
+    content.append(f"    enum {state_machine.name}States {{")
+    for state in state_machine.states:
+        if isinstance(state, State):
+            content.append(f"        {state.name.upper()},")
+    content.append("    };")
+    content.append("")
+
+    for nested_sm in state_machine.nested_state_machines:
+        content.append(f"    enum {nested_sm.name}{{")
+        for state in nested_sm.states:
+            content.append(f"        {state.name.upper()},")
+        content.append("    };")
+        content.append("")
+
+    content.append(f"    {state_machine.name}(){{")
+    content.append("")
+
+    if state_machine.states:
+        first_state = state_machine.states[0]
+        content.append(f"        StateMachine {state_machine.name} = StateMachine({state_machine.name}States::{first_state.name.upper()});")
+        content.append("")
+
+    for nested_sm in state_machine.nested_state_machines:
+        if nested_sm.states:
+            first_nested = nested_sm.states[0]
+            content.extend([
+                f"        StateMachine {nested_sm.name} = StateMachine({nested_sm.name}::{first_nested.name.upper()});",
+                f"        {state_machine.name}.add_state_machine({nested_sm.name},{nested_sm.name}::{first_nested.name.upper()});",
+            ])
+            for state in nested_sm.states[1:]:
+                content.append(f"        {nested_sm.name}.add_state({nested_sm.name}::{state.name.upper()});")
+        content.append("")
+
+    for state in state_machine.states[1:]:
+        if isinstance(state, State):
+            content.append(f"        {state_machine.name}.add_state({state_machine.name}States::{state.name.upper()});")
+    content.append("")
+
+    for t in state_machine.transitions:
+        if t.comment:
+            content.append(f"        // {t.comment}")
+        from_state = get_state_reference(t.from_state, state_machine.name)
+        to_state = get_state_reference(t.to_state, state_machine.name)
+        content.append(f"        {state_machine.name}.add_transition({from_state},{to_state},{t.name});")
+    content.append("")
+
+    for action in state_machine.actions:
+        for sa in action.state_actions:
+            if sa.description:
+                content.append(f"        // {sa.description}")
+            
+            state_ref = get_state_reference(action.state, state_machine.name)
+            
+            if action.type == "enter":
+                content.append(f"        {state_machine.name}.add_enter_action({sa.name},{state_ref});")
+            elif action.type == "exit":
+                content.append(f"        {state_machine.name}.add_exit_action({sa.name},{state_ref});")
+            elif action.type.startswith("cyclic"):
+                precision = action.type.split("_")[1]
+                content.append(f"        {state_machine.name}.add_{precision}_precision_cyclic_action({sa.name},{sa.period},{state_ref});")
+    content.append("")
+
+    content.extend([
+        "    }",
+        "",
+        "};"
+    ])
+
+    with open("Core/Inc/state_machine.hpp", "w") as f:
+        f.write("\n".join(content))
+
+
+#Main function
 
 boards = Generate_PacketDescription()
 board = input("Enter board name: ")
@@ -209,6 +306,11 @@ while board not in boards:
 Generate_DataPackets_hpp(board)
 Generate_OrderPackets_hpp(board)
 Generate_Protections_hpp(board)
+if __name__ == "__main__":
+    with open("state_machine.json","r") as file:
+        data = json.load(file)
+    sm = parse_state_machine(data)
+    generate_code(sm)
 
 
 

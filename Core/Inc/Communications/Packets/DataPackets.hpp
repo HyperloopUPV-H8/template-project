@@ -1,71 +1,72 @@
+#pragma once
 #include "ST-LIB.hpp"
 
 //Data packets for VCU
 class DataPackets{
-enum class valve_state : uint8_t {
-VALVE_OPEN=0,
-VALVE_CLOSED=1
-};
-enum class reed1 : uint8_t {
-EXTENDED=0,
-RETRACTED=1
-};
-enum class reed2 : uint8_t {
-EXTENDED=0,
-RETRACTED=1
-};
-enum class reed3 : uint8_t {
-EXTENDED=0,
-RETRACTED=1
-};
-enum class reed4 : uint8_t {
-EXTENDED=0,
-RETRACTED=1
-};
-enum class general_state : uint8_t {
-CONNECTING=0,
-OPERATIONAL=1,
-FAULT=2
-};
-enum class specific_state : uint8_t {
-IDLE=0,
-TAKING OFF=1,
-STABLE LEVITATION=2,
-PROPULSION=3,
-LANDING=4,
-UNLOADING=5,
-LOADING=6,
-TRACTION=7
-};
-enum class voltage_state : uint8_t {
-NOT_HV=0,
-HV=1
-};
-enum class emergency_tape : uint8_t {
-DISABLED=0,
-ENABLED=1
-};
-enum class emergency_tape_value : uint8_t {
-NORMAL=0,
-EMERGENCY=1
-};
-enum class pcu_connection : uint8_t {
-Disconnected=0,
-Connected=1
-};
-enum class obccu_connection : uint8_t {
-Disconnected=0,
-Connected=1
-};
-enum class lcu_connection : uint8_t {
-Disconnected=0,
-Connected=1
-};
-enum class bmsl_connection : uint8_t {
-Disconnected=0,
-Connected=1
-};
-
+    enum class valve_state : uint8_t {
+    VALVE_OPEN=0,
+    VALVE_CLOSED=1
+    };
+    enum class reed1 : uint8_t {
+    EXTENDED=0,
+    RETRACTED=1
+    };
+    enum class reed2 : uint8_t {
+    EXTENDED=0,
+    RETRACTED=1
+    };
+    enum class reed3 : uint8_t {
+    EXTENDED=0,
+    RETRACTED=1
+    };
+    enum class reed4 : uint8_t {
+    EXTENDED=0,
+    RETRACTED=1
+    };
+    enum class general_state : uint8_t {
+    CONNECTING=0,
+    OPERATIONAL=1,
+    FAULT=2
+    };
+    enum class specific_state : uint8_t {
+    IDLE=0,
+    TAKING_OFF=1,
+    STABLE_LEVITATION=2,
+    PROPULSION=3,
+    LANDING=4,
+    UNLOADING=5,
+    LOADING=6,
+    TRACTION=7
+    };
+    enum class voltage_state : uint8_t {
+    NOT_HV=0,
+    HV=1
+    };
+    enum class emergency_tape : uint8_t {
+    DISABLED=0,
+    ENABLED=1
+    };
+    enum class emergency_tape_value : uint8_t {
+    NORMAL=0,
+    EMERGENCY=1
+    };
+    enum class pcu_connection : uint8_t {
+    Disconnected=0,
+    Connected=1
+    };
+    enum class obccu_connection : uint8_t {
+    Disconnected=0,
+    Connected=1
+    };
+    enum class lcu_connection : uint8_t {
+    Disconnected=0,
+    Connected=1
+    };
+    enum class bmsl_connection : uint8_t {
+    Disconnected=0,
+    Connected=1
+    };
+    
 
 
     private:
@@ -88,36 +89,36 @@ Connected=1
     DataPackets(valve_state &valve_state,float32 &reference_pressure,float32 &actual_pressure,reed1 &reed1,reed2 &reed2,reed3 &reed3,reed4 &reed4,float64 &bottle_temp_1,float64 &bottle_temp_2,float32 &high_pressure,float32 &low_pressure_1,float32 &low_pressure_2,float64 &direction,float64 &position,float64 &speed,float64 &acceleration,uint32_t &longest_update_ms,general_state &general_state,specific_state &specific_state,voltage_state &voltage_state,emergency_tape &emergency_tape,emergency_tape_value &emergency_tape_value,uint16_t &output_voltage,bool &driving_mosfets,pcu_connection &pcu_connection,obccu_connection &obccu_connection,lcu_connection &lcu_connection,bmsl_connection &bmsl_connection,float32 &waterblock_temperature,float32 &waterblock_pressure}})
 {
 
-vcu_regulator_packet = new StackPacket(211,valve_state,reference_pressure,actual_pressure);
-packets[id] = vcu_regulator_packet;
-id++;
-vcu_reed_packet = new StackPacket(212,reed1,reed2,reed3,reed4);
-packets[id] = vcu_reed_packet;
-id++;
-vcu_bottle_temperature_packet = new StackPacket(213,bottle_temp_1,bottle_temp_2);
-packets[id] = vcu_bottle_temperature_packet;
-id++;
-vcu_pressure_packet = new StackPacket(214,high_pressure,low_pressure_1,low_pressure_2);
-packets[id] = vcu_pressure_packet;
-id++;
-encoder_packet = new StackPacket(219,direction,position,speed,acceleration);
-packets[id] = encoder_packet;
-id++;
-state_machines_packet = new StackPacket(220,longest_update_ms,general_state,specific_state,voltage_state);
-packets[id] = state_machines_packet;
-id++;
-emergency_tape_state = new StackPacket(221,emergency_tape,emergency_tape_value);
-packets[id] = emergency_tape_state;
-id++;
-output_vtg = new StackPacket(981,output_voltage,driving_mosfets);
-packets[id] = output_vtg;
-id++;
-Tcp_connections = new StackPacket(230,pcu_connection,obccu_connection,lcu_connection,bmsl_connection);
-packets[id] = Tcp_connections;
-id++;
-waterblock_data = new StackPacket(231,waterblock_temperature,waterblock_pressure);
-packets[id] = waterblock_data;
-id++;
-
+    vcu_regulator_packet = new StackPacket(211,valve_state,reference_pressure,actual_pressure);
+    packets[id] = vcu_regulator_packet;
+    id++;
+    vcu_reed_packet = new StackPacket(212,reed1,reed2,reed3,reed4);
+    packets[id] = vcu_reed_packet;
+    id++;
+    vcu_bottle_temperature_packet = new StackPacket(213,bottle_temp_1,bottle_temp_2);
+    packets[id] = vcu_bottle_temperature_packet;
+    id++;
+    vcu_pressure_packet = new StackPacket(214,high_pressure,low_pressure_1,low_pressure_2);
+    packets[id] = vcu_pressure_packet;
+    id++;
+    encoder_packet = new StackPacket(219,direction,position,speed,acceleration);
+    packets[id] = encoder_packet;
+    id++;
+    state_machines_packet = new StackPacket(220,longest_update_ms,general_state,specific_state,voltage_state);
+    packets[id] = state_machines_packet;
+    id++;
+    emergency_tape_state = new StackPacket(221,emergency_tape,emergency_tape_value);
+    packets[id] = emergency_tape_state;
+    id++;
+    output_vtg = new StackPacket(981,output_voltage,driving_mosfets);
+    packets[id] = output_vtg;
+    id++;
+    Tcp_connections = new StackPacket(230,pcu_connection,obccu_connection,lcu_connection,bmsl_connection);
+    packets[id] = Tcp_connections;
+    id++;
+    waterblock_data = new StackPacket(231,waterblock_temperature,waterblock_pressure);
+    packets[id] = waterblock_data;
+    id++;
+    
 }
 };

@@ -1,11 +1,12 @@
+#pragma once
 #include "ST-LIB.hpp"
 
 //Data packets for {{board}}
 class DataPackets{
-{% for enum in enums %}enum class {{enum.name}} : uint8_t {
-{% for value in enum["values"] %}{{value}}={{loop.index0}}{%if not loop.last%},{%endif%}
-{% endfor %}};
-{% endfor %}
+    {% for enum in enums %}enum class {{enum.name}} : uint8_t {
+    {% for value in enum["values"] %}{{value}}={{loop.index0}}{%if not loop.last%},{%endif%}
+    {% endfor %}};
+    {% endfor %}
 
 
     private:
@@ -19,9 +20,9 @@ class DataPackets{
     DataPackets({%for value in data %}{{value.type}} &{{value.name}}{%if not loop.last%},{%endif%}{%endfor%}}})
 {
 
-{% for packet in packets %}{{packet.name}} = new StackPacket({{packet.id}}{% if packet.data%},{{packet.data}}{% endif%});
-packets[id] = {{packet.name}};
-id++;
-{% endfor %}
+    {% for packet in packets %}{{packet.name}} = new StackPacket({{packet.id}}{% if packet.data%},{{packet.data}}{% endif%});
+    packets[id] = {{packet.name}};
+    id++;
+    {% endfor %}
 }
 };
