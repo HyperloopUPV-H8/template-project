@@ -8,7 +8,7 @@ class OrderPackets{
     {% endfor %}};
     {% endfor %}
 
-    {%for packet in packets%}void {{packet.name}}_callback();
+    {%for packet in packets%}bool {{packet.name}}_callback();
     {% endfor %}
 
     private:
