@@ -5,8 +5,7 @@
 class OrderPackets{
     {% for enum in enums %}enum class {{enum.name}} : uint8_t {
     {% for value in enum["values"] %}{{value}}={{loop.index0}}{%if not loop.last%},{%endif%}
-    {% endfor %}
-    };
+    {% endfor %}};
     {% endfor %}
 
     {%for packet in packets%}void {{packet.name}}_callback();

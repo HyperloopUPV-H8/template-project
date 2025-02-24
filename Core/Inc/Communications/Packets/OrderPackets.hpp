@@ -6,7 +6,6 @@ class OrderPackets{
     enum class test_speed_control_direction : uint8_t {
     FORWARD=0,
     BACKWARD=1
-    
     };
     
 
