@@ -39,6 +39,12 @@ jobs:
         run: |
           cmake --preset ${{ inputs.preset }} .
           cmake --build --preset ${{ inputs.preset }}
+      - name: Run Simulator Tests
+        if: inputs.preset == "simulator"
+        run: |
+          cd Tests
+          echo "Running tests against $(cd .. && pwd)/out/build/simulator/latest.elf"
+          python3 test.py -uut="$(cd .. && pwd)/out/build/simulator/latest.elf"
       - name: Upload Build
         id: upload-build-artifact
         uses: actions/upload-artifact@v4
