@@ -53,7 +53,6 @@ class UnitUnderTest:
     def stream_output(self):
         while True:
             line = self._process.stdout.readline()
-            print("entra")
             if not line: break
             
             LOG(line, mode = 'ELF')
