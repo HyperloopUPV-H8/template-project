@@ -44,6 +44,7 @@ jobs:
         run: |
           cd Tests
           echo "Running tests against $(cd .. && pwd)/out/build/simulator/latest.elf"
+          set -e
           python3 test.py -uut="$(cd .. && pwd)/out/build/simulator/latest.elf"
       - name: Upload Build
         id: upload-build-artifact
