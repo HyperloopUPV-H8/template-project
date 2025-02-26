@@ -40,7 +40,7 @@ jobs:
           cmake --preset ${{ inputs.preset }} .
           cmake --build --preset ${{ inputs.preset }}
       - name: Run Simulator Tests
-        if: inputs.preset == "simulator"
+        if: inputs.preset == 'simulator'
         run: |
           cd Tests
           echo "Running tests against $(cd .. && pwd)/out/build/simulator/latest.elf"
