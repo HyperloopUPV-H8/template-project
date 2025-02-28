@@ -320,7 +320,6 @@ for c in aux:
         break
 board = filtered
 if board not in boards:
-    print("Board not found")
     sys.exit()
 Generate_DataPackets_hpp(board)
 Generate_OrderPackets_hpp(board)

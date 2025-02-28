@@ -165,3 +165,20 @@ if (PROJECT_IS_TOP_LEVEL)
         ${CMAKE_CURRENT_SOURCE_DIR}/out/build/latest.elf
     )
 endif()
+
+execute_process(
+    COMMAND git rev-parse --show-toplevel
+    OUTPUT_VARIABLE REPO_PATH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+get_filename_component(REPO_NAME ${REPO_PATH} NAME)
+
+find_package(Python3 COMPONENTS Interpreter REQUIRED)
+
+set(GENERATOR_SCRIPT "${CMAKE_SOURCE_DIR}/Core/Inc/Code_generation/Generator.py")
+
+add_custom_target(run_generator ALL
+    COMMAND ${Python3_EXECUTABLE} ${GENERATOR_SCRIPT} ${REPO_NAME}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
