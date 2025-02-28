@@ -2,6 +2,7 @@ import json
 from Packet_descriptions import *
 import os
 import jinja2
+import sys
 
 
 def Generate_PacketDescription():
@@ -305,11 +306,22 @@ def generate_code(state_machine):
 
 #Main function
 
+if len(sys.argv)<2:
+    print("Please enter a board name")
+    sys.exit()
+    
 boards = Generate_PacketDescription()
-board = input("Enter board name: ")
-while board not in boards: 
-    print("Board not found, select an available board")
-    board = input("Enter board name: ")
+aux = sys.argv[1]
+filtered = ""
+for c in aux:
+    if c.isalpha():
+        filtered += c
+    else:
+        break
+board = filtered
+if board not in boards:
+    print("Board not found")
+    sys.exit()
 Generate_DataPackets_hpp(board)
 Generate_OrderPackets_hpp(board)
 Generate_Protections_hpp(board)
