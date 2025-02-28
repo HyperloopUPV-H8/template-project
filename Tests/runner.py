@@ -99,6 +99,8 @@ class TestRunner:
     
     # Runs all the registered tests, cleaning up after each test
     def run(self):
+        failed_tests = 0
+        
         for name, test in self._tests.items():
             try:
                 test.run_prepare()
@@ -114,10 +116,18 @@ class TestRunner:
                     except Exception as reason:
                         print(f"[{name}] Failed!")
                         print(f"  * Reason: {reason}")
+                        failed_tests += 1
 
                 test.run_cleanup()
             except KeyboardInterrupt:
                 print(f"[{name}] Keyboard Interrupt. Aborted.")
+                import sys
+                sys.exit(130)
+        
+        if failed_tests > 0:
+            import sys
+            print(f"\nTest summary: {failed_tests} test(s) failed")
+            sys.exit(1)
 
 
 
