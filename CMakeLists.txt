@@ -2,6 +2,7 @@ cmake_minimum_required (VERSION 3.14)
 
 project (template-project ASM C CXX)
 set(EXECUTABLE ${PROJECT_NAME}.elf)
+set(Board ${PROJECT_NAME})
 set(STLIB_DIR ${CMAKE_CURRENT_LIST_DIR}/deps/ST-LIB)
 
 option(USE_ETHERNET "Enable ethernet peripheral" OFF)
@@ -172,6 +173,6 @@ find_package(Python3 COMPONENTS Interpreter REQUIRED)
 set(GENERATOR_SCRIPT "${CMAKE_SOURCE_DIR}/Core/Inc/Code_generation/Generator.py")
 
 add_custom_target(run_generator ALL
-    COMMAND ${Python3_EXECUTABLE} ${GENERATOR_SCRIPT} ${PROJECT_NAME}
+    COMMAND ${Python3_EXECUTABLE} ${GENERATOR_SCRIPT} ${Board}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
