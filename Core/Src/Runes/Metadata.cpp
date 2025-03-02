@@ -1,5 +1,4 @@
 extern "C"{
-    extern char metadata;
     const char DESCRIPTION[255]  __attribute__((section(".metadata_pool")))= 
         "****************"  // placeholder for beggining
         "20250302T120100"   // DateTime using ISO-8601 format
