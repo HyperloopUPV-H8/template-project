@@ -40,7 +40,7 @@ CMakeUserPresets.json
 # *-----------------------*
 
 tools/*.bin
-
+Core/Src/Runes/generated_metadata.cpp
 # *-----------------------*
 # |         C/C++         |
 # *-----------------------*
