@@ -19,7 +19,7 @@ try:
         os.remove("dump.bin")
         raise Exception()
 except Exception:
-    print("Error when running STM32_Programmer_CLI, make sure the board is powered and the cable connected")
+    print("Error when running STM32_Programmer_CLI, make sure the board is powered and the cable connected,\nalso make sure STLINK is not in use by the debugger or STM32CubeProgrammer")
     exit(-1)
 
 binary_raw = None
@@ -62,7 +62,7 @@ dt = datetime.strptime(iso_time, "%Y%m%dT%H%M%S")
 readable_time = dt.strftime("%d %B %Y, %H:%M:%S")  # 24-hour format (%H)
 
 
-print(readable_time)
+print("Code was compiled at: {}".format(readable_time))
 print("STLIB commit {}".format(stlib_commit))
 print("ADJ commit {}".format(adj_commit))
 print("Board commit {}".format(board_commit))
