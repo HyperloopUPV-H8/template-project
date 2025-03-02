@@ -30,6 +30,7 @@ set(HAL_HEADER
 )
 set(HAL_RUNES
   ${CMAKE_SOURCE_DIR}/Core/Src/Runes/Runes.cpp
+  ${CMAKE_SOURCE_DIR}/Core/Src/Runes/Metadata.cpp
 )
 set(HAL_SOURCE
   ${CMAKE_SOURCE_DIR}/Core/Src/stm32h7xx_hal_msp.c
