@@ -9,5 +9,9 @@ extern "C"{
         " "                 // alignment
         "{{ STLIB_COMMIT }}"          // STLIB commit
         "{{ ADJ_COMMIT}}"          // ADJ commit
-        "{{ BOARD_COMMIT }}";          // Board commit
+        "{{ BOARD_COMMIT }}"          // Board commit
+        // the '=' is used for unparsing
+        {% for var_pair in variables -%}
+        "{{var_pair.name}}={{var_pair.value}}" 
+        {% endfor %};
 }
