@@ -41,6 +41,8 @@ adj_commit_length = 8
 board_commit_offset = adj_commit_offset + adj_commit_length
 board_commit_legnth = 8 
 
+custom_variables_offset = board_commit_offset + board_commit_legnth
+
 def __validate_retrieved_binary():
     for i in range(0,checksum_length):
         if binary_raw[i] != '*':
@@ -64,3 +66,10 @@ print(readable_time)
 print("STLIB commit {}".format(stlib_commit))
 print("ADJ commit {}".format(adj_commit))
 print("Board commit {}".format(board_commit))
+
+
+for i in range(custom_variables_offset, 255):
+    if binary_raw[i].isdigit() == True and binary_raw[i+1].isdigit() == False:
+        print(binary_raw[i],end="\n")
+    else:
+        print(binary_raw[i],end="")
