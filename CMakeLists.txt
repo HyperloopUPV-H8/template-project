@@ -11,11 +11,9 @@ add_custom_target(
 )
 add_custom_command(
     OUTPUT
-        ${CMAKE_CURRENT_BINARY_DIR}/_tmp.h  # fake! ensure we run!
-h  
+        ${CMAKE_CURRENT_BINARY_DIR}/_tmp.h  # fake! ensure we run! 
     COMMAND python3 ${CMAKE_SOURCE_DIR}/tools/generate_binary_metadata.py
 )
-
 
 option(USE_ETHERNET "Enable ethernet peripheral" OFF)
 option(TARGET_NUCLEO "Targets the STM32H723 Nucleo development board" OFF)
