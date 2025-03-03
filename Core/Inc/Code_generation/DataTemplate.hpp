@@ -3,14 +3,14 @@
 
 //Data packets for {{board}}
 class DataPackets{
-    {% for enum in enums %}enum class {{enum.name}} : uint8_t {
+    {% for enum in enums %}enum class {{enum.name}}:uint8_t{
     {% for value in enum["values"] %}{{value}}={{loop.index0}}{%if not loop.last%},{%endif%}
     {% endfor %}};
-    {% endfor %}
+    {%endfor %}
 
 
     private:
-        constexpr static size_t size= {{size}};
+        constexpr static size_t size={{size}};
         uint32_t id{0};
     public:
         std::array<StackPacket*,size> packets; 
@@ -21,7 +21,7 @@ class DataPackets{
 {
 
     {% for packet in packets %}{{packet.name}} = new StackPacket({{packet.id}}{% if packet.data%},{{packet.data}}{% endif%});
-    packets[id] = {{packet.name}};
+    packets[id]={{packet.name}};
     id++;
     {% endfor %}
 }

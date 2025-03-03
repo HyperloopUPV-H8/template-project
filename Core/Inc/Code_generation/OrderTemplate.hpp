@@ -3,7 +3,7 @@
 
 //Order packets for {{board}}
 class OrderPackets{
-    {% for enum in enums %}enum class {{enum.name}} : uint8_t {
+    {% for enum in enums %}enum class {{enum.name}}:uint8_t{
     {% for value in enum["values"] %}{{value}}={{loop.index0}}{%if not loop.last%},{%endif%}
     {% endfor %}};
     {% endfor %}
@@ -12,7 +12,7 @@ class OrderPackets{
     {% endfor %}
 
     private:
-        constexpr static size_t size= {{size}};
+        constexpr static size_t size={{size}};
         uint32_t id{0};
     public:
         std::array<StackOrder*,size> packets; 
@@ -22,8 +22,8 @@ class OrderPackets{
     OrderPackets({%for value in data %}{{value.type}} &{{value.name}}{%if not loop.last%},{%endif%}{%endfor%}}})
 {
 
-    {% for packet in packets %}{{packet.name}} = new StackOrder({{packet.id}},{{packet.name}}_callback{% if packet.data%},{{packet.data}}{% endif%});
-    packets[id] = {{packet.name}};
+    {% for packet in packets %}{{packet.name}}=new StackOrder({{packet.id}},{{packet.name}}_callback{% if packet.data%},{{packet.data}}{% endif%});
+    packets[id]={{packet.name}};
     id++;
     {% endfor %}
 }
