@@ -5,14 +5,9 @@ set(EXECUTABLE ${PROJECT_NAME}.elf)
 set(STLIB_DIR ${CMAKE_CURRENT_LIST_DIR}/deps/ST-LIB)
 
 
-add_custom_target(
-    my_custom_target_that_always_runs ALL
-    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/_tmp.h
-)
 add_custom_command(
-    OUTPUT
-        ${CMAKE_CURRENT_BINARY_DIR}/_tmp.h  # fake! ensure we run! 
-    COMMAND python3 ${CMAKE_SOURCE_DIR}/tools/generate_binary_metadata.py
+    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/tools/generate_binary_metadata.py 
+    COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/tools/generate_binary_metadata.py
 )
 
 option(USE_ETHERNET "Enable ethernet peripheral" OFF)
@@ -41,7 +36,7 @@ set(HAL_HEADER
 )
 set(HAL_RUNES
   ${CMAKE_SOURCE_DIR}/Core/Src/Runes/Runes.cpp
-  ${CMAKE_SOURCE_DIR}/Core/Src/Runes/generated_metadata.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/Runes/generated_metadata.cpp
 )
 set(HAL_SOURCE
   ${CMAKE_SOURCE_DIR}/Core/Src/stm32h7xx_hal_msp.c
