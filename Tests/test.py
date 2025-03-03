@@ -2,22 +2,22 @@ import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__), "VirtualMCU", "src"))
 
 import vmcu.assertions as assertions
-import vmcu.pin.pinout as Pinout
-import vmcu.services.digital_in as DigitalInService
-import vmcu.shared_memory as SharedMemory
+from vmcu.pin.pinout import Pinout
+from vmcu.services.digital_in import DigitalInService
+from vmcu.shared_memory import SharedMemory
 from runner import runner
 
 @runner.test()
-def led_toggle():
-   print("1")
-   shm = SharedMemory("gpio_SHM_tests","state_machine_SHM_tests")
-   print("2")
+def StateMachine_test():
+   #-----------Create shared memory and inscrbe pin--------------#
+   shm = SharedMemory("gpio_stmtests","state_machine_stmtests")
    led = DigitalInService(shm, Pinout.PB2)
-   print("3")
 
+   #-----------Test the state machine transition--------------#
    led.turn_on()
-   print("4")
 
-   assertions.completes(assertions.wait_until_true(shm.get_sm(1)==1), before=assertions.seconds(1), msg="The state machine did not transition")
-   print("5")
+   def check_transition():
+      return shm.get_state_machine_state(1)==1
+   
+   assertions.completes(assertions.wait_until_true(check_transition), before=assertions.seconds(1), msg="The state machine did not transition")
 runner.run() # Runs the tests, do not delete!

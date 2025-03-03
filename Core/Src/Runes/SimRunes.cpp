@@ -21,8 +21,8 @@ map<uint16_t,Packet*> Packet::packets = {};
 /************************************************
  *                 SharedMemory
  ***********************************************/
-const char *SHM::gpio_memory_name = "gpio_SHM_tests";
-const char *SHM::state_machine_memory_name = "state_machine_SHM_tests";
+const char *SHM::gpio_memory_name = "gpio_stmtests";
+const char *SHM::state_machine_memory_name = "state_machine_stmtests";
 
 unordered_map<Pin, size_t> SHM::pin_offsets{
 	{PA0, 0}, {PA1, 1}, {PA2, 2}, {PA3, 3}, {PA4, 4},
