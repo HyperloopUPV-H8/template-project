@@ -15,7 +15,7 @@ int main(void) {
         operational =1,
     };
     PinState led_state = PinState::OFF;
-    uint8_t id = DigitalInput::inscribe(PA1);
+    uint8_t id = DigitalInput::inscribe(PB2);
     STLIB::start();
     StateMachine state_machine(connecting);
     state_machine.add_state(operational);

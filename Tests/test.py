@@ -9,10 +9,15 @@ from runner import runner
 
 @runner.test()
 def led_toggle():
+   print("1")
    shm = SharedMemory("gpio_SHM_tests","state_machine_SHM_tests")
-   led = DigitalInService(shm, Pinout.PA1)
+   print("2")
+   led = DigitalInService(shm, Pinout.PB2)
+   print("3")
 
    led.turn_on()
+   print("4")
 
    assertions.completes(assertions.wait_until_true(shm.get_sm(1)==1), before=assertions.seconds(1), msg="The state machine did not transition")
+   print("5")
 runner.run() # Runs the tests, do not delete!
