@@ -53,7 +53,7 @@ repo_root = __get_git_root__()
 search_in_subfolder(os.path.join(repo_root,"Core/Inc"))
 
 environment = Environment(loader=FileSystemLoader(os.path.join(repo_root,'tools')))
-template = environment.get_template(os.path.join('binary_metadata_template.txt'))
+template = environment.get_template(os.path.join('binary_metadata_template.cpp'))
 
 iso_time = datetime.now().strftime("%Y%m%dT%H%M%S")
 repo_root = __get_git_root__()
