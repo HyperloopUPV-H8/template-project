@@ -1,8 +1,0 @@
-format:
-16 bytes for '*' showing the beggining of the section, should not be needed, but works as a sentinel when unparsing
-15 bytes for DateTime using ISO 8601 format
-1 extra byte for alignmet
-8 bytes for STLIB commit
-8 bytes for ADJ commit
-8 bytes for board commit
-CUSTOM VARIABLES go here
