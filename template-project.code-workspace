@@ -75,7 +75,9 @@
       "list": "cpp",
       "expected": "cpp",
       "regex": "cpp",
-      "variant": "cpp"
+      "variant": "cpp",
+      "stacktrace": "cpp",
+      "valarray": "cpp"
     }
   }
 }
