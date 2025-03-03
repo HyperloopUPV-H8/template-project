@@ -10,14 +10,26 @@ int main(void) {
 #ifdef SIM_ON
     SharedMemory::start();
 #endif
-
-    DigitalOutput led_on(PA1);
+    enum state_id{
+        connecting =0,
+        operational =1,
+    };
+    PinState led_state = PinState::OFF;
+    uint8_t id = DigitalInput::inscribe(PA1);
     STLIB::start();
+    StateMachine state_machine(connecting);
+    state_machine.add_state(operational);
+    state_machine.add_transition(connecting, operational, [&](){
+        return led_state;
 
-    Time::register_low_precision_alarm(100, [&]() { led_on.toggle(); });
-
-    while (1) {
+    });
+    state_machine.add_low_precision_cyclic_action([&](){
+        led_state = DigitalInput::read_pin_state(id);
+    }, std::chrono::milliseconds(1000), {connecting, operational});
+    while(1){
         STLIB::update();
+        state_machine.check_transitions();
+        
     }
 }
 
