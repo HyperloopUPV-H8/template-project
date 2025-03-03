@@ -36,7 +36,9 @@ jobs:
         with:
           submodules: recursive
       - name: Configure
-        run: pip install -r requirements.txt
+        run: |
+          python -m ensurepip --upgrade  
+          pip install -r requirements.txt
       - name: Build
         run: |
           cmake --preset ${{ inputs.preset }} .
