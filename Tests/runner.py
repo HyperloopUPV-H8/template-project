@@ -169,10 +169,10 @@ class TestRunner:
                 import sys
                 sys.exit(130)
                
-         if failed_tests>0:
-          import sys
-          LOG(f"[{failed_tests}] Tests Failed!", mode= 'ERR')
-          sys.exit(1)
+        if failed_tests>0:
+            import sys
+            LOG(f"[{failed_tests}] Tests Failed!", mode= 'ERR')
+            sys.exit(1)
 
                 
 
