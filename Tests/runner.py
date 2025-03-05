@@ -40,13 +40,13 @@ class UnitUnderTest:
             self._executable,
             shell=True,
             stdout=subprocess.PIPE,
-
             stderr=subprocess.PIPE,
             text=True,
             bufsize=1,
         )
 
         self._stdout_thread = threading.Thread(target=self.stream_output)
+        self._stdout_thread.daemon = True
         self._stdout_thread.start()
 
     def stream_output(self):
