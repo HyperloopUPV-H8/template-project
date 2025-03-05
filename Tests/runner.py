@@ -41,14 +41,13 @@ class UnitUnderTest:
             shell=True,
             stdout=subprocess.PIPE,
 
-            #stdout=sys.stdout,
             stderr=subprocess.PIPE,
             text=True,
             bufsize=1,
         )
 
-        stdout_thread = threading.Thread(target=self.stream_output)
-        stdout_thread.start()
+        self._stdout_thread = threading.Thread(target=self.stream_output)
+        self._stdout_thread.start()
 
     def stream_output(self):
         while True:
@@ -67,6 +66,8 @@ class UnitUnderTest:
             except Exception:
                 out = "Error recovering stdout"
                 err = "Error recovering stderr"
+        
+        self._stdout_thread.join(timeout=1)
         
         if out:
             LOG(f"  * UUT stdout:\n{out}")
