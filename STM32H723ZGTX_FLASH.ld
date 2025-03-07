@@ -134,7 +134,21 @@ SECTIONS
     . = ALIGN(4);
     _edata = .;        /* define a global symbol at data end */
   } >RAM_D1 AT> FLASH
-
+  /*
+    this needs to be the last thing in FLASH
+    because the preceeding sections are appended after the one preceeding them
+    this is, if this were the first thing in FLASH
+    the sections below it would try to be placed afterwards
+    thus overflowing the FLASH
+  */
+  .metadata_pool :
+  {
+  	. = ABSOLUTE(0x080DFD00);
+    . = ALIGN(4);
+    metadata = .;
+    KEEP(*(.metadata_pool))
+    . += 0x100;
+  } >FLASH
   /* Uninitialized data section */
   . = ALIGN(4);
   .bss (NOLOAD) :
