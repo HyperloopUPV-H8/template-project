@@ -29,7 +29,7 @@ jobs:
     outputs:
       build-artifact: ${{ steps.upload-build-artifact.outputs.artifact-id }}
     container:
-      image: jmaralo/hyperloop-upv-firmware:0.3.0
+      image: jmaralo/hyperloop-upv-firmware:latest
     steps:
       - name: Clone Project
         uses: actions/checkout@v3
