@@ -1,8 +1,6 @@
 import re
 import json
 
-#--------------PacketDescription------------------------#
-
 class BoardDescription:    
     def __init__(self,name:str,board:dict):
         self.name = name

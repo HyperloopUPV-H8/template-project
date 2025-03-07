@@ -77,7 +77,8 @@
       "regex": "cpp",
       "variant": "cpp",
       "stacktrace": "cpp",
-      "valarray": "cpp"
+      "valarray": "cpp",
+      "typeindex": "cpp"
     }
   }
 }

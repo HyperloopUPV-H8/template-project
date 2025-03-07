@@ -3,7 +3,7 @@ import json
 import os
 import jinja2
 
-def Generate_PacketDescription():
+def Generate_PacketDescription():    
     with open("Core/Inc/Code_generation/Packet_generation/JSON_ADE/boards.json") as f:
         boards = json.load(f)
     boards_name = []
@@ -194,6 +194,6 @@ def Generate_Protections_hpp(board_input:str):
     if context == False:
         if os.path.exists("Core/Inc/Communications/Packets/Protections.hpp"):
             os.remove("Core/Inc/Communications/Packets/Protections.hpp")
-            return
+        return
     with open("Core/Inc/Communications/Packets/Protections.hpp","w") as Output:
         Output.write(template.render(context))
