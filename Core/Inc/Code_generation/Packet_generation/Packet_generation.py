@@ -3,15 +3,17 @@ import json
 import os
 import jinja2
 
-def Generate_PacketDescription():    
-    with open("Core/Inc/Code_generation/Packet_generation/JSON_ADE/boards.json") as f:
+templates_path = "Core/Inc/Code_generation/Packet_generation"
+
+def Generate_PacketDescription(JSONpath:str):    
+    with open(JSONpath+"/boards.json") as f:
         boards = json.load(f)
     boards_name = []
     for board in boards["boards"]:
         
-        with open("Core/Inc/Code_generation/Packet_generation/JSON_ADE/" + (boards["boards"][board])) as f:
+        with open(JSONpath+"/" + (boards["boards"][board])) as f:
             b = json.load(f)
-        board_instance = BoardDescription(board, b)
+        board_instance = BoardDescription(board, b,JSONpath)
         boards_name.append(board_instance.name)
         globals()[board] = board_instance
     
@@ -62,18 +64,19 @@ def Get_data_context(board:BoardDescription):
     return context
 
 def Generate_DataPackets_hpp(board_input:str):
+    data_packets_path = "Core/Inc/Communications/Packets/DataPackets.hpp"
     board_instance = globals()[board_input]
     if board_instance.data_size == 0:
-        if os.path.exists("Core/Inc/Communications/Packets/DataPackets.hpp"):
-            os.remove("Core/Inc/Communications/Packets/DataPackets.hpp")
+        if os.path.exists(data_packets_path):
+            os.remove(data_packets_path)
         return    
   
-    env= jinja2.Environment(loader=jinja2.FileSystemLoader("Core/Inc/Code_generation/Packet_generation"))
+    env= jinja2.Environment(loader=jinja2.FileSystemLoader(templates_path))
     template = env.get_template("DataTemplate.hpp")
     context = Get_data_context(board_instance)
 
     
-    with open("Core/Inc/Communications/Packets/DataPackets.hpp","w") as Output:
+    with open(data_packets_path,"w") as Output:
         Output.write(template.render(context))
             
 #--------------OrderPackets.hpp generation---------------#
@@ -121,18 +124,19 @@ def Get_order_context(board:BoardDescription):
     return context
 
 def Generate_OrderPackets_hpp(board_input:str):
+    order_packets_path = "Core/Inc/Communications/Packets/OrderPackets.hpp"
     board_instance = globals()[board_input]
     if board_instance.order_size == 0:
-        if os.path.exists("Core/Inc/Communications/Packets/OrderPackets.hpp"):
-            os.remove("Core/Inc/Communications/Packets/OrderPackets.hpp")
+        if os.path.exists(order_packets_path):
+            os.remove(order_packets_path)
         return    
   
-    env= jinja2.Environment(loader=jinja2.FileSystemLoader("Core/Inc/Code_generation/Packet_generation"))
+    env= jinja2.Environment(loader=jinja2.FileSystemLoader(templates_path))
     template = env.get_template("OrderTemplate.hpp")
     context = Get_order_context(board_instance)
 
     
-    with open("Core/Inc/Communications/Packets/OrderPackets.hpp","w") as Output:
+    with open(order_packets_path,"w") as Output:
         Output.write(template.render(context))
 
 
@@ -187,13 +191,14 @@ def Generate_Protections_context(board:BoardDescription):
     return context
 
 def Generate_Protections_hpp(board_input:str):
+    protections_path = "Core/Inc/Communications/Packets/Protections.hpp"
     board_instance = globals()[board_input]
-    env= jinja2.Environment(loader=jinja2.FileSystemLoader("Core/Inc/Code_generation/Packet_generation"))
+    env= jinja2.Environment(loader=jinja2.FileSystemLoader(templates_path))
     template = env.get_template("ProtectionsTemplate.hpp")
     context = Generate_Protections_context(board_instance)
     if context == False:
-        if os.path.exists("Core/Inc/Communications/Packets/Protections.hpp"):
-            os.remove("Core/Inc/Communications/Packets/Protections.hpp")
+        if os.path.exists(protections_path):
+            os.remove(protections_path)
         return
-    with open("Core/Inc/Communications/Packets/Protections.hpp","w") as Output:
+    with open(protections_path,"w") as Output:
         Output.write(template.render(context))

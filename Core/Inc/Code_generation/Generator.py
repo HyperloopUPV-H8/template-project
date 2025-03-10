@@ -4,8 +4,8 @@ from State_machine_generation.State_machine_generation import *
 
 
 
-
-boards = Generate_PacketDescription()
+JSONpath = "Core/Inc/Code_generation/JSON_ADE"
+boards = Generate_PacketDescription(JSONpath)
 board = input("Enter board name: ")
 while board not in boards: 
     print("Board not found, select an available board")

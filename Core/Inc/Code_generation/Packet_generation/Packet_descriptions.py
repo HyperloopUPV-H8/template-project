@@ -2,7 +2,7 @@ import re
 import json
 
 class BoardDescription:    
-    def __init__(self,name:str,board:dict):
+    def __init__(self,name:str,board:dict,JSONpath:str):
         self.name = name
         self.id = board["board_id"]
         self.ip = board["board_ip"]
@@ -14,9 +14,9 @@ class BoardDescription:
             packets_name = re.split(r'_|\.', packets)[0]
             self.packets[packets_name] = []
             measurement = self._MeasurementFileSearch(packets,board["measurements"])
-            with open("Core/Inc/Code_generation/Packet_generation/JSON_ADE/boards/" + name+"/" + board["packets"][i]) as f:
+            with open(JSONpath+"/boards/" + name+"/" + board["packets"][i]) as f:
                 p= json.load(f)
-            with open("Core/Inc/Code_generation/Packet_generation/JSON_ADE/boards/" + name + "/" + measurement) as f:
+            with open(JSONpath+"/boards/" + name + "/" + measurement) as f:
                 m = json.load(f)
             i += 1
             for packet in p["packets"]:
