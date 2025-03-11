@@ -37,7 +37,7 @@ jobs:
           submodules: recursive
       - name: Configure
         run: |
-          apt install python3.12-venv
+          apt install python3.12-venv | yes
           python3 -m venv
           source bin/activate
           pip install -r requirements.txt
