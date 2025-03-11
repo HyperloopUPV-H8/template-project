@@ -37,8 +37,9 @@ jobs:
           submodules: recursive
       - name: Configure
         run: |
-          curl -O https://bootstrap.pypa.io/get-pip.py
-          python3 get-pip.py
+          apt install python3.12-venv
+          python3 -m venv
+          source bin/activate
           pip install -r requirements.txt
       - name: Build
         run: |
