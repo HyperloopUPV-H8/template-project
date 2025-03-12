@@ -44,6 +44,7 @@ jobs:
         shell: bash
       - name: Build
         run: |
+          source bin/activate
           cmake --preset ${{ inputs.preset }} .
           cmake --build --preset ${{ inputs.preset }}
       - name: Upload Build
