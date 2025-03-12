@@ -4,8 +4,7 @@
       "path": "."
     },
     {
-      "name": "ST-LIB",
-      "path": "../ST-LIB"
+      "path": "../Projectos/ST-LIB"
     }
   ],
   "settings": {
@@ -72,7 +71,14 @@
       "stop_token": "cpp",
       "thread": "cpp",
       "format": "cpp",
-      "mutex": "cpp"
+      "mutex": "cpp",
+      "list": "cpp",
+      "expected": "cpp",
+      "regex": "cpp",
+      "variant": "cpp",
+      "stacktrace": "cpp",
+      "valarray": "cpp",
+      "typeindex": "cpp"
     }
   }
 }
