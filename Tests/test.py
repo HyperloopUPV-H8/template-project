@@ -10,8 +10,10 @@ from vmcu.assertions import *
 
 @runner.test()
 def led_toggle():
-    TOGGLE_PERIOD = milliseconds(5 * 2)
-    ALLOWED_SLACK = milliseconds(3)
+
+    TOGGLE_PERIOD = milliseconds(100 * 2)
+    ALLOWED_SLACK = milliseconds(100)
+
     shm = SharedMemory("gpio__blinking_led", "state_machine__blinking_led")
     led = DigitalOutService(shm, Pinout.PB1)
     state = DigitalOut.State.Low

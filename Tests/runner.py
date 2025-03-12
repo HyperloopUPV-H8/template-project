@@ -40,15 +40,14 @@ class UnitUnderTest:
             self._executable,
             shell=True,
             stdout=subprocess.PIPE,
-
-            #stdout=sys.stdout,
             stderr=subprocess.PIPE,
             text=True,
             bufsize=1,
         )
 
-        stdout_thread = threading.Thread(target=self.stream_output)
-        stdout_thread.start()
+        self._stdout_thread = threading.Thread(target=self.stream_output)
+        self._stdout_thread.daemon = True
+        self._stdout_thread.start()
 
     def stream_output(self):
         while True:
@@ -67,6 +66,8 @@ class UnitUnderTest:
             except Exception:
                 out = "Error recovering stdout"
                 err = "Error recovering stderr"
+        
+        self._stdout_thread.join(timeout=1)
         
         if out:
             LOG(f"  * UUT stdout:\n{out}")
@@ -132,10 +133,14 @@ class TestRunner:
     
     # Runs all the registered tests, cleaning up after each test
     def run(self):
+
+        failed_tests = 0
+
         if not os.path.exists(f'./{pathlogs}'):
             os.makedirs(f'./{pathlogs}')
         date  = datetime.now()
         logging.basicConfig(level=logging.INFO, filename=f'{pathlogs}/{date}log.log', filemode='w', format="%(levelname)s - %(message)s")
+
         for name, test in self._tests.items():
             try:
                 test.run_prepare()
@@ -150,6 +155,7 @@ class TestRunner:
                             LOG(f"  * Result: {result}")
                     except Exception as reason:
                         tb = traceback.extract_tb(reason.__traceback__)
+                        failed_tests += 1
 
                         # Obtener la última llamada (donde ocurrió el error)
                         file1, line1, _, _ = tb[-2]
@@ -161,8 +167,15 @@ class TestRunner:
                 test.run_cleanup()
             except KeyboardInterrupt:
                 LOG(f"[{name}] Keyboard Interrupt. Aborted.")
+                import sys
+                sys.exit(130)
+               
+        if failed_tests>0:
+            import sys
+            LOG(f"[{failed_tests}] Tests Failed!", mode= 'ERR')
+            sys.exit(1)
 
-
+                
 
 parser = ArgumentParser(
     prog="test",
