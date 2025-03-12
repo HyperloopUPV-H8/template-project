@@ -53,28 +53,30 @@ def search_in_subfolder(root_folder):
                 if filename.endswith(extension):  
                     file_path = os.path.join(folder_name, filename)
                     parse_file(file_path)
+def main():
+    repo_root = __get_git_root__()
+    search_in_subfolder(os.path.join(repo_root,"Core/"))
 
-repo_root = __get_git_root__()
-search_in_subfolder(os.path.join(repo_root,"Core/"))
+    environment = Environment(loader=FileSystemLoader(os.path.join(repo_root,'tools')))
+    template = environment.get_template(os.path.join('binary_metadata_template.cpp'))
 
-environment = Environment(loader=FileSystemLoader(os.path.join(repo_root,'tools')))
-template = environment.get_template(os.path.join('binary_metadata_template.cpp'))
-
-iso_time = datetime.now().strftime("%Y%m%dT%H%M%S")
-repo_root = __get_git_root__()
-stlib_commit    =   __get_current_commit__(os.path.join(repo_root,"deps/ST-LIB"))
-adj_commit      =   __get_current_commit__(os.path.join(repo_root,"deps/adj"))  ## keep an eye on this  
-board_commit    =   __get_current_commit__(repo_root)
+    iso_time = datetime.now().strftime("%Y%m%dT%H%M%S")
+    repo_root = __get_git_root__()
+    stlib_commit    =   __get_current_commit__(os.path.join(repo_root,"deps/ST-LIB"))
+    adj_commit      =   __get_current_commit__(os.path.join(repo_root,"deps/adj"))  ## keep an eye on this  
+    board_commit    =   __get_current_commit__(repo_root)
 
 
-output_file = os.path.join(repo_root,"Core/Src/Runes/generated_metadata.cpp")
-content = template.render(
-    DateTimeISO8601=iso_time,
-    STLIB_COMMIT = stlib_commit,
-    ADJ_COMMIT = adj_commit,
-    BOARD_COMMIT = board_commit,
-    variables=variables)
-with open(output_file, mode="w", encoding="utf-8") as message:
-    message.write(content)
+    output_file = os.path.join(repo_root,"Core/Src/Runes/generated_metadata.cpp")
+    content = template.render(
+        DateTimeISO8601=iso_time,
+        STLIB_COMMIT = stlib_commit,
+        ADJ_COMMIT = adj_commit,
+        BOARD_COMMIT = board_commit,
+        variables=variables)
+    with open(output_file, mode="w", encoding="utf-8") as message:
+        message.write(content)
 
-print("Generation completed")
+    print("Generation completed")
+if __name__ == "__main__":
+    main()
