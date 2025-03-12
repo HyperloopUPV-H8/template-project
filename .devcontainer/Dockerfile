@@ -2,7 +2,7 @@ FROM ubuntu:24.04
 
 # Install git, git-lfs, colorama and build tools
 RUN echo "deb http://security.ubuntu.com/ubuntu focal-security main universe" > /etc/apt/sources.list.d/ubuntu-focal-sources.list && \
-    apt-get update && apt-get -y install git git-lfs python3-colorama cmake g++ build-essential libncurses5 libusb-1.0-0 gdb && \
+    apt-get update && apt-get -y install git git-lfs python3 python3-pip curl python3-colorama cmake g++ build-essential libncurses5 libusb-1.0-0 gdb && \
     git lfs install
 
 # Install cubeclt
