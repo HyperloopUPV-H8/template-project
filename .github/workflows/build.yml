@@ -35,10 +35,19 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: recursive
+      - name: Configure
+        run: |
+          apt install -y python3.12-venv 
+          python3 -m venv .
+          source bin/activate
+          pip install -r requirements.txt
+        shell: bash
       - name: Build
         run: |
+          source bin/activate
           cmake --preset ${{ inputs.preset }} .
           cmake --build --preset ${{ inputs.preset }}
+        shell: bash
       - name: Upload Build
         id: upload-build-artifact
         uses: actions/upload-artifact@v4
