@@ -46,14 +46,16 @@ def parse_file(file_path):
 print("Starting binary metadata generation")
 
 def search_in_subfolder(root_folder):
+    accepted_file_extensions = ['.cpp','.c','.h','.hpp']
     for folder_name, subfolders, filenames in os.walk(root_folder):
         for filename in filenames:
-            if filename.endswith('.h') or filename.endswith('.hpp'):  
-                file_path = os.path.join(folder_name, filename)
-                parse_file(file_path)
+            for extension in accepted_file_extensions:
+                if filename.endswith(extension):  
+                    file_path = os.path.join(folder_name, filename)
+                    parse_file(file_path)
 
 repo_root = __get_git_root__()
-search_in_subfolder(os.path.join(repo_root,"Core/Inc"))
+search_in_subfolder(os.path.join(repo_root,"Core/"))
 
 environment = Environment(loader=FileSystemLoader(os.path.join(repo_root,'tools')))
 template = environment.get_template(os.path.join('binary_metadata_template.cpp'))
