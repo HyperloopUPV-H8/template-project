@@ -1,14 +1,17 @@
 from jinja2 import Environment, FileSystemLoader
 from datetime import datetime
 from git import Repo
+from pathlib import Path
 import os
 
 def __get_git_root__():
-    try:
-        repo = Repo(os.getcwd(), search_parent_directories=True)
-        return repo.git.rev_parse("--show-toplevel")
-    except Exception:
-        return None  # Not in a Git repo
+    # Start at the script's directory and walk up to find the .git folder
+    repo_root = Path(__file__).resolve()
+    while not (repo_root / ".git").exists() and repo_root != repo_root.parent:
+        repo_root = repo_root.parent
+
+    return str(repo_root) if (repo_root / ".git").exists() else None
+
 def __get_current_commit__(path):
     try:
         repo = Repo(path, search_parent_directories=True)
