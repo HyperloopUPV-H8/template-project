@@ -1,6 +1,4 @@
-import json
-from state_machine_object_descriptions import *
-
+from State_machine_generation.State_machine_description import *
 def instance_object_name(name):
     return f"{name}_State_Machine"
 
@@ -103,10 +101,4 @@ def generate_code(state_machine):
     
     with open("Core/Inc/state_machine.hpp", "w") as f:
         f.write("\n".join(content))
-
-if __name__ == "__main__":
-    with open("state_machine.json", "r") as file:
-        data = json.load(file)
-    sm = parse_state_machine(data)
-    generate_code(sm)
 
