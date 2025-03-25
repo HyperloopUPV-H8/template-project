@@ -29,16 +29,32 @@ jobs:
     outputs:
       build-artifact: ${{ steps.upload-build-artifact.outputs.artifact-id }}
     container:
-      image: jmaralo/hyperloop-upv-firmware:0.3.0
+      image: jmaralo/hyperloop-upv-firmware:latest
     steps:
       - name: Clone Project
         uses: actions/checkout@v3
         with:
           submodules: recursive
+      - name: Configure
+        run: |
+          apt install -y python3.12-venv 
+          python3 -m venv .
+          source bin/activate
+          pip install -r requirements.txt
+        shell: bash
       - name: Build
         run: |
+          source bin/activate
           cmake --preset ${{ inputs.preset }} .
           cmake --build --preset ${{ inputs.preset }}
+        shell: bash
+      - name: Run Simulator Tests
+        if: inputs.preset == 'simulator'
+        run: |
+          cd Tests
+          echo "Running tests against $(cd .. && pwd)/out/build/simulator/latest.elf"
+          set -e
+          python3 test.py -uut="$(cd .. && pwd)/out/build/latest.elf"
       - name: Upload Build
         id: upload-build-artifact
         uses: actions/upload-artifact@v4

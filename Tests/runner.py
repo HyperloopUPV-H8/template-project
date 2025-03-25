@@ -1,6 +1,25 @@
 import subprocess
 from argparse import ArgumentParser
 import time
+import sys
+import os
+from datetime import datetime
+import traceback
+
+import logging
+import threading
+
+pathlogs = 'testsLog'
+
+def LOG(*args, mode= 'INFO'):
+    print(args)
+    if(mode == 'INFO'):
+        logging.info(args)
+    elif(mode == 'ERR'):
+        logging.error(args)
+    elif(mode=='ELF'):
+        logging.info(f'<CPP>{args}')
+
 
 
 class DuplicatedTestError(Exception):
@@ -16,13 +35,26 @@ class UnitUnderTest:
         self._executable = executable
     
     def __enter__(self):
+        self._executable = f"stdbuf -oL {self._executable}"
         self._process = subprocess.Popen(
             self._executable,
             shell=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            text=True
+            text=True,
+            bufsize=1,
         )
+
+        self._stdout_thread = threading.Thread(target=self.stream_output)
+        self._stdout_thread.daemon = True
+        self._stdout_thread.start()
+
+    def stream_output(self):
+        while True:
+            line = self._process.stdout.readline()
+            if not line: break
+            
+            LOG(line, mode = 'ELF')
 
     def __exit__(self, *args):
         try:
@@ -35,10 +67,12 @@ class UnitUnderTest:
                 out = "Error recovering stdout"
                 err = "Error recovering stderr"
         
+        self._stdout_thread.join(timeout=1)
+        
         if out:
-            print(f"  * UUT stdout:\n{out}")
+            LOG(f"  * UUT stdout:\n{out}")
         if err:
-            print(f"  * UUT stderr:\n{err}")
+            LOG(f"  * UUT stderr:\n{err}")
 
 
 class Test:
@@ -99,6 +133,14 @@ class TestRunner:
     
     # Runs all the registered tests, cleaning up after each test
     def run(self):
+
+        failed_tests = 0
+
+        if not os.path.exists(f'./{pathlogs}'):
+            os.makedirs(f'./{pathlogs}')
+        date  = datetime.now()
+        logging.basicConfig(level=logging.INFO, filename=f'{pathlogs}/{date}log.log', filemode='w', format="%(levelname)s - %(message)s")
+
         for name, test in self._tests.items():
             try:
                 test.run_prepare()
@@ -106,20 +148,34 @@ class TestRunner:
                 with self._uut:
                     time.sleep(0.1)
                     try:
-                        print(f"[{name}] Running...")
+                        LOG(f"[{name}] Running...")
                         result = test()
-                        print(f"[{name}] Succesfull!")
+                        LOG(f"[{name}] Succesfull!")
                         if result is not None:
-                            print(f"  * Result: {result}")
+                            LOG(f"  * Result: {result}")
                     except Exception as reason:
-                        print(f"[{name}] Failed!")
-                        print(f"  * Reason: {reason}")
+                        tb = traceback.extract_tb(reason.__traceback__)
+                        failed_tests += 1
+
+                        # Obtener la última llamada (donde ocurrió el error)
+                        file1, line1, _, _ = tb[-2]
+                        file2, line2, _, _ = tb[-1]
+                        LOG(f"[{name}] Failed!", mode= 'ERR')
+                        LOG(f'file: {file1} line: {line1}, file: {file2} line: {line2}', mode = 'ERR')
+                        LOG(f"  * Reason: {reason}", mode = 'ERR')
 
                 test.run_cleanup()
             except KeyboardInterrupt:
-                print(f"[{name}] Keyboard Interrupt. Aborted.")
+                LOG(f"[{name}] Keyboard Interrupt. Aborted.")
+                import sys
+                sys.exit(130)
+               
+        if failed_tests>0:
+            import sys
+            LOG(f"[{failed_tests}] Tests Failed!", mode= 'ERR')
+            sys.exit(1)
 
-
+                
 
 parser = ArgumentParser(
     prog="test",
