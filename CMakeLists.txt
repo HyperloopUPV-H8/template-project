@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.14)
 
 project (template-project ASM C CXX)
 set(EXECUTABLE ${PROJECT_NAME}.elf)
-set(Board ${PROJECT_NAME})
+set(Board "VCU") # User must change the Board name
 set(STLIB_DIR ${CMAKE_CURRENT_LIST_DIR}/deps/ST-LIB)
 
 
