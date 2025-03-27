@@ -106,14 +106,20 @@ UART::Instance UART::instance2 = { .TX = PD5, .RX = PD6, .huart = &huart2,
 								   .instance = USART2, .baud_rate = 115200, .word_length = UART_WORDLENGTH_8B,
                                };
 
+UART::Instance UART::instance3 = { .TX = PD8, .RX = PD9, .huart = &huart3,
+								   .instance = USART3, .baud_rate = 115200, .word_length = UART_WORDLENGTH_8B,
+                               };
+
 
 UART::Peripheral UART::uart1 = UART::Peripheral::peripheral1;
 UART::Peripheral UART::uart2 = UART::Peripheral::peripheral2;
+UART::Peripheral UART::uart3 = UART::Peripheral::peripheral3;
 
 
 unordered_map<UART::Peripheral, UART::Instance*> UART::available_uarts = {
 	{UART::uart1, &UART::instance1},
 	{UART::uart2, &UART::instance2},
+	{UART::uart3, &UART::instance3},
 };
 
 uint8_t UART::printf_uart = 0;
