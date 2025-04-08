@@ -19,5 +19,5 @@
     "utility": "cpp",
     "variant": "cpp",
     "atomic": "cpp"
-  },
+  }
 }
