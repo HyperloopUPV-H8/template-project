@@ -19,5 +19,6 @@
     "utility": "cpp",
     "variant": "cpp",
     "atomic": "cpp"
-  }
+  },
+  "idf.pythonInstallPath": "C:\\Users\\oscar\\.espressif\\tools\\idf-python\\3.11.2\\python.exe"
 }
