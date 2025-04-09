@@ -24,11 +24,15 @@ int main(void) {
     float sin_u = 0.0f, sin_v = 0.0f, sin_w = 0.0f;
     DataWatchpointTrace::start();
     STLIB::start();
-    
+    unsigned int st = DataWatchpointTrace::start_count();
+        int a = 3;
+    unsigned int stop = DataWatchpointTrace::stop_count();
+    a = stop;
+    stop = st;
+    st = a;
+    float angle = TWO_PI * freq * time;
     unsigned int start_cycle = DataWatchpointTrace::start_count();
-    sin_u = sin(TWO_PI * freq * time);
-    sin_v = sin(TWO_PI * freq * time + TWO_PI / 3.0f);
-    sin_w = sin(TWO_PI * freq * time - TWO_PI / 3.0f);
+    sin_u = sin(angle);
     unsigned int end_cycle = DataWatchpointTrace::stop_count();
     uint64_t start_tick = Time::get_global_tick();
     for(int i = 0; i < REPS; i++){
@@ -42,9 +46,7 @@ int main(void) {
     start_cycle = cycle_time + 1;
 
     start_cycle = DataWatchpointTrace::start_count();
-    sin_u = fast_sin_lut(TWO_PI * freq * time);
-    sin_v = fast_sin_lut(TWO_PI * freq * time + TWO_PI / 3.0f);
-    sin_w = fast_sin_lut(TWO_PI * freq * time - TWO_PI / 3.0f);
+    sin_u = fast_sin_lut(angle);
     end_cycle = DataWatchpointTrace::stop_count();
     uint64_t start_tick_2 = Time::get_global_tick();
     for(int i = 0; i < REPS; i++){
