@@ -1,15 +1,25 @@
 import json 
+import sys
 from Packet_generation.Packet_generation import *
 from State_machine_generation.State_machine_generation import *
 
-
-
+if len(sys.argv)<2:
+    print("Please enter a board name,exiting...")
+    sys.exit()
+    
 JSONpath = "Core/Inc/Code_generation/JSON_ADE"
 boards = Generate_PacketDescription(JSONpath)
-board = input("Enter board name: ")
-while board not in boards: 
-    print("Board not found, select an available board")
-    board = input("Enter board name: ")
+aux = sys.argv[1]
+filtered = ""
+for c in aux:
+    if c.isalpha():
+        filtered += c
+    else:
+        break
+board = filtered
+if board not in boards:
+    sys.exit()
+
 Generate_DataPackets_hpp(board)
 Generate_OrderPackets_hpp(board)
 Generate_Protections_hpp(board)
