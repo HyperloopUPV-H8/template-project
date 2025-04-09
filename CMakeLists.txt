@@ -5,6 +5,14 @@ set(EXECUTABLE ${PROJECT_NAME}.elf)
 set(Board "VCU") # User must change the Board name
 set(STLIB_DIR ${CMAKE_CURRENT_LIST_DIR}/deps/ST-LIB)
 
+find_package(Python3 COMPONENTS Interpreter REQUIRED)
+
+set(GENERATOR_SCRIPT "${CMAKE_SOURCE_DIR}/Core/Inc/Code_generation/Generator.py")
+
+add_custom_target(run_generator ALL
+    COMMAND ${Python3_EXECUTABLE} ${GENERATOR_SCRIPT} ${Board}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
 
 add_custom_target(
     my_custom_target_that_always_runs ALL
@@ -179,11 +187,4 @@ if (PROJECT_IS_TOP_LEVEL)
 endif()
 
 
-find_package(Python3 COMPONENTS Interpreter REQUIRED)
 
-set(GENERATOR_SCRIPT "${CMAKE_SOURCE_DIR}/Core/Inc/Code_generation/Generator.py")
-
-add_custom_target(run_generator ALL
-    COMMAND ${Python3_EXECUTABLE} ${GENERATOR_SCRIPT} ${Board}
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-)
