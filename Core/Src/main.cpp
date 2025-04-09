@@ -12,7 +12,7 @@
 float fast_sin_lut(float angle) {
     angle = fmod(angle, TWO_PI);
     if (angle < 0) angle += TWO_PI;
-    int idx = round((angle * NUMBER_POINTS) / TWO_PI);
+    int idx = (angle * NUMBER_POINTS) / TWO_PI;
     return look_up_table_sin[idx];
 }
 int main(void) {
@@ -24,12 +24,20 @@ int main(void) {
     float sin_u = 0.0f, sin_v = 0.0f, sin_w = 0.0f;
     DataWatchpointTrace::start();
     STLIB::start();
+    
     unsigned int start_cycle = DataWatchpointTrace::start_count();
     sin_u = sin(TWO_PI * freq * time);
     sin_v = sin(TWO_PI * freq * time + TWO_PI / 3.0f);
     sin_w = sin(TWO_PI * freq * time - TWO_PI / 3.0f);
     unsigned int end_cycle = DataWatchpointTrace::stop_count();
-
+    uint64_t start_tick = Time::get_global_tick();
+    for(int i = 0; i < REPS; i++){
+        sin_u = sin(TWO_PI * freq * time);
+        sin_v = sin(TWO_PI * freq * time + TWO_PI / 3.0f);
+        sin_w = sin(TWO_PI * freq * time - TWO_PI / 3.0f);
+    }
+    uint64_t end_tick = Time::get_global_tick();
+    uint64_t time_in_ticks = end_tick - start_tick;
     unsigned int cycle_time = end_cycle - start_cycle;
     start_cycle = cycle_time + 1;
 
@@ -38,8 +46,21 @@ int main(void) {
     sin_v = fast_sin_lut(TWO_PI * freq * time + TWO_PI / 3.0f);
     sin_w = fast_sin_lut(TWO_PI * freq * time - TWO_PI / 3.0f);
     end_cycle = DataWatchpointTrace::stop_count();
-    cycle_time = end_cycle - start_cycle;
+    uint64_t start_tick_2 = Time::get_global_tick();
+    for(int i = 0; i < REPS; i++){
+        sin_u = fast_sin_lut(TWO_PI * freq * time);
+        sin_v = fast_sin_lut(TWO_PI * freq * time + TWO_PI / 3.0f);
+        sin_w = fast_sin_lut(TWO_PI * freq * time - TWO_PI / 3.0f);
+    }
+    uint64_t end_tick_2 = Time::get_global_tick();
+    uint64_t time_in_ticks_2 = end_tick_2 - start_tick_2;
 
+    unsigned int cycle_time_2 = end_cycle - start_cycle;
+    int difference = cycle_time- cycle_time_2;
+
+    sin_u = difference;
+    difference = time_in_ticks;
+    sin_u = time_in_ticks_2;
     sin_u = sin_v;
     sin_v = sin_w;
     sin_w = sin_u;
