@@ -4,6 +4,7 @@ project (template-project ASM C CXX)
 set(EXECUTABLE ${PROJECT_NAME}.elf)
 set(STLIB_DIR ${CMAKE_CURRENT_LIST_DIR}/deps/ST-LIB)
 
+set(VENV_PYTHON "${CMAKE_SOURCE_DIR}/virtual/bin/python")
 
 add_custom_target(
     my_custom_target_that_always_runs ALL
@@ -12,7 +13,7 @@ add_custom_target(
 add_custom_command(
     OUTPUT
         ${CMAKE_CURRENT_BINARY_DIR}/_tmp.h  # fake! ensure we run! 
-    COMMAND python3 ${CMAKE_SOURCE_DIR}/tools/generate_binary_metadata.py
+    COMMAND ${VENV_PYTHON} ${CMAKE_SOURCE_DIR}/tools/generate_binary_metadata.py
 )
 
 option(USE_ETHERNET "Enable ethernet peripheral" OFF)

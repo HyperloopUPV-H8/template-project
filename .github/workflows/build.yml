@@ -38,13 +38,13 @@ jobs:
       - name: Configure
         run: |
           apt install -y python3.12-venv 
-          python3 -m venv .
-          source bin/activate
+          python3 -m venv virtual
+          source virtual/bin/activate
           pip install -r requirements.txt
         shell: bash
       - name: Build
         run: |
-          source bin/activate
+          source virtual/bin/activate
           cmake --preset ${{ inputs.preset }} .
           cmake --build --preset ${{ inputs.preset }}
         shell: bash
