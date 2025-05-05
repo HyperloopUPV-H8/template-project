@@ -11,11 +11,10 @@ int main(void) {
     SharedMemory::start();
 #endif
 
-    DigitalOutput led_on(PB1);
-    STLIB::start();
+    DigitalOutput led_on(PG8);
+    STLIB::start("00:80:e1:00:01:04");
 
-    Time::register_low_precision_alarm(5, [&]() { led_on.toggle(); 
-    });
+    Time::register_low_precision_alarm(500, [&]() { led_on.toggle(); });
 
     while (1) {
         STLIB::update();
