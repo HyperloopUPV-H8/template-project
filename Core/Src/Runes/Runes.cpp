@@ -314,3 +314,11 @@ MultiplierAccelerator::FMACInstance MultiplierAccelerator::Instance = {
     .dma_write = DMA::Stream::DMA2Stream2,
 };
 #endif
+
+/************************************************
+ *					   WATCHDOG
+ ***********************************************/
+
+#ifdef HAL_IWDG_MODULE_ENABLED
+Watchdog watchdog(std::chrono::milliseconds(100));
+#endif
