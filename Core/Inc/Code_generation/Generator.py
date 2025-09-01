@@ -21,9 +21,6 @@ board = filtered
 
 boards = Generate_PacketDescription(JSONpath, board)
 
-if board not in boards:
-    print("Board not found, exiting...")
-    sys.exit()
 if __name__ == "__main__":
     Generate_DataPackets_hpp(board)
     Generate_OrderPackets_hpp(board)

@@ -2,6 +2,7 @@ from Packet_generation.Packet_descriptions import *
 import json
 import os
 import jinja2
+import sys
 
 templates_path = "Core/Inc/Code_generation/Packet_generation"
 
@@ -11,10 +12,14 @@ def Generate_PacketDescription(JSONpath:str,board:str):
     boards_name = []
     for b in boards:
         boards_name.append(b)
-    with open(JSONpath+"/" + (boards[board])) as f:
-        b = json.load(f)
-        board_instance = BoardDescription(board, b,JSONpath)
-        globals()[board] = board_instance
+    if board in boards_name:
+        with open(JSONpath+"/" + (boards[board])) as f:
+            b = json.load(f)
+            board_instance = BoardDescription(board, b,JSONpath)
+            globals()[board] = board_instance
+    else:
+        print("Board not found, exiting...")
+        sys.exit()
     
     return boards_name
         
