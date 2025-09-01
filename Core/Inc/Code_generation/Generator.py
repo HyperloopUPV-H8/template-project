@@ -8,22 +8,26 @@ if len(sys.argv)<2:
     sys.exit()
     
 JSONpath = "Core/Inc/Code_generation/JSON_ADE"
-boards = Generate_PacketDescription(JSONpath)
+
 aux = sys.argv[1]
 filtered = ""
-for c in aux:
-    if c.isalpha():
-        filtered += c
+for char in aux:
+    if char.isalpha():
+        filtered += char
     else:
         break
 board = filtered
-if board not in boards:
-    sys.exit()
 
-Generate_DataPackets_hpp(board)
-Generate_OrderPackets_hpp(board)
-Generate_Protections_hpp(board)
+
+boards = Generate_PacketDescription(JSONpath, board)
+
+if board not in boards:
+    print("Board not found, exiting...")
+    sys.exit()
 if __name__ == "__main__":
+    Generate_DataPackets_hpp(board)
+    Generate_OrderPackets_hpp(board)
+    # Generate_Protections_hpp(board), no protections for now
     with open("state_machine.json", "r") as file:
         data = json.load(file)
     sm = parse_state_machine(data)
