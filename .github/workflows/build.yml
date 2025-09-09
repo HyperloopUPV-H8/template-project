@@ -37,6 +37,8 @@ jobs:
           submodules: recursive
       - name: Configure
         run: |
+          apt update && apt install -y sudo
+          sudo apt update
           apt install -y python3.12-venv 
           python3 -m venv virtual
           source virtual/bin/activate
