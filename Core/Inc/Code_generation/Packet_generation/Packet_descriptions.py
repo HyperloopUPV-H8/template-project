@@ -6,9 +6,13 @@ class BoardDescription:
         self.name = name
         self.id = board["board_id"]
         self.ip = board["board_ip"]
+        #Sockets
+        with open(JSONpath+"/boards/"+name+"/sockets.json") as s:
+            socks = json.load(s)
+            self.sockets=self.SocketsDescription(socks,self.ip)
+        #Packets 
         self.data_size =0
         self.order_size =0
-        self.measurements_files = board["measurements"]
         self.packet_files = board["packets"]
         self.measurement_lists = []
         self.packets = {}
@@ -29,6 +33,28 @@ class BoardDescription:
                 else:
                     self.order_size += 1
                 i += 1
+                
+    class SocketsDescription:
+        def __init__(self,sockets:list,board_ip:str):
+            self.allSockets=[]
+            self.ServerSockets = []
+            self.Sockets = []
+            self.DatagramSockets = []
+            self.board_ip = board_ip
+            for sock in sockets:
+                name = sock["name"].replace(" ", "_").replace("-", "_")
+                sock_type = sock["type"]
+                self.allSockets.append({"name": name,"type":sock_type})
+                
+                if sock_type == "ServerSocket":
+                    self.ServerSockets.append({"name": name,"type":sock_type,"board_ip":self.board_ip, "port": sock["port"]})
+                elif sock_type == "Socket":
+                    self.Sockets.append({"name": name,"type":sock_type,"board_ip":self.board_ip, "localport": sock["local_port"], "remote_ip": sock["remote_ip"], "remote_port": sock["remote_port"]})
+                elif sock_type == "DatagramSocket":
+                    self.DatagramSockets.append({"name": name,"type":sock_type,"board_ip":self.board_ip, "port": sock["port"],"remote_ip":sock["remote_ip"]})
+            
+
+        
 class PacketDescription:
     def __init__(self, packet:dict,measurements:list):
         self.id =packet["id"]

@@ -17,13 +17,23 @@ class DataPackets{
         std::array<StackPacket*,size> packets; 
         {%for packet in packets%}StackPacket* {{packet.name}};
         {% endfor %}
+
+        {% for socket in sockets %}{{socket.type}}* {{socket.name}} = nullptr;
+        {% endfor %}
         
     DataPackets({%for value in data %}{{value.type}} &{{value.name}}{%if not loop.last%},{%endif%}{%endfor%})
-{
+{   
+    {% for socket in ServerSockets%}{{socket.name}} = new ServerSocket("{{socket.board_ip}}",{{socket.port}});
+    {% endfor %}
+    {% for socket in DatagramSockets%}{{socket.name}} = new DatagramSocket("{{socket.board_ip}}",{{socket.port}},"{{socket.remote_ip}}",{{socket.port}});
+    {% endfor %}
+    {% for socket in Sockets%}{{socket.name}} = new Socket("{{socket.board_ip}}",{{socket.local_port}},"{{socket.remote_ip}}",{{socket.remote_port}});
+    {% endfor %}
 
     {% for packet in packets %}{{packet.name}} = new StackPacket({{packet.id}}{% if packet.data%},{{packet.data}}{% endif%});
     packets[id]={{packet.name}};
     id++;
+
     {% endfor %}
 }
 };

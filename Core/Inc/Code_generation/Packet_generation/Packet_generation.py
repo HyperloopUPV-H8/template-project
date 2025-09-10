@@ -64,6 +64,10 @@ def Get_data_context(board:BoardDescription):
         "packets" : packets,
         "data": data,
         "size": board.order_size,
+        "sockets":board.sockets.allSockets,
+        "ServerSockets":board.sockets.ServerSockets,
+        "Sockets":board.sockets.Sockets,
+        "DatagramSockets":board.sockets.DatagramSockets,
     }
     return context
 
