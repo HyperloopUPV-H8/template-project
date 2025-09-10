@@ -107,8 +107,8 @@ class DataPackets{
     pcu_udp = new DatagramSocket("192.168.1.3",50402,"192.168.1.5",50402);
     hvscu_udp = new DatagramSocket("192.168.1.3",50403,"192.168.1.7",50403);
     
-    pcu_tcp = new Socket("192.168.1.3",,"192.168.1.5",50500);
-    hvscu_tcp = new Socket("192.168.1.3",,"192.168.1.7",50500);
+    pcu_tcp = new Socket("192.168.1.3",50501,"192.168.1.5",50500);
+    hvscu_tcp = new Socket("192.168.1.3",50502,"192.168.1.7",50500);
     
 
     Current_State = new StackPacket(249,general_state,operational_state);

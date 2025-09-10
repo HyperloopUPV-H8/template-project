@@ -49,7 +49,7 @@ class BoardDescription:
                 if sock_type == "ServerSocket":
                     self.ServerSockets.append({"name": name,"type":sock_type,"board_ip":self.board_ip, "port": sock["port"]})
                 elif sock_type == "Socket":
-                    self.Sockets.append({"name": name,"type":sock_type,"board_ip":self.board_ip, "localport": sock["local_port"], "remote_ip": sock["remote_ip"], "remote_port": sock["remote_port"]})
+                    self.Sockets.append({"name": name,"type":sock_type,"board_ip":self.board_ip, "local_port": sock["local_port"], "remote_ip": sock["remote_ip"], "remote_port": sock["remote_port"]})
                 elif sock_type == "DatagramSocket":
                     self.DatagramSockets.append({"name": name,"type":sock_type,"board_ip":self.board_ip, "port": sock["port"],"remote_ip":sock["remote_ip"]})
             
