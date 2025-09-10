@@ -6,11 +6,11 @@ class BoardDescription:
         self.name = name
         self.id = board["board_id"]
         self.ip = board["board_ip"]
-        #Sockets
+        #Sockets:
         with open(JSONpath+"/boards/"+name+"/sockets.json") as s:
             socks = json.load(s)
             self.sockets=self.SocketsDescription(socks,self.ip)
-        #Packets 
+        #Packets: 
         self.sending_packets = []
         self.data_size =0
         self.order_size =0
@@ -28,8 +28,9 @@ class BoardDescription:
             i=0
             for packet in p:
                 self.packets[packets_name].append(PacketDescription(packet,self.measurement_lists))
-                if PacketDescription.check_for_sending(packet) is not None:
-                    self.sending_packets.append(PacketDescription.check_for_sending(packet))
+                aux_sending= PacketDescription.check_for_sending(packet)
+                if aux_sending is not None:
+                    self.sending_packets.append(aux_sending)
                     
                 if self.packets[packets_name][i].type != "order":
                     self.data_size += 1
@@ -101,9 +102,9 @@ class PacketDescription:
             
     @staticmethod
     def check_for_sending(packet:dict):
-        if "period" and "socket" in packet:
+        if "period_ms" and "socket" in packet:
             name = packet["name"].replace(" ", "_").replace("-", "_")
-            return {"name": name,"period": packet["period"],"socket": packet["socket"]}
+            return {"name": name,"period": packet["period_ms"],"socket": packet["socket"]}
         else:
             return None
 class MeasurmentsDescription:
