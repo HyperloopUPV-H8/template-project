@@ -78,25 +78,25 @@ class DataPackets{
 
     private:
         constexpr static size_t size=18;
-        uint32_t id{0};
+        inline static uint32_t id{0};
     public:
-        std::array<StackPacket*,size> packets; 
-        StackPacket* Current_State;
-        StackPacket* Reeds;
-        StackPacket* Flow;
-        StackPacket* Regulator;
-        StackPacket* Pressure;
-        StackPacket* tapes;
-        StackPacket* sdc;
-        StackPacket* recovery_state;
+        static std::array<StackPacket*,size> packets; 
+        inline static StackPacket* Current_State =nullptr;
+        inline static StackPacket* Reeds =nullptr;
+        inline static StackPacket* Flow =nullptr;
+        inline static StackPacket* Regulator =nullptr;
+        inline static StackPacket* Pressure =nullptr;
+        inline static StackPacket* tapes =nullptr;
+        inline static StackPacket* sdc =nullptr;
+        inline static StackPacket* recovery_state =nullptr;
         
 
-        ServerSocket* control_station_tcp = nullptr;
-        DatagramSocket* control_station_udp = nullptr;
-        Socket* pcu_tcp = nullptr;
-        DatagramSocket* pcu_udp = nullptr;
-        Socket* hvscu_tcp = nullptr;
-        DatagramSocket* hvscu_udp = nullptr;
+        inline static ServerSocket* control_station_tcp = nullptr;
+        inline static DatagramSocket* control_station_udp = nullptr;
+        inline static Socket* pcu_tcp = nullptr;
+        inline static DatagramSocket* pcu_udp = nullptr;
+        inline static Socket* hvscu_tcp = nullptr;
+        inline static DatagramSocket* hvscu_udp = nullptr;
         
         
     DataPackets(general_state &general_state,operational_state &operational_state,reed1 &reed1,reed2 &reed2,reed3 &reed3,reed4 &reed4,bool &all_reeds,flow1 &flow1,flow2 &flow2,float32 &regulator_1_pressure,float32 &regulator_2_pressure,float32 &pressure_high,float32 &pressure_regulator,float32 &pressure_brakes,float32 &pressure_capsule,tape_enable_output &tape_enable_output,emergency_tape &emergency_tape,SDC &SDC,uint8_t &state)
@@ -143,29 +143,21 @@ class DataPackets{
     id++;
 
     
-    Time::register_low_precision_alarm(16.67,[control_station_udp=control_station_udp,Current_State=Current_State](){
-        control_station_udp->send_packet(*Current_State);
+    Time::register_low_precision_alarm(16.67,+[](){
+        
+        DataPackets::control_station_udp->send_packet(*DataPackets::Current_State);
+        DataPackets::control_station_udp->send_packet(*DataPackets::Reeds);
+        DataPackets::control_station_udp->send_packet(*DataPackets::Flow);
+        DataPackets::control_station_udp->send_packet(*DataPackets::Regulator);
+        DataPackets::control_station_udp->send_packet(*DataPackets::Pressure);
+        DataPackets::control_station_udp->send_packet(*DataPackets::tapes);
+        DataPackets::control_station_udp->send_packet(*DataPackets::sdc);
+        
+        
     });
-    Time::register_low_precision_alarm(16.67,[control_station_udp=control_station_udp,Reeds=Reeds](){
-        control_station_udp->send_packet(*Reeds);
-    });
-    Time::register_low_precision_alarm(16.67,[control_station_udp=control_station_udp,Flow=Flow](){
-        control_station_udp->send_packet(*Flow);
-    });
-    Time::register_low_precision_alarm(16.67,[control_station_udp=control_station_udp,Regulator=Regulator](){
-        control_station_udp->send_packet(*Regulator);
-    });
-    Time::register_low_precision_alarm(16.67,[control_station_udp=control_station_udp,Pressure=Pressure](){
-        control_station_udp->send_packet(*Pressure);
-    });
-    Time::register_low_precision_alarm(16.67,[control_station_udp=control_station_udp,tapes=tapes](){
-        control_station_udp->send_packet(*tapes);
-    });
-    Time::register_low_precision_alarm(16.67,[control_station_udp=control_station_udp,sdc=sdc](){
-        control_station_udp->send_packet(*sdc);
-    });
-    Time::register_low_precision_alarm(16.67,[pcu_udp=pcu_udp,recovery_state=recovery_state](){
-        pcu_udp->send_packet(*recovery_state);
+    Time::register_low_precision_alarm(16.67,+[](){
+         DataPackets::pcu_udp->send_packet(*DataPackets::recovery_state);
+        
     });
     
 

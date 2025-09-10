@@ -12,13 +12,13 @@ class DataPackets{
 
     private:
         constexpr static size_t size={{size}};
-        uint32_t id{0};
+        inline static uint32_t id{0};
     public:
-        std::array<StackPacket*,size> packets; 
-        {%for packet in packets%}StackPacket* {{packet.name}};
+        static std::array<StackPacket*,size> packets; 
+        {%for packet in packets%}inline static StackPacket* {{packet.name}} =nullptr;
         {% endfor %}
 
-        {% for socket in sockets %}{{socket.type}}* {{socket.name}} = nullptr;
+        {% for socket in sockets %}inline static {{socket.type}}* {{socket.name}} = nullptr;
         {% endfor %}
         
     DataPackets({%for value in data %}{{value.type}} &{{value.name}}{%if not loop.last%},{%endif%}{%endfor%})
@@ -34,8 +34,12 @@ class DataPackets{
     id++;
 
     {% endfor %}
-    {%for packet in sending_packets %}Time::register_low_precision_alarm({{packet.period}},[{{packet.socket}}={{packet.socket}},{{packet.name}}={{packet.name}}](){
-        {{packet.socket}}->send_packet(*{{packet.name}});
+    {%for packet in sending_packets %}Time::register_low_precision_alarm({{packet.period}},+[](){
+        {% if packet.name is string %} DataPackets::{{packet.socket}}->send_packet(*DataPackets::{{packet.name}});
+        {%else%}
+        {%for name in packet.name%}DataPackets::{{packet.socket}}->send_packet(*DataPackets::{{name}});
+        {%endfor%}
+        {% endif %}
     });
     {%endfor%}
 

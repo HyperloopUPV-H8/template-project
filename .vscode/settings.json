@@ -22,6 +22,11 @@
     "string": "cpp",
     "string_view": "cpp",
     "ranges": "cpp",
-    "span": "cpp"
+    "span": "cpp",
+    "bitset": "cpp",
+    "initializer_list": "cpp",
+    "stacktrace": "cpp",
+    "regex": "cpp",
+    "valarray": "cpp"
   }
 }

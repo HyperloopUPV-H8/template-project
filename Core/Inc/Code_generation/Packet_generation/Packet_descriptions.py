@@ -36,7 +36,34 @@ class BoardDescription:
                 else:
                     self.order_size += 1
                 i += 1
+            
+        self.sending_packets = self.fix_sendind_packets(self.sending_packets)
+        print(self.sending_packets)
         
+    @staticmethod
+    def fix_sendind_packets(sending_packets:list):
+        fixed_packets = []
+        lookup = {}
+        for item in sending_packets:
+            if not isinstance(item, dict):
+                continue
+            period = item.get("period")
+            socket = item.get("socket")
+            name = item.get("name")
+            key = (period, socket)
+            lookup.setdefault(key, []).append(name)
+
+        for (period, socket), names in lookup.items():
+            entry = {"period": period, "socket": socket}
+            if len(names) == 1:
+                entry["name"] = names[0]
+            else:
+                entry["name"] = names
+            fixed_packets.append(entry)
+
+        return fixed_packets
+                
+                
                 
     class SocketsDescription:
         def __init__(self,sockets:list,board_ip:str):
