@@ -1,4 +1,3 @@
-import json 
 import sys
 from Packet_generation.Packet_generation import *
 from State_machine_generation.State_machine_generation import *

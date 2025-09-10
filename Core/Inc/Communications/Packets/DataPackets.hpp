@@ -110,7 +110,6 @@ class DataPackets{
     pcu_tcp = new Socket("192.168.1.3",50501,"192.168.1.5",50500);
     hvscu_tcp = new Socket("192.168.1.3",50502,"192.168.1.7",50500);
     
-
     Current_State = new StackPacket(249,general_state,operational_state);
     packets[id]=Current_State;
     id++;
@@ -144,5 +143,32 @@ class DataPackets{
     id++;
 
     
+    Time::register_low_precision_alarm(16.67,[control_station_udp=control_station_udp,Current_State=Current_State](){
+        control_station_udp->send_packet(*Current_State);
+    });
+    Time::register_low_precision_alarm(16.67,[control_station_udp=control_station_udp,Reeds=Reeds](){
+        control_station_udp->send_packet(*Reeds);
+    });
+    Time::register_low_precision_alarm(16.67,[control_station_udp=control_station_udp,Flow=Flow](){
+        control_station_udp->send_packet(*Flow);
+    });
+    Time::register_low_precision_alarm(16.67,[control_station_udp=control_station_udp,Regulator=Regulator](){
+        control_station_udp->send_packet(*Regulator);
+    });
+    Time::register_low_precision_alarm(16.67,[control_station_udp=control_station_udp,Pressure=Pressure](){
+        control_station_udp->send_packet(*Pressure);
+    });
+    Time::register_low_precision_alarm(16.67,[control_station_udp=control_station_udp,tapes=tapes](){
+        control_station_udp->send_packet(*tapes);
+    });
+    Time::register_low_precision_alarm(16.67,[control_station_udp=control_station_udp,sdc=sdc](){
+        control_station_udp->send_packet(*sdc);
+    });
+    Time::register_low_precision_alarm(16.67,[pcu_udp=pcu_udp,recovery_state=recovery_state](){
+        pcu_udp->send_packet(*recovery_state);
+    });
+    
+
+
 }
 };

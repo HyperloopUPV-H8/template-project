@@ -11,9 +11,9 @@ class BoardDescription:
             socks = json.load(s)
             self.sockets=self.SocketsDescription(socks,self.ip)
         #Packets 
+        self.sending_packets = []
         self.data_size =0
         self.order_size =0
-        self.packet_files = board["packets"]
         self.measurement_lists = []
         self.packets = {}
         for measurement in board["measurements"]:
@@ -28,11 +28,15 @@ class BoardDescription:
             i=0
             for packet in p:
                 self.packets[packets_name].append(PacketDescription(packet,self.measurement_lists))
+                if PacketDescription.check_for_sending(packet) is not None:
+                    self.sending_packets.append(PacketDescription.check_for_sending(packet))
+                    
                 if self.packets[packets_name][i].type != "order":
                     self.data_size += 1
                 else:
                     self.order_size += 1
                 i += 1
+        
                 
     class SocketsDescription:
         def __init__(self,sockets:list,board_ip:str):
@@ -67,7 +71,14 @@ class PacketDescription:
         for variable in packet["variables"]:
             self.variables.append(variable)
             self.measurements.append(MeasurmentsDescription(measurements,variable))
-
+            
+    @staticmethod
+    def check_for_sending(packet:dict):
+        if "period" and "socket" in packet:
+            name = packet["name"].replace(" ", "_").replace("-", "_")
+            return {"name": name,"period": packet["period"],"socket": packet["socket"]}
+        else:
+            return None
 class MeasurmentsDescription:
     def __init__(self,measurements:list, variable:str):
         self.id = variable

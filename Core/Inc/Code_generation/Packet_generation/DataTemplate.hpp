@@ -29,11 +29,16 @@ class DataPackets{
     {% endfor %}
     {% for socket in Sockets%}{{socket.name}} = new Socket("{{socket.board_ip}}",{{socket.local_port}},"{{socket.remote_ip}}",{{socket.remote_port}});
     {% endfor %}
-
     {% for packet in packets %}{{packet.name}} = new StackPacket({{packet.id}}{% if packet.data%},{{packet.data}}{% endif%});
     packets[id]={{packet.name}};
     id++;
 
     {% endfor %}
+    {%for packet in sending_packets %}Time::register_low_precision_alarm({{packet.period}},[{{packet.socket}}={{packet.socket}},{{packet.name}}={{packet.name}}](){
+        {{packet.socket}}->send_packet(*{{packet.name}});
+    });
+    {%endfor%}
+
+
 }
 };

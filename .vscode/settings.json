@@ -18,6 +18,10 @@
     "tuple": "cpp",
     "utility": "cpp",
     "variant": "cpp",
-    "atomic": "cpp"
+    "atomic": "cpp",
+    "string": "cpp",
+    "string_view": "cpp",
+    "ranges": "cpp",
+    "span": "cpp"
   }
 }

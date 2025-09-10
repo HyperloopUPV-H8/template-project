@@ -68,6 +68,7 @@ def Get_data_context(board:BoardDescription):
         "ServerSockets":board.sockets.ServerSockets,
         "Sockets":board.sockets.Sockets,
         "DatagramSockets":board.sockets.DatagramSockets,
+        "sending_packets": board.sending_packets,
     }
     return context
 
