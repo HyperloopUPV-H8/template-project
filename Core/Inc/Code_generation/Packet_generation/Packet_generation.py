@@ -33,7 +33,7 @@ def Get_data_context(board:BoardDescription):
             for packet_instance in board.packets[packet]:
                 if packet_instance.type != "order":
                     for measurement in packet_instance.measurements:
-                        if hasattr(measurement, "enum"):
+                        if hasattr(measurement, "enum")and measurement.enum not in Enums:
                             Enums.append(measurement.enum)
         return Enums
     
@@ -101,7 +101,7 @@ def Get_order_context(board:BoardDescription):
             for packet_instance in board.packets[packet]:
                 if packet_instance.type == "order":
                     for measurement in packet_instance.measurements:
-                        if hasattr(measurement, "enum"):
+                        if hasattr(measurement, "enum") and measurement.enum not in Enums:
                             Enums.append(measurement.enum)
         return Enums
     
@@ -113,15 +113,19 @@ def Get_order_context(board:BoardDescription):
             for packet_instance in board.packets[packet]:
                 if packet_instance.type == "order":
                     tempdata = ""
+                    tempdata_but_pointer = ""
                     for variable in packet_instance.variables:
                         tempdata +=(str(variable) +",")
+                        tempdata_but_pointer +=("&"+str(variable) +",")
                     if tempdata.endswith(","):
-                        tempdata = tempdata[:-1]  
-                    aux_packet = {"name": packet_instance.name, "data":tempdata , "id": packet_instance.id}
+                        tempdata = tempdata[:-1] 
+                        tempdata_but_pointer = tempdata_but_pointer[:-1] 
+                    aux_packet = {"name": packet_instance.name, "data":tempdata_but_pointer , "id": packet_instance.id}
                     Packets.append(aux_packet)
                     for measurement in packet_instance.measurements:
                         aux_data = {"type": measurement.type, "name": measurement.id}
-                        totaldata.append(aux_data)
+                        if aux_data not in totaldata:
+                            totaldata.append(aux_data)
         
         return Packets,totaldata
     

@@ -150,4 +150,6 @@ class MeasurmentsDescription:
         aux_type = type[:4]
         if aux_type == "uint":
             type += "_t"
+        elif type == "float32":
+            type = "float"
         return type
