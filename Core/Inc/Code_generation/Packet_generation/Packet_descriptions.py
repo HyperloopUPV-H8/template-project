@@ -39,7 +39,6 @@ class BoardDescription:
                 i += 1
             
         self.sending_packets = self.fix_sendind_packets(self.sending_packets)
-        print(self.sending_packets)
         
     @staticmethod
     def fix_sendind_packets(sending_packets:list):

@@ -45,11 +45,15 @@ def Get_data_context(board:BoardDescription):
             for packet_instance in board.packets[packet]:
                 if packet_instance.type != "order":
                     tempdata = ""
+                    tempdata_but_pointer = ""
                     for variable in packet_instance.variables:
                         tempdata +=(str(variable) +",")
+                        tempdata_but_pointer +=("&"+str(variable) +",")
                     if tempdata.endswith(","):
                         tempdata = tempdata[:-1]  
-                    aux_packet = {"name": packet_instance.name, "data":tempdata.replace(" ", "_").replace("-", "_") , "id": packet_instance.id}
+                    if tempdata_but_pointer.endswith(","):
+                        tempdata_but_pointer = tempdata_but_pointer[:-1]
+                    aux_packet = {"name": packet_instance.name, "data":tempdata_but_pointer.replace(" ", "_").replace("-", "_") , "id": packet_instance.id}
                     Packets.append(aux_packet)
                     for measurement in packet_instance.measurements:
                         aux_data = {"type": measurement.type, "name": measurement.id.replace(" ", "_").replace("-", "_")}
