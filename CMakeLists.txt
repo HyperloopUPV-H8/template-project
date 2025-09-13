@@ -2,9 +2,19 @@ cmake_minimum_required (VERSION 3.14)
 
 project (template-project ASM C CXX)
 set(EXECUTABLE ${PROJECT_NAME}.elf)
+set(Board "VCU") # User must change the Board name
 set(STLIB_DIR ${CMAKE_CURRENT_LIST_DIR}/deps/ST-LIB)
 
+find_package(Python3 COMPONENTS Interpreter REQUIRED)
+
+set(GENERATOR_SCRIPT "${CMAKE_SOURCE_DIR}/Core/Inc/Code_generation/Generator.py")
+
+add_custom_target(run_generator ALL
+    COMMAND ${Python3_EXECUTABLE} ${GENERATOR_SCRIPT} ${Board}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
 set(VENV_PYTHON "${CMAKE_SOURCE_DIR}/virtual/bin/python")
+
 
 add_custom_target(
     my_custom_target_that_always_runs ALL
@@ -177,3 +187,6 @@ if (PROJECT_IS_TOP_LEVEL)
         ${CMAKE_CURRENT_SOURCE_DIR}/out/build/latest.elf
     )
 endif()
+
+
+

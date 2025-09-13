@@ -2,20 +2,24 @@ from Packet_generation.Packet_descriptions import *
 import json
 import os
 import jinja2
+import sys
 
 templates_path = "Core/Inc/Code_generation/Packet_generation"
 
-def Generate_PacketDescription(JSONpath:str):    
+def Generate_PacketDescription(JSONpath:str,board:str):    
     with open(JSONpath+"/boards.json") as f:
         boards = json.load(f)
     boards_name = []
-    for board in boards["boards"]:
-        
-        with open(JSONpath+"/" + (boards["boards"][board])) as f:
+    for b in boards:
+        boards_name.append(b)
+    if board in boards_name:
+        with open(JSONpath+"/" + (boards[board])) as f:
             b = json.load(f)
-        board_instance = BoardDescription(board, b,JSONpath)
-        boards_name.append(board_instance.name)
-        globals()[board] = board_instance
+            board_instance = BoardDescription(board, b,JSONpath)
+            globals()[board] = board_instance
+    else:
+        print("Board not found, exiting...")
+        sys.exit()
     
     return boards_name
         
@@ -29,7 +33,7 @@ def Get_data_context(board:BoardDescription):
             for packet_instance in board.packets[packet]:
                 if packet_instance.type != "order":
                     for measurement in packet_instance.measurements:
-                        if hasattr(measurement, "enum"):
+                        if hasattr(measurement, "enum")and measurement.enum not in Enums:
                             Enums.append(measurement.enum)
         return Enums
     
@@ -41,14 +45,18 @@ def Get_data_context(board:BoardDescription):
             for packet_instance in board.packets[packet]:
                 if packet_instance.type != "order":
                     tempdata = ""
+                    tempdata_but_pointer = ""
                     for variable in packet_instance.variables:
                         tempdata +=(str(variable) +",")
+                        tempdata_but_pointer +=("&"+str(variable) +",")
                     if tempdata.endswith(","):
                         tempdata = tempdata[:-1]  
-                    aux_packet = {"name": packet_instance.name, "data":tempdata , "id": packet_instance.id}
+                    if tempdata_but_pointer.endswith(","):
+                        tempdata_but_pointer = tempdata_but_pointer[:-1]
+                    aux_packet = {"name": packet_instance.name, "data":tempdata_but_pointer.replace(" ", "_").replace("-", "_") , "id": packet_instance.id}
                     Packets.append(aux_packet)
                     for measurement in packet_instance.measurements:
-                        aux_data = {"type": measurement.type, "name": measurement.id}
+                        aux_data = {"type": measurement.type, "name": measurement.id.replace(" ", "_").replace("-", "_")}
                         totaldata.append(aux_data)
         
         return Packets,totaldata
@@ -60,6 +68,11 @@ def Get_data_context(board:BoardDescription):
         "packets" : packets,
         "data": data,
         "size": board.order_size,
+        "sockets":board.sockets.allSockets,
+        "ServerSockets":board.sockets.ServerSockets,
+        "Sockets":board.sockets.Sockets,
+        "DatagramSockets":board.sockets.DatagramSockets,
+        "sending_packets": board.sending_packets,
     }
     return context
 
@@ -88,7 +101,7 @@ def Get_order_context(board:BoardDescription):
             for packet_instance in board.packets[packet]:
                 if packet_instance.type == "order":
                     for measurement in packet_instance.measurements:
-                        if hasattr(measurement, "enum"):
+                        if hasattr(measurement, "enum") and measurement.enum not in Enums:
                             Enums.append(measurement.enum)
         return Enums
     
@@ -100,15 +113,19 @@ def Get_order_context(board:BoardDescription):
             for packet_instance in board.packets[packet]:
                 if packet_instance.type == "order":
                     tempdata = ""
+                    tempdata_but_pointer = ""
                     for variable in packet_instance.variables:
                         tempdata +=(str(variable) +",")
+                        tempdata_but_pointer +=("&"+str(variable) +",")
                     if tempdata.endswith(","):
-                        tempdata = tempdata[:-1]  
-                    aux_packet = {"name": packet_instance.name, "data":tempdata , "id": packet_instance.id}
+                        tempdata = tempdata[:-1] 
+                        tempdata_but_pointer = tempdata_but_pointer[:-1] 
+                    aux_packet = {"name": packet_instance.name, "data":tempdata_but_pointer , "id": packet_instance.id}
                     Packets.append(aux_packet)
                     for measurement in packet_instance.measurements:
                         aux_data = {"type": measurement.type, "name": measurement.id}
-                        totaldata.append(aux_data)
+                        if aux_data not in totaldata:
+                            totaldata.append(aux_data)
         
         return Packets,totaldata
     
@@ -142,63 +159,63 @@ def Generate_OrderPackets_hpp(board_input:str):
 
 #--------------Protections.hpp generation---------------#
 
-def Generate_Protections_context(board:BoardDescription):
-    def Get_Bondaries(measurement:MeasurmentsDescription):
-        Boundaries = []
-        for i in {0,1}:
-            for j in {0,1}:
-                if measurement.protections.protections[i].Protectionvalue[j] is None:
-                    continue
-                temp_boundary= {"type": measurement.type, "Above_or_Below":measurement.protections.protections[i].ProtectionType, "value": measurement.protections.protections[i].Protectionvalue[j],"coma":"," }
-                Boundaries.append(temp_boundary)
+# def Generate_Protections_context(board:BoardDescription):
+#     def Get_Bondaries(measurement:MeasurmentsDescription):
+#         Boundaries = []
+#         for i in {0,1}:
+#             for j in {0,1}:
+#                 if measurement.protections.protections[i].Protectionvalue[j] is None:
+#                     continue
+#                 temp_boundary= {"type": measurement.type, "Above_or_Below":measurement.protections.protections[i].ProtectionType, "value": measurement.protections.protections[i].Protectionvalue[j],"coma":"," }
+#                 Boundaries.append(temp_boundary)
         
-        Boundaries[-1]["coma"] = ""
-        return Boundaries
+#         Boundaries[-1]["coma"] = ""
+#         return Boundaries
             
 
-    def Get_protection_packets(board:BoardDescription):
-        protections = []
-        for packet in board.packets:
-            for packet_instance in board.packets[packet]:
-                for measurement in packet_instance.measurements:
-                    if hasattr(measurement, "protections"):
-                        protections.append(measurement)
-        if len(protections) == 0:
-            return False
-        return protections
+#     def Get_protection_packets(board:BoardDescription):
+#         protections = []
+#         for packet in board.packets:
+#             for packet_instance in board.packets[packet]:
+#                 for measurement in packet_instance.measurements:
+#                     if hasattr(measurement, "protections"):
+#                         protections.append(measurement)
+#         if len(protections) == 0:
+#             return False
+#         return protections
     
     
-    protection_packets = Get_protection_packets(board)
-    if protection_packets == False:
-        return False
-    protections=[]
-    data =[]
-    for measurement in protection_packets:
-        Boundaries = Get_Bondaries(measurement)
-        aux_protection = {"packet": measurement.id, "Boundaries": Boundaries}
-        aux_data = {"type": measurement.type, "name": measurement.id}
-        if aux_data not in data:
-            data.append(aux_data)
-        if aux_protection in protections:
-            continue
-        protections.append(aux_protection)
+#     protection_packets = Get_protection_packets(board)
+#     if protection_packets == False:
+#         return False
+#     protections=[]
+#     data =[]
+#     for measurement in protection_packets:
+#         Boundaries = Get_Bondaries(measurement)
+#         aux_protection = {"packet": measurement.id, "Boundaries": Boundaries}
+#         aux_data = {"type": measurement.type, "name": measurement.id}
+#         if aux_data not in data:
+#             data.append(aux_data)
+#         if aux_protection in protections:
+#             continue
+#         protections.append(aux_protection)
     
-    context ={
-        "board": board.name,
-        "data": data,
-        "protections": protections 
-    }
-    return context
+#     context ={
+#         "board": board.name,
+#         "data": data,
+#         "protections": protections 
+#     }
+#     return context
 
-def Generate_Protections_hpp(board_input:str):
-    protections_path = "Core/Inc/Communications/Packets/Protections.hpp"
-    board_instance = globals()[board_input]
-    env= jinja2.Environment(loader=jinja2.FileSystemLoader(templates_path))
-    template = env.get_template("ProtectionsTemplate.hpp")
-    context = Generate_Protections_context(board_instance)
-    if context == False:
-        if os.path.exists(protections_path):
-            os.remove(protections_path)
-        return
-    with open(protections_path,"w") as Output:
-        Output.write(template.render(context))
+# def Generate_Protections_hpp(board_input:str):
+#     protections_path = "Core/Inc/Communications/Packets/Protections.hpp"
+#     board_instance = globals()[board_input]
+#     env= jinja2.Environment(loader=jinja2.FileSystemLoader(templates_path))
+#     template = env.get_template("ProtectionsTemplate.hpp")
+#     context = Generate_Protections_context(board_instance)
+#     if context == False:
+#         if os.path.exists(protections_path):
+#             os.remove(protections_path)
+#         return
+#     with open(protections_path,"w") as Output:
+#         Output.write(template.render(context))
