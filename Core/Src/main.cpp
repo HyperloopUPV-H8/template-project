@@ -1,9 +1,4 @@
-#ifndef SIM_ON
 #include "main.h"
-
-#include "lwip.h"
-#endif
-
 #include "ST-LIB.hpp"
 
 int main(void) {
