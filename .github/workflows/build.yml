@@ -45,6 +45,7 @@ jobs:
 
       - name: Init submodules
         run: |
+          git config --global --add safe.directory '*'
           git submodule update --init --depth 1
           ./deps/ST-LIB/tools/init-submodules.sh 
         shell: bash
