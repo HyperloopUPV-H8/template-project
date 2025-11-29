@@ -31,4 +31,4 @@ jobs:
           context: .
           file: ci/Dockerfile
           push: true
-          tags: latest
+          tags: ghcr.io/hyperloopupv-h8/template-project/hyperloop-firmware-toolchain:latest
