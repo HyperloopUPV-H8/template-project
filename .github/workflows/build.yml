@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     container:
-      image: ghcr.io/HyperloopUPV-H8/ST-LIB/hyperloop-firmware-toolchain:latest
+      image: ghcr.io/hyperloopupv-h8/template-project/hyperloop-firmware-toolchain:latest
 
     outputs:
       build-artifact: ${{ steps.upload-build-artifact.outputs.artifact-id }}
