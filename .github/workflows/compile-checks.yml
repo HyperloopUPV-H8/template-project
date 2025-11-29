@@ -33,6 +33,6 @@ jobs:
           - board-relwithdebinfo-eth
           - simulator
       fail-fast: false
-    uses: ./deps/ST-LIB/.github/workflows/build.yml
+    uses: ./.github/workflows/build.yml
     with:
       preset: ${{ matrix.preset }}
