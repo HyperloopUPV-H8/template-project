@@ -29,6 +29,9 @@ jobs:
   build:
     name: Build Project
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: read
 
     container:
       image: ghcr.io/hyperloopupv-h8/st-lib/hyperloop-firmware-toolchain:latest
